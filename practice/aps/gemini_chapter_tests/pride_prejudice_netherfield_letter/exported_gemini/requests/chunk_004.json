@@ -1,0 +1,64 @@
+{
+  "output_file": "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\audio\\chunk_004.wav",
+  "model": "gemini-2.5-pro-preview-tts",
+  "scene_position": "turning_point",
+  "character_states": {
+    "miss_bingley": "baseline: polished, socially ambitious, performatively charming, sharp-edged beneath sweetness; entering from: confident praise, polished, assured, flattering; current beat: playful criticism, brisk, polished, lightly mocking",
+    "mr_bingley": "baseline: warm, open, genial, quick, self-deprecating; entering from: good-humoured teasing, quick, warm, playful, open; current beat: self-deprecating cheer, quick, light, genial, amused"
+  },
+  "character_voice_bibles": {
+    "miss_bingley": {
+      "character_id": "miss_bingley",
+      "display_name": "Miss Bingley",
+      "role": "supporting",
+      "provider_voice": "Aoede",
+      "voice_bible": "polished, socially ambitious, performatively charming, sharp-edged beneath sweetness",
+      "do_not_change": [
+        "social polish",
+        "performative charm",
+        "period tone"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "How delighted Miss Darcy will be to receive such a letter!",
+        "You write uncommonly fast."
+      ]
+    },
+    "mr_bingley": {
+      "character_id": "mr_bingley",
+      "display_name": "Mr. Bingley",
+      "role": "main",
+      "provider_voice": "Puck",
+      "voice_bible": "warm, open, genial, quick, self-deprecating",
+      "do_not_change": [
+        "warmth",
+        "openness",
+        "good humour"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?",
+        "My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspondents."
+      ]
+    }
+  },
+  "chapter_context": "## CHAPTER CONTEXT\nA drawing-room evening at Netherfield. Jane is recovering upstairs, while Elizabeth joins the party below. Darcy writes a letter, Miss Bingley hovers beside him, Mr. Bingley is good-humoured, and Elizabeth quietly observes the social performances around her.\n\n## THE SCENE\nDarcy is writing while Miss Bingley attempts to win his attention through flattery. Elizabeth quietly observes, amused by the mismatch between Miss Bingley's praise and Darcy's composure. Bingley enters the discussion with open good humour.\n\n## DIRECTOR'S NOTES\n- Keep the narration elegant, lightly ironic, and socially observant.\n- Miss Bingley should sound polished, eager, performative, and increasingly transparent in her attempts to flatter Darcy.\n- Darcy should sound composed, controlled, dry, and intellectually precise.\n- Bingley should sound warm, quick, open, and good-humoured.\n- Elizabeth should sound bright, observant, amused, and intellectually agile.\n- Do not modernise diction or add slang.\n- Preserve exact source text except where production splitting is needed to avoid TTS run-ons.\n- Miss Bingley's compliments should sound deliberate and socially performative.\n- Darcy should receive praise with almost complete unconcern.\n- Bingley should bring lightness and speed to the exchange.\n- Elizabeth's interjections should be poised, amused, and incisive.\n- Miss Bingley should sound polished, socially ambitious, performatively charming, sharp-edged beneath sweetness.\n- Mr. Bingley should sound warm, open, genial, quick, self-deprecating.\n\n## SAMPLE CONTEXT\nClassic comedy of manners: polished drawing-room banter, social manoeuvring, dry wit, and restrained romantic tension. Drawing-room comedy with restrained romantic tension and rapid social inference\n\n## CONTINUITY PACKET\n\nChunk 4 continues scene scene_001: Darcy's Letter. Scene position: turning_point.\n\n### JOIN CONTEXT - DO NOT SPEAK\nThe previous spoken beat was: Mr. Darcy: dry distinction, measured, calm, precise, understated. Line: My style of writing is very different from yours.\n\n### PREVIOUS MOMENT\n- Mr. Bingley: good-humoured teasing, quick, warm, playful, open. Line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllable...\n- Mr. Darcy: dry distinction, measured, calm, precise, understated. Line: My style of writing is very different from yours.\n\n### CURRENT MOMENT\n- Miss Bingley: playful criticism, brisk, polished, lightly mocking. Line: Oh, Charles writes in the most careless way imaginable. He leaves out half his words, and blots the rest.\n- Mr. Bingley: self-deprecating cheer, quick, light, genial, amused. Line: My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspon...\n\n### CHARACTER STATE\n- Miss Bingley: baseline: polished, socially ambitious, performatively charming, sharp-edged beneath sweetness; entering from: confident praise, polished, assured, flattering; current beat: playful criticism, brisk, polished, lightly mocking\n- Mr. Bingley: baseline: warm, open, genial, quick, self-deprecating; entering from: good-humoured teasing, quick, warm, playful, open; current beat: self-deprecating cheer, quick, light, genial, amused\n\n### CHARACTER VOICE BIBLE\n- Miss Bingley: polished, socially ambitious, performatively charming, sharp-edged beneath sweetness; Gemini voice Aoede; golden line: How delighted Miss Darcy will be to receive such a letter!\n- Mr. Bingley: warm, open, genial, quick, self-deprecating; Gemini voice Puck; golden line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?\n\n### VOICE LOCKS\n- Miss Bingley uses Gemini voice Aoede and must stay polished, socially ambitious, performatively charming, sharp-edged beneath sweetness. Do not change: social polish, performative charm, period tone.\n- Mr. Bingley uses Gemini voice Puck and must stay warm, open, genial, quick, self-deprecating. Do not change: warmth, openness, good humour.\n\n### JOINING INSTRUCTIONS\n- Preserve the same scene energy as the surrounding chunks.\n- Do not restart the performance as if this is a new scene.\n- Keep pauses natural at the beginning and end so this audio can be stitched into an audiobook.",
+  "continuity_packet": "## CONTINUITY PACKET\n\nChunk 4 continues scene scene_001: Darcy's Letter. Scene position: turning_point.\n\n### JOIN CONTEXT - DO NOT SPEAK\nThe previous spoken beat was: Mr. Darcy: dry distinction, measured, calm, precise, understated. Line: My style of writing is very different from yours.\n\n### PREVIOUS MOMENT\n- Mr. Bingley: good-humoured teasing, quick, warm, playful, open. Line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllable...\n- Mr. Darcy: dry distinction, measured, calm, precise, understated. Line: My style of writing is very different from yours.\n\n### CURRENT MOMENT\n- Miss Bingley: playful criticism, brisk, polished, lightly mocking. Line: Oh, Charles writes in the most careless way imaginable. He leaves out half his words, and blots the rest.\n- Mr. Bingley: self-deprecating cheer, quick, light, genial, amused. Line: My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspon...\n\n### CHARACTER STATE\n- Miss Bingley: baseline: polished, socially ambitious, performatively charming, sharp-edged beneath sweetness; entering from: confident praise, polished, assured, flattering; current beat: playful criticism, brisk, polished, lightly mocking\n- Mr. Bingley: baseline: warm, open, genial, quick, self-deprecating; entering from: good-humoured teasing, quick, warm, playful, open; current beat: self-deprecating cheer, quick, light, genial, amused\n\n### CHARACTER VOICE BIBLE\n- Miss Bingley: polished, socially ambitious, performatively charming, sharp-edged beneath sweetness; Gemini voice Aoede; golden line: How delighted Miss Darcy will be to receive such a letter!\n- Mr. Bingley: warm, open, genial, quick, self-deprecating; Gemini voice Puck; golden line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?\n\n### VOICE LOCKS\n- Miss Bingley uses Gemini voice Aoede and must stay polished, socially ambitious, performatively charming, sharp-edged beneath sweetness. Do not change: social polish, performative charm, period tone.\n- Mr. Bingley uses Gemini voice Puck and must stay warm, open, genial, quick, self-deprecating. Do not change: warmth, openness, good humour.\n\n### JOINING INSTRUCTIONS\n- Preserve the same scene energy as the surrounding chunks.\n- Do not restart the performance as if this is a new scene.\n- Keep pauses natural at the beginning and end so this audio can be stitched into an audiobook.",
+  "transcript": "TTS the following conversation exactly as written:\n\nMiss Bingley: [playful criticism, brisk, polished, lightly mocking] Oh, Charles writes in the most careless way imaginable. He leaves out half his words, and blots the rest.\n\nMr. Bingley: [self-deprecating cheer, quick, light, genial, amused] My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspondents.",
+  "speaker_voices": {
+    "Miss Bingley": "Aoede",
+    "Mr. Bingley": "Puck"
+  },
+  "source": {
+    "book_id": "pride_and_prejudice",
+    "chapter_id": "chapter_netherfield_letter_test",
+    "scene_id": "scene_001",
+    "chunk_number": 4,
+    "scene_chunk_index": 4,
+    "scene_chunk_count": 5,
+    "beat_ids": [
+      "scene_001_beat_020",
+      "scene_001_beat_021"
+    ]
+  }
+}

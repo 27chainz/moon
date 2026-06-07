@@ -1,0 +1,64 @@
+{
+  "output_file": "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\audio\\chunk_003.wav",
+  "model": "gemini-2.5-pro-preview-tts",
+  "scene_position": "rising",
+  "character_states": {
+    "mr_bingley": "baseline: warm, open, genial, quick, self-deprecating; current beat: good-humoured teasing, quick, warm, playful, open",
+    "mr_darcy": "baseline: composed, reserved, precise, dry, quietly authoritative; entering from: controlled modesty, measured, dry, precise, restrained; current beat: dry distinction, measured, calm, precise, understated"
+  },
+  "character_voice_bibles": {
+    "mr_bingley": {
+      "character_id": "mr_bingley",
+      "display_name": "Mr. Bingley",
+      "role": "main",
+      "provider_voice": "Puck",
+      "voice_bible": "warm, open, genial, quick, self-deprecating",
+      "do_not_change": [
+        "warmth",
+        "openness",
+        "good humour"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?",
+        "My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspondents."
+      ]
+    },
+    "mr_darcy": {
+      "character_id": "mr_darcy",
+      "display_name": "Mr. Darcy",
+      "role": "main",
+      "provider_voice": "Fenrir",
+      "voice_bible": "composed, reserved, precise, dry, quietly authoritative",
+      "do_not_change": [
+        "reserve",
+        "precision",
+        "calm authority"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "You are mistaken. I write rather slowly.",
+        "It is fortunate, then, that they fall to my lot instead of to yours."
+      ]
+    }
+  },
+  "chapter_context": "## CHAPTER CONTEXT\nA drawing-room evening at Netherfield. Jane is recovering upstairs, while Elizabeth joins the party below. Darcy writes a letter, Miss Bingley hovers beside him, Mr. Bingley is good-humoured, and Elizabeth quietly observes the social performances around her.\n\n## THE SCENE\nDarcy is writing while Miss Bingley attempts to win his attention through flattery. Elizabeth quietly observes, amused by the mismatch between Miss Bingley's praise and Darcy's composure. Bingley enters the discussion with open good humour.\n\n## DIRECTOR'S NOTES\n- Keep the narration elegant, lightly ironic, and socially observant.\n- Miss Bingley should sound polished, eager, performative, and increasingly transparent in her attempts to flatter Darcy.\n- Darcy should sound composed, controlled, dry, and intellectually precise.\n- Bingley should sound warm, quick, open, and good-humoured.\n- Elizabeth should sound bright, observant, amused, and intellectually agile.\n- Do not modernise diction or add slang.\n- Preserve exact source text except where production splitting is needed to avoid TTS run-ons.\n- Miss Bingley's compliments should sound deliberate and socially performative.\n- Darcy should receive praise with almost complete unconcern.\n- Bingley should bring lightness and speed to the exchange.\n- Elizabeth's interjections should be poised, amused, and incisive.\n- Mr. Bingley should sound warm, open, genial, quick, self-deprecating.\n- Mr. Darcy should sound composed, reserved, precise, dry, quietly authoritative.\n\n## SAMPLE CONTEXT\nClassic comedy of manners: polished drawing-room banter, social manoeuvring, dry wit, and restrained romantic tension. Drawing-room comedy with restrained romantic tension and rapid social inference\n\n## CONTINUITY PACKET\n\nChunk 3 continues scene scene_001: Darcy's Letter. Scene position: rising.\n\n### JOIN CONTEXT - DO NOT SPEAK\nThe previous spoken beat was: Miss Bingley: confident praise, polished, assured, flattering. Line: It is a rule with me, that a person who can write a long letter with ease cannot write ill.\n\n### PREVIOUS MOMENT\n- Mr. Darcy: controlled modesty, measured, dry, precise, restrained. Line: They are generally long; but whether always charming, it is not for me to determine.\n- Miss Bingley: confident praise, polished, assured, flattering. Line: It is a rule with me, that a person who can write a long letter with ease cannot write ill.\n\n### CURRENT MOMENT\n- Mr. Bingley: good-humoured teasing, quick, warm, playful, open. Line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllable...\n- Mr. Darcy: dry distinction, measured, calm, precise, understated. Line: My style of writing is very different from yours.\n\n### CHARACTER STATE\n- Mr. Bingley: baseline: warm, open, genial, quick, self-deprecating; current beat: good-humoured teasing, quick, warm, playful, open\n- Mr. Darcy: baseline: composed, reserved, precise, dry, quietly authoritative; entering from: controlled modesty, measured, dry, precise, restrained; current beat: dry distinction, measured, calm, precise, understated\n\n### CHARACTER VOICE BIBLE\n- Mr. Bingley: warm, open, genial, quick, self-deprecating; Gemini voice Puck; golden line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?\n- Mr. Darcy: composed, reserved, precise, dry, quietly authoritative; Gemini voice Fenrir; golden line: You are mistaken. I write rather slowly.\n\n### VOICE LOCKS\n- Mr. Bingley uses Gemini voice Puck and must stay warm, open, genial, quick, self-deprecating. Do not change: warmth, openness, good humour.\n- Mr. Darcy uses Gemini voice Fenrir and must stay composed, reserved, precise, dry, quietly authoritative. Do not change: reserve, precision, calm authority.\n\n### JOINING INSTRUCTIONS\n- Preserve the same scene energy as the surrounding chunks.\n- Do not restart the performance as if this is a new scene.\n- Keep pauses natural at the beginning and end so this audio can be stitched into an audiobook.",
+  "continuity_packet": "## CONTINUITY PACKET\n\nChunk 3 continues scene scene_001: Darcy's Letter. Scene position: rising.\n\n### JOIN CONTEXT - DO NOT SPEAK\nThe previous spoken beat was: Miss Bingley: confident praise, polished, assured, flattering. Line: It is a rule with me, that a person who can write a long letter with ease cannot write ill.\n\n### PREVIOUS MOMENT\n- Mr. Darcy: controlled modesty, measured, dry, precise, restrained. Line: They are generally long; but whether always charming, it is not for me to determine.\n- Miss Bingley: confident praise, polished, assured, flattering. Line: It is a rule with me, that a person who can write a long letter with ease cannot write ill.\n\n### CURRENT MOMENT\n- Mr. Bingley: good-humoured teasing, quick, warm, playful, open. Line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllable...\n- Mr. Darcy: dry distinction, measured, calm, precise, understated. Line: My style of writing is very different from yours.\n\n### CHARACTER STATE\n- Mr. Bingley: baseline: warm, open, genial, quick, self-deprecating; current beat: good-humoured teasing, quick, warm, playful, open\n- Mr. Darcy: baseline: composed, reserved, precise, dry, quietly authoritative; entering from: controlled modesty, measured, dry, precise, restrained; current beat: dry distinction, measured, calm, precise, understated\n\n### CHARACTER VOICE BIBLE\n- Mr. Bingley: warm, open, genial, quick, self-deprecating; Gemini voice Puck; golden line: That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?\n- Mr. Darcy: composed, reserved, precise, dry, quietly authoritative; Gemini voice Fenrir; golden line: You are mistaken. I write rather slowly.\n\n### VOICE LOCKS\n- Mr. Bingley uses Gemini voice Puck and must stay warm, open, genial, quick, self-deprecating. Do not change: warmth, openness, good humour.\n- Mr. Darcy uses Gemini voice Fenrir and must stay composed, reserved, precise, dry, quietly authoritative. Do not change: reserve, precision, calm authority.\n\n### JOINING INSTRUCTIONS\n- Preserve the same scene energy as the surrounding chunks.\n- Do not restart the performance as if this is a new scene.\n- Keep pauses natural at the beginning and end so this audio can be stitched into an audiobook.",
+  "transcript": "TTS the following conversation exactly as written:\n\nMr. Bingley: [good-humoured teasing, quick, warm, playful, open] That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?\n\nMr. Darcy: [dry distinction, measured, calm, precise, understated] My style of writing is very different from yours.",
+  "speaker_voices": {
+    "Mr. Bingley": "Puck",
+    "Mr. Darcy": "Fenrir"
+  },
+  "source": {
+    "book_id": "pride_and_prejudice",
+    "chapter_id": "chapter_netherfield_letter_test",
+    "scene_id": "scene_001",
+    "chunk_number": 3,
+    "scene_chunk_index": 3,
+    "scene_chunk_count": 5,
+    "beat_ids": [
+      "scene_001_beat_018",
+      "scene_001_beat_019"
+    ]
+  }
+}

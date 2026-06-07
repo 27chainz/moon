@@ -1,0 +1,386 @@
+{
+  "aps_version": "0.1",
+  "book_id": "pride_and_prejudice",
+  "title": "Pride and Prejudice",
+  "chapter_id": "chapter_netherfield_letter_test",
+  "chapter_title": "Netherfield Drawing-Room: Darcy's Letter",
+  "production_packet": {
+    "the_scene": "A drawing-room evening at Netherfield. Jane is recovering upstairs, while Elizabeth joins the party below. Darcy writes a letter, Miss Bingley hovers beside him, Mr. Bingley is good-humoured, and Elizabeth quietly observes the social performances around her.",
+    "director_notes": [
+      "Keep the narration elegant, lightly ironic, and socially observant.",
+      "Miss Bingley should sound polished, eager, performative, and increasingly transparent in her attempts to flatter Darcy.",
+      "Darcy should sound composed, controlled, dry, and intellectually precise.",
+      "Bingley should sound warm, quick, open, and good-humoured.",
+      "Elizabeth should sound bright, observant, amused, and intellectually agile.",
+      "Do not modernise diction or add slang.",
+      "Preserve exact source text except where production splitting is needed to avoid TTS run-ons."
+    ],
+    "sample_context": "Classic comedy of manners: polished drawing-room banter, social manoeuvring, dry wit, and restrained romantic tension."
+  },
+  "characters": {
+    "narrator": {
+      "display_name": "Narrator",
+      "role": "narrator",
+      "stable_voice": "elegant, dry, socially observant literary narrator",
+      "provider_voice": {
+        "gemini": "Charon"
+      },
+      "do_not_change": ["clarity", "period tone", "dry wit"]
+    },
+    "miss_bingley": {
+      "display_name": "Miss Bingley",
+      "role": "supporting",
+      "stable_voice": "polished, socially ambitious, performatively charming, sharp-edged beneath sweetness",
+      "provider_voice": {
+        "gemini": "Aoede"
+      },
+      "do_not_change": ["social polish", "performative charm", "period tone"]
+    },
+    "mr_darcy": {
+      "display_name": "Mr. Darcy",
+      "role": "main",
+      "stable_voice": "composed, reserved, precise, dry, quietly authoritative",
+      "provider_voice": {
+        "gemini": "Fenrir"
+      },
+      "do_not_change": ["reserve", "precision", "calm authority"]
+    },
+    "mr_bingley": {
+      "display_name": "Mr. Bingley",
+      "role": "main",
+      "stable_voice": "warm, open, genial, quick, self-deprecating",
+      "provider_voice": {
+        "gemini": "Puck"
+      },
+      "do_not_change": ["warmth", "openness", "good humour"]
+    },
+    "elizabeth": {
+      "display_name": "Elizabeth",
+      "role": "main",
+      "stable_voice": "bright, observant, amused, poised, intellectually lively",
+      "provider_voice": {
+        "gemini": "Leda"
+      },
+      "do_not_change": ["brightness", "wit", "poise"]
+    }
+  },
+  "scenes": [
+    {
+      "scene_id": "scene_001",
+      "title": "Darcy's Letter",
+      "summary": "Miss Bingley flatters Darcy while he writes. Bingley and Elizabeth join the conversation, and Darcy turns the banter into a precise argument about humility, quickness, and persuasion.",
+      "setting": "Netherfield drawing-room, evening",
+      "mood": "witty, socially charged, polished, lightly comic",
+      "scene_context": "Darcy is writing while Miss Bingley attempts to win his attention through flattery. Elizabeth quietly observes, amused by the mismatch between Miss Bingley's praise and Darcy's composure. Bingley enters the discussion with open good humour.",
+      "director_notes": [
+        "Miss Bingley's compliments should sound deliberate and socially performative.",
+        "Darcy should receive praise with almost complete unconcern.",
+        "Bingley should bring lightness and speed to the exchange.",
+        "Elizabeth's interjections should be poised, amused, and incisive."
+      ],
+      "sample_context": "Drawing-room comedy with restrained romantic tension and rapid social inference.",
+      "beats": [
+        {
+          "beat_id": "scene_001_beat_001",
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The day passed much as the day before had done. Mrs. Hurst and Miss Bingley had spent some hours of the morning with the invalid, who continued, though slowly, to mend; and, in the evening, Elizabeth joined their party in the drawing-room.",
+          "context": "Scene setup.",
+          "performance": {
+            "emotion": "composed observation",
+            "intensity": 0.35,
+            "pacing": "measured",
+            "delivery": "elegant, clear, socially observant"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_002",
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Mr. Darcy was writing, and Miss Bingley, seated near him, was watching the progress of his letter, and repeatedly calling off his attention by messages to his sister.",
+          "context": "Miss Bingley is trying to get Darcy's attention.",
+          "performance": {
+            "emotion": "dry amusement",
+            "intensity": 0.45,
+            "pacing": "measured",
+            "delivery": "lightly ironic, observant"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_003",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "How delighted Miss Darcy will be to receive such a letter!",
+          "context": "Miss Bingley flatters Darcy through his sister.",
+          "performance": {
+            "emotion": "performative admiration",
+            "intensity": 0.65,
+            "pacing": "bright",
+            "delivery": "polished, eager, flattering"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_004",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "You write uncommonly fast.",
+          "context": "Another attempt to draw Darcy out.",
+          "performance": {
+            "emotion": "admiring insistence",
+            "intensity": 0.6,
+            "pacing": "quick",
+            "delivery": "sweetly persistent"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_005",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "You are mistaken. I write rather slowly.",
+          "context": "Darcy answers without indulging the compliment.",
+          "performance": {
+            "emotion": "controlled correction",
+            "intensity": 0.35,
+            "pacing": "unhurried",
+            "delivery": "dry, precise, composed"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_006",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "How many letters you must have occasion to write in the course of a year! Letters of business, too! How odious I should think them!",
+          "context": "Miss Bingley continues to flatter and sympathise.",
+          "performance": {
+            "emotion": "performative sympathy",
+            "intensity": 0.7,
+            "pacing": "lively",
+            "delivery": "gossipy, polished, slightly overdone"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_007",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "It is fortunate, then, that they fall to my lot instead of to yours.",
+          "context": "Darcy replies with calm dryness.",
+          "performance": {
+            "emotion": "dry irony",
+            "intensity": 0.45,
+            "pacing": "unhurried",
+            "delivery": "low, controlled, lightly cutting"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_008",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "Pray tell your sister that I long to see her.",
+          "context": "Miss Bingley tries another message through Darcy.",
+          "performance": {
+            "emotion": "social eagerness",
+            "intensity": 0.6,
+            "pacing": "brisk",
+            "delivery": "polished, insistent"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_009",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "I have already told her so once, by your desire.",
+          "context": "Darcy quietly resists repetition.",
+          "performance": {
+            "emotion": "dry restraint",
+            "intensity": 0.4,
+            "pacing": "even",
+            "delivery": "precise, calm, mildly impatient"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_010",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "I am afraid you do not like your pen. Let me mend it for you. I mend pens remarkably well.",
+          "context": "Miss Bingley offers help as another form of flirtation.",
+          "performance": {
+            "emotion": "eager helpfulness",
+            "intensity": 0.65,
+            "pacing": "quick",
+            "delivery": "bright, performative, slightly intrusive"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_011",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "Thank you, but I always mend my own.",
+          "context": "Darcy declines.",
+          "performance": {
+            "emotion": "composed refusal",
+            "intensity": 0.35,
+            "pacing": "brief",
+            "delivery": "firm, polite, final"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_012",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "How can you contrive to write so even?",
+          "context": "Miss Bingley continues praising minutiae.",
+          "performance": {
+            "emotion": "admiring persistence",
+            "intensity": 0.6,
+            "pacing": "bright",
+            "delivery": "polished, searching for a response"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_013",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "Tell your sister I am delighted to hear of her improvement on the harp, and pray let her know that I am quite in raptures with her beautiful little design for a table, and I think it infinitely superior to Miss Grantley's.",
+          "context": "Miss Bingley offers a long message for Darcy's sister.",
+          "performance": {
+            "emotion": "lavish flattery",
+            "intensity": 0.75,
+            "pacing": "flowing",
+            "delivery": "ornate, socially performative, eager"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_014",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "Will you give me leave to defer your raptures till I write again? At present I have not room to do them justice.",
+          "context": "Darcy answers with elegant dryness.",
+          "performance": {
+            "emotion": "dry wit",
+            "intensity": 0.5,
+            "pacing": "unhurried",
+            "delivery": "composed, precise, faintly amused"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_015",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "Oh, it is of no consequence. I shall see her in January. But do you always write such charming long letters to her, Mr. Darcy?",
+          "context": "Miss Bingley pivots back to praising Darcy.",
+          "performance": {
+            "emotion": "lightly flustered admiration",
+            "intensity": 0.65,
+            "pacing": "brisk",
+            "delivery": "socially graceful, persistent"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_016",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "They are generally long; but whether always charming, it is not for me to determine.",
+          "context": "Darcy refuses to accept the compliment.",
+          "performance": {
+            "emotion": "controlled modesty",
+            "intensity": 0.4,
+            "pacing": "measured",
+            "delivery": "dry, precise, restrained"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_017",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "It is a rule with me, that a person who can write a long letter with ease cannot write ill.",
+          "context": "Miss Bingley makes a broad compliment.",
+          "performance": {
+            "emotion": "confident praise",
+            "intensity": 0.6,
+            "pacing": "polished",
+            "delivery": "assured, flattering"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_018",
+          "kind": "dialogue",
+          "speaker": "mr_bingley",
+          "text": "That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?",
+          "context": "Bingley teases Darcy and his sister Caroline.",
+          "performance": {
+            "emotion": "good-humoured teasing",
+            "intensity": 0.7,
+            "pacing": "quick",
+            "delivery": "warm, playful, open"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_019",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "My style of writing is very different from yours.",
+          "context": "Darcy distinguishes himself from Bingley.",
+          "performance": {
+            "emotion": "dry distinction",
+            "intensity": 0.45,
+            "pacing": "measured",
+            "delivery": "calm, precise, understated"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_020",
+          "kind": "dialogue",
+          "speaker": "miss_bingley",
+          "text": "Oh, Charles writes in the most careless way imaginable. He leaves out half his words, and blots the rest.",
+          "context": "Miss Bingley criticises her brother with familiar ease.",
+          "performance": {
+            "emotion": "playful criticism",
+            "intensity": 0.65,
+            "pacing": "brisk",
+            "delivery": "polished, lightly mocking"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_021",
+          "kind": "dialogue",
+          "speaker": "mr_bingley",
+          "text": "My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspondents.",
+          "context": "Bingley jokes at his own expense.",
+          "performance": {
+            "emotion": "self-deprecating cheer",
+            "intensity": 0.65,
+            "pacing": "quick",
+            "delivery": "light, genial, amused"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_022",
+          "kind": "dialogue",
+          "speaker": "elizabeth",
+          "text": "Your humility, Mr. Bingley, must disarm reproof.",
+          "context": "Elizabeth enters the banter.",
+          "performance": {
+            "emotion": "bright amusement",
+            "intensity": 0.6,
+            "pacing": "nimble",
+            "delivery": "poised, witty, observant"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_023",
+          "kind": "dialogue",
+          "speaker": "mr_darcy",
+          "text": "Nothing is more deceitful than the appearance of humility. It is often only carelessness of opinion, and sometimes an indirect boast.",
+          "context": "Darcy analyses Bingley's modesty.",
+          "performance": {
+            "emotion": "intellectual precision",
+            "intensity": 0.6,
+            "pacing": "deliberate",
+            "delivery": "controlled, analytical, firm"
+          }
+        }
+      ]
+    }
+  ]
+}
+

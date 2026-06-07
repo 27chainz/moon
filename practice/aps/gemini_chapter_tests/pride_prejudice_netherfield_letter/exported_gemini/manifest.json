@@ -1,0 +1,101 @@
+{
+  "book_id": "pride_and_prejudice",
+  "chapter_id": "chapter_netherfield_letter_test",
+  "model": "gemini-2.5-pro-preview-tts",
+  "qa_status": "pending",
+  "qa_notes": [],
+  "character_voice_bibles": {
+    "narrator": {
+      "character_id": "narrator",
+      "display_name": "Narrator",
+      "role": "narrator",
+      "provider_voice": "Charon",
+      "voice_bible": "elegant, dry, socially observant literary narrator",
+      "do_not_change": [
+        "clarity",
+        "period tone",
+        "dry wit"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "The day passed much as the day before had done. Mrs. Hurst and Miss Bingley had spent some hours of the morning with the invalid, who continued, though slowly, to mend; and, in the evening, Elizabeth joined their party in the drawing-room.",
+        "Mr. Darcy was writing, and Miss Bingley, seated near him, was watching the progress of his letter, and repeatedly calling off his attention by messages to his sister."
+      ]
+    },
+    "miss_bingley": {
+      "character_id": "miss_bingley",
+      "display_name": "Miss Bingley",
+      "role": "supporting",
+      "provider_voice": "Aoede",
+      "voice_bible": "polished, socially ambitious, performatively charming, sharp-edged beneath sweetness",
+      "do_not_change": [
+        "social polish",
+        "performative charm",
+        "period tone"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "How delighted Miss Darcy will be to receive such a letter!",
+        "You write uncommonly fast."
+      ]
+    },
+    "mr_darcy": {
+      "character_id": "mr_darcy",
+      "display_name": "Mr. Darcy",
+      "role": "main",
+      "provider_voice": "Fenrir",
+      "voice_bible": "composed, reserved, precise, dry, quietly authoritative",
+      "do_not_change": [
+        "reserve",
+        "precision",
+        "calm authority"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "You are mistaken. I write rather slowly.",
+        "It is fortunate, then, that they fall to my lot instead of to yours."
+      ]
+    },
+    "mr_bingley": {
+      "character_id": "mr_bingley",
+      "display_name": "Mr. Bingley",
+      "role": "main",
+      "provider_voice": "Puck",
+      "voice_bible": "warm, open, genial, quick, self-deprecating",
+      "do_not_change": [
+        "warmth",
+        "openness",
+        "good humour"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "That will not do for a compliment to Darcy, Caroline, because he does not write with ease. He studies too much for words of four syllables. Do not you, Darcy?",
+        "My ideas flow so rapidly that I have not time to express them; by which means my letters sometimes convey no ideas at all to my correspondents."
+      ]
+    },
+    "elizabeth": {
+      "character_id": "elizabeth",
+      "display_name": "Elizabeth",
+      "role": "main",
+      "provider_voice": "Leda",
+      "voice_bible": "bright, observant, amused, poised, intellectually lively",
+      "do_not_change": [
+        "brightness",
+        "wit",
+        "poise"
+      ],
+      "approved_reference_note": "",
+      "golden_lines": [
+        "Your humility, Mr. Bingley, must disarm reproof."
+      ]
+    }
+  },
+  "requests": [
+    "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\requests\\chunk_001.json",
+    "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\requests\\chunk_002.json",
+    "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\requests\\chunk_003.json",
+    "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\requests\\chunk_004.json",
+    "practice\\aps\\gemini_chapter_tests\\pride_prejudice_netherfield_letter\\exported_gemini\\requests\\chunk_005.json"
+  ],
+  "note": "Gemini TTS chunks are split to keep each request within the two-speaker limit."
+}

@@ -67,6 +67,11 @@ Return only valid JSON. Do not use Markdown. Do not wrap the response in code fe
 - Do not invent new spoken lines.
 - Do not summarize source prose inside `beat.text`.
 - Do not modernize, simplify, censor, or rewrite the source text.
+- `beat.text` must be plain spoken text with no Markdown formatting.
+- Strip Markdown emphasis markers while preserving the words:
+  - Wrong: `My parents had also given me a _Best of Gilbert and Sullivan_ LP`
+  - Right: `My parents had also given me a Best of Gilbert and Sullivan LP`
+- Do not include Markdown headings, bullets, links, code fences, or emphasis syntax in `beat.text`.
 - Split very long prose paragraphs into smaller narration beats only at natural sentence boundaries.
 
 ## Dialogue Rules

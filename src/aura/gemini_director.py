@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from src.aura.aps_hygiene import sanitize_aps_text
 from src.aura.gemini_production import write_json
 
 
@@ -222,7 +223,10 @@ def create_aps(
 
     raw = response.text or ""
     plan = parse_json_response(raw)
+    plan, hygiene_changes = sanitize_aps_text(plan)
     warnings = validate_aps(plan)
+    if hygiene_changes:
+        plan["_hygiene_changes"] = hygiene_changes
     if warnings:
         plan.setdefault("_director_warnings", warnings)
     return plan

@@ -1,0 +1,9 @@
+torch
+torchaudio
+transformers
+accelerate
+peft
+soundfile
+scipy
+google-genai
+pyloudnorm

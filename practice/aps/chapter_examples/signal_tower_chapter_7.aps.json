@@ -1,0 +1,4729 @@
+{
+  "schema_version": "0.2",
+  "aps_version": "0.2",
+  "book_id": "signal_tower_demo",
+  "title": "The Signal Tower",
+  "chapter_id": "chapter_007",
+  "chapter_title": "The Signal Tower",
+  "source_document": {
+    "source_id": "source_document.text",
+    "format": "markdown",
+    "start_char": 0,
+    "end_char": 2581,
+    "text": "Chapter 7: The Signal Tower\n\nThe storm had arrived faster than anyone expected.\n\nRain hammered the metal walls of the signal tower, turning every conversation into a near shout. Somewhere above them, loose cables rattled against the outer frame.\n\nMaya climbed the final flight of stairs and pushed through the hatch.\n\nThe control room was empty.\n\nAt least, it looked empty.\n\nA single lamp glowed beside the main console. Everything else sat in darkness.\n\n\"Tell me you found something,\" Noah said.\n\nMaya didn't answer immediately.\n\nShe was staring at the floor.\n\nWet footprints.\n\nFresh.\n\nLeading from the hatch to the far corner of the room.\n\n\"Noah.\"\n\nThe change in her voice made him stop.\n\n\"What?\"\n\nShe pointed.\n\nFor a moment neither of them spoke.\n\nThe footprints ended abruptly beside the wall.\n\nThere was no door.\n\nNo window.\n\nNothing.\n\n\"That's impossible,\" Noah whispered.\n\nThe room shook as thunder rolled across the mountains.\n\nMaya stepped closer to the wall.\n\nThe concrete surface looked normal.\n\nThen she noticed a scratch.\n\nA thin vertical line running from floor to ceiling.\n\nA hidden seam.\n\n\"Back up,\" she said.\n\nNoah obeyed immediately.\n\nMaya pressed her hand against the wall.\n\nNothing happened.\n\nShe pushed harder.\n\nStill nothing.\n\nThen a voice spoke behind them.\n\n\"Looking for this?\"\n\nBoth of them spun around.\n\nA man stood beside the console.\n\nNeither of them had heard him enter.\n\nNeither of them had heard the hatch open.\n\nThe stranger smiled.\n\nNot warmly.\n\nNot kindly.\n\nLike someone who already knew how this would end.\n\nNoah took a step forward.\n\n\"Who are you?\"\n\nThe man ignored the question.\n\nInstead, he looked directly at Maya.\n\n\"I was wondering how long it would take you.\"\n\nMaya felt her stomach tighten.\n\n\"Have we met?\"\n\nThe stranger laughed.\n\nA short, quiet laugh.\n\n\"You don't remember me.\"\n\n\"I've never seen you before.\"\n\n\"No,\" the man said. \"You just don't remember.\"\n\nSilence filled the room.\n\nOutside, the storm intensified.\n\nRain battered the tower windows.\n\nThe lights flickered.\n\nFor the first time since entering the room, the stranger's smile faded.\n\nHis expression became serious.\n\nAlmost concerned.\n\n\"We don't have much time.\"\n\nNoah frowned.\n\n\"For what?\"\n\nThe stranger looked toward the hidden door.\n\nThen back at Maya.\n\n\"For what's coming.\"\n\nA deafening crash echoed somewhere below the tower.\n\nThe entire building trembled.\n\nNoah swore.\n\nMaya turned toward the staircase.\n\nAnother crash.\n\nCloser this time.\n\n\"What was that?\" Noah asked.\n\nThe stranger didn't answer.\n\nHis eyes never left the stairwell.\n\nThen, quietly, he said:\n\n\"Too late.\""
+  },
+  "automation_policy": {
+    "confidence_thresholds": {
+      "auto_accept_min": 0.8,
+      "review_min": 0.55,
+      "reject_below": 0.55
+    },
+    "dialogue_tag_policy": {
+      "safe_tags": [
+        "said",
+        "asked",
+        "whispered"
+      ],
+      "unsafe_tags": [
+        "lied",
+        "admitted",
+        "confessed",
+        "hesitated"
+      ],
+      "unsafe_action_markers": [
+        "pointing",
+        "smiling",
+        "crying",
+        "laughing",
+        "turning",
+        "reaching",
+        "bleeding"
+      ]
+    }
+  },
+  "production_packet": {
+    "the_scene": "A storm-battered mountain signal tower at night. Maya and Noah discover impossible wet footprints, a hidden seam, and a stranger who appears without warning before something crashes up from below.",
+    "director_notes": [
+      "Use one consistent default narrator voice for the chapter.",
+      "Keep narration tense, cinematic, and controlled, with storm pressure always present but not overpowering speech.",
+      "Dialogue must feel alive: raised when competing with the storm, hushed when fear takes over, and controlled when the stranger speaks.",
+      "Remove only safe dialogue tags. Preserve action, plot information, and suspicious behavior as context metadata."
+    ],
+    "sample_context": "Modern suspense thriller audiobook with a storm, an impossible room, and a controlled stranger reveal."
+  },
+  "narration_strategy": {
+    "mode": "platform_default",
+    "default_narrator": {
+      "provider": "gemini",
+      "voice_id": "Kore",
+      "style": "clear, restrained, emotionally responsive, not theatrical"
+    },
+    "override_allowed": true,
+    "override_used": false
+  },
+  "characters": {
+    "narrator": {
+      "display_name": "Narrator",
+      "role": "narrator",
+      "stable_voice": "clear, restrained, emotionally responsive, not theatrical",
+      "provider_voice": {
+        "gemini": "Kore"
+      },
+      "do_not_change": [
+        "clarity",
+        "base tone",
+        "narrator identity"
+      ]
+    },
+    "maya": {
+      "display_name": "Maya",
+      "role": "main",
+      "stable_voice": "alert, brave, controlled, emotionally restrained under pressure",
+      "provider_voice": {
+        "gemini": "Leda"
+      },
+      "do_not_change": [
+        "age",
+        "accent",
+        "base tone"
+      ]
+    },
+    "noah": {
+      "display_name": "Noah",
+      "role": "main",
+      "stable_voice": "practical, protective, quick to react, tense under danger",
+      "provider_voice": {
+        "gemini": "Puck"
+      },
+      "do_not_change": [
+        "age",
+        "accent",
+        "base tone"
+      ]
+    },
+    "stranger": {
+      "display_name": "Stranger",
+      "role": "antagonist_or_unknown",
+      "stable_voice": "calm, low, precise, unsettlingly familiar, controlled",
+      "provider_voice": {
+        "gemini": "Fenrir"
+      },
+      "do_not_change": [
+        "controlled tone",
+        "calm menace",
+        "base tone"
+      ]
+    }
+  },
+  "scenes": [
+    {
+      "scene_id": "scene_001",
+      "title": "The Signal Tower Control Room",
+      "summary": "Maya and Noah enter a storm-battered signal tower control room, discover impossible footprints, encounter a stranger, and hear something approaching from below.",
+      "setting": "mountain signal tower control room, night, violent storm, metal walls, rattling cables, flickering lights",
+      "scene_type": "suspense_thriller",
+      "emotion": "storm pressure, dread, revelation, imminent danger",
+      "intensity": 0.86,
+      "pace": "rising",
+      "scene_context": "The storm forces everyone to speak over rain and rattling metal. The room first appears empty, then impossible, then occupied by a stranger who seems to know Maya.",
+      "moment_contexts": [
+        {
+          "moment_id": "moment_001",
+          "description": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious."
+        },
+        {
+          "moment_id": "moment_002",
+          "description": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible."
+        },
+        {
+          "moment_id": "moment_003",
+          "description": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside."
+        },
+        {
+          "moment_id": "moment_004",
+          "description": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat."
+        },
+        {
+          "moment_id": "moment_005",
+          "description": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches."
+        },
+        {
+          "moment_id": "moment_006",
+          "description": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived."
+        }
+      ],
+      "narrative_importance": {
+        "score": 0.94,
+        "label": "major_reveal_and_threat",
+        "reason": "The stranger knows Maya, the hidden door is revealed, and an unseen danger reaches the tower.",
+        "treatment": {
+          "direction_strength": "high",
+          "pause_before": "medium",
+          "pause_after": "long",
+          "qa_priority": "high"
+        }
+      },
+      "ambience": {
+        "ambience_id": "storm_signal_tower",
+        "perspective": "inside metal tower during violent exterior storm",
+        "loops": [
+          "muffled heavy rain on metal",
+          "rattling exterior cables",
+          "distant thunder"
+        ],
+        "level": "present_but_below_dialogue"
+      },
+      "acoustic_space": {
+        "listener_position": "inside_signal_tower_control_room",
+        "room_size": "small_metal_and_concrete_room",
+        "surface_character": "metal walls, concrete seam, glass tower windows",
+        "interior_reverb": "tight metallic reflections"
+      },
+      "environment_sources": {
+        "rain_on_metal_walls": {
+          "sound": "heavy rain",
+          "location": "outside",
+          "position": "wide_all_around",
+          "distance": "near",
+          "occlusion": 0.45,
+          "filter": "metallic softened impacts",
+          "duck_under_dialogue": true
+        },
+        "loose_cables": {
+          "sound": "rattling cables",
+          "location": "outside_upper_frame",
+          "position": "above_and_wide",
+          "distance": "medium",
+          "occlusion": 0.35,
+          "duck_under_dialogue": true
+        },
+        "thunder_mountains": {
+          "sound": "rolling thunder",
+          "location": "outside_mountains",
+          "position": "wide_low_distance",
+          "distance": "far",
+          "occlusion": 0.25,
+          "duck_under_dialogue": false
+        }
+      },
+      "character_states": {
+        "maya": {
+          "base_voice": "alert, brave, controlled",
+          "current_state": "focused but increasingly disturbed",
+          "continuity_rule": "do not recast; shift emotion and volume only"
+        },
+        "noah": {
+          "base_voice": "protective, practical, quick",
+          "current_state": "reactive and alarmed",
+          "continuity_rule": "do not recast; keep protective energy"
+        },
+        "stranger": {
+          "base_voice": "calm, low, precise",
+          "current_state": "controlled until urgency breaks through",
+          "continuity_rule": "do not recast; keep unnerving calm even when serious"
+        }
+      },
+      "beats": [
+        {
+          "beat_id": "scene_001_beat_001",
+          "sequence_index": 1,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The storm had arrived faster than anyone expected.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 29,
+            "source_end": 79,
+            "source_text": "The storm had arrived faster than anyone expected."
+          },
+          "moment_context_id": "moment_001",
+          "context": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "neutral",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "tight, atmospheric setup",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 0,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The storm had arrived faster than anyone expected.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "storm_setup"
+        },
+        {
+          "beat_id": "scene_001_beat_002",
+          "sequence_index": 2,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Rain hammered the metal walls of the signal tower, turning every conversation into a near shout. Somewhere above them, loose cables rattled against the outer frame.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 81,
+            "source_end": 245,
+            "source_text": "Rain hammered the metal walls of the signal tower, turning every conversation into a near shout. Somewhere above them, loose cables rattled against the outer frame."
+          },
+          "moment_context_id": "moment_001",
+          "context": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "neutral",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "tight, atmospheric setup",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Rain hammered the metal walls of the signal tower, turning every conversation into a near shout. Somewhere above them, loose cables rattled against the outer frame.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "storm_setup"
+        },
+        {
+          "beat_id": "scene_001_beat_003",
+          "sequence_index": 3,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Maya climbed the final flight of stairs and pushed through the hatch.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 247,
+            "source_end": 316,
+            "source_text": "Maya climbed the final flight of stairs and pushed through the hatch."
+          },
+          "moment_context_id": "moment_001",
+          "context": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "neutral",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "tight, atmospheric setup",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Maya climbed the final flight of stairs and pushed through the hatch.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "storm_setup"
+        },
+        {
+          "beat_id": "scene_001_beat_004",
+          "sequence_index": 4,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The control room was empty.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 318,
+            "source_end": 345,
+            "source_text": "The control room was empty."
+          },
+          "moment_context_id": "moment_001",
+          "context": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "neutral",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "tight, atmospheric setup",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The control room was empty.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_005",
+          "sequence_index": 5,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "At least, it looked empty.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 347,
+            "source_end": 373,
+            "source_text": "At least, it looked empty."
+          },
+          "moment_context_id": "moment_001",
+          "context": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "neutral",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "tight, atmospheric setup",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "At least, it looked empty.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_006",
+          "sequence_index": 6,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "A single lamp glowed beside the main console. Everything else sat in darkness.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 375,
+            "source_end": 453,
+            "source_text": "A single lamp glowed beside the main console. Everything else sat in darkness."
+          },
+          "moment_context_id": "moment_001",
+          "context": "The storm traps Maya and Noah inside the signal tower. The control room appears empty, but the lamp and darkness make the emptiness suspicious.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "neutral",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "tight, atmospheric setup",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "A single lamp glowed beside the main console. Everything else sat in darkness.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_007",
+          "sequence_index": 7,
+          "kind": "dialogue",
+          "speaker": "noah",
+          "text": "Tell me you found something",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 455,
+            "source_end": 496,
+            "source_text": "\"Tell me you found something,\" Noah said.",
+            "spoken_text_span": {
+              "source_start": 456,
+              "source_end": 484,
+              "text": "Tell me you found something,"
+            },
+            "removed_text_spans": [
+              {
+                "source_start": 486,
+                "source_end": 495,
+                "text": "Noah said",
+                "reason": "Converted to speaker attribution and/or performance metadata."
+              }
+            ]
+          },
+          "moment_context_id": "moment_002",
+          "context": "urgent near-shout over storm noise",
+          "dialogue_tag_policy": {
+            "source_tag": "said",
+            "classification": "safe",
+            "action": "remove",
+            "risk_reason": null,
+            "reason": "neutral attribution only"
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Noah recognisably young, practical, protective, and quick to react.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "urgent near-shout over storm noise"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "urgent near-shout over storm noise",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Tell me you found something",
+          "speaker_attribution": "explicit_tag",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_008",
+          "sequence_index": 8,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Maya didn't answer immediately.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 498,
+            "source_end": 529,
+            "source_text": "Maya didn't answer immediately."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Maya didn't answer immediately.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_009",
+          "sequence_index": 9,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "She was staring at the floor.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 531,
+            "source_end": 560,
+            "source_text": "She was staring at the floor."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "She was staring at the floor.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_010",
+          "sequence_index": 10,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Wet footprints.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 562,
+            "source_end": 577,
+            "source_text": "Wet footprints."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Wet footprints.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_011",
+          "sequence_index": 11,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Fresh.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 579,
+            "source_end": 585,
+            "source_text": "Fresh."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Fresh.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_012",
+          "sequence_index": 12,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Leading from the hatch to the far corner of the room.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 587,
+            "source_end": 640,
+            "source_text": "Leading from the hatch to the far corner of the room."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Leading from the hatch to the far corner of the room.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_013",
+          "sequence_index": 13,
+          "kind": "dialogue",
+          "speaker": "maya",
+          "text": "Noah.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 642,
+            "source_end": 649,
+            "source_text": "\"Noah.\"",
+            "spoken_text_span": {
+              "source_start": 643,
+              "source_end": 648,
+              "text": "Noah."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_002",
+          "context": "low alarm; a single warning word",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Maya recognisably alert, brave, controlled, and emotionally restrained under pressure.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "low alarm; a single warning word"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "low alarm; a single warning word",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Noah.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_014",
+          "sequence_index": 14,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The change in her voice made him stop.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 651,
+            "source_end": 689,
+            "source_text": "The change in her voice made him stop."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The change in her voice made him stop.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_015",
+          "sequence_index": 15,
+          "kind": "dialogue",
+          "speaker": "noah",
+          "text": "What?",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 691,
+            "source_end": 698,
+            "source_text": "\"What?\"",
+            "spoken_text_span": {
+              "source_start": 692,
+              "source_end": 697,
+              "text": "What?"
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_002",
+          "context": "short, alerted response",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Noah recognisably young, practical, protective, and quick to react.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "short, alerted response"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "short, alerted response",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "What?",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_016",
+          "sequence_index": 16,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "She pointed.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 700,
+            "source_end": 712,
+            "source_text": "She pointed."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "She pointed.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_017",
+          "sequence_index": 17,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "For a moment neither of them spoke.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 714,
+            "source_end": 749,
+            "source_text": "For a moment neither of them spoke."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "For a moment neither of them spoke.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_018",
+          "sequence_index": 18,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The footprints ended abruptly beside the wall.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 751,
+            "source_end": 797,
+            "source_text": "The footprints ended abruptly beside the wall."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The footprints ended abruptly beside the wall.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_019",
+          "sequence_index": 19,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "There was no door.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 799,
+            "source_end": 817,
+            "source_text": "There was no door."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "There was no door.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_020",
+          "sequence_index": 20,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "No window.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 819,
+            "source_end": 829,
+            "source_text": "No window."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "No window.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_021",
+          "sequence_index": 21,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Nothing.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 831,
+            "source_end": 839,
+            "source_text": "Nothing."
+          },
+          "moment_context_id": "moment_002",
+          "context": "Maya discovers fresh wet footprints leading across the control room and ending at a blank wall. The room stops feeling empty and starts feeling impossible.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "quiet reveal, mounting impossibility",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Nothing.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_022",
+          "sequence_index": 22,
+          "kind": "dialogue",
+          "speaker": "noah",
+          "text": "That's impossible",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 841,
+            "source_end": 877,
+            "source_text": "\"That's impossible,\" Noah whispered.",
+            "spoken_text_span": {
+              "source_start": 842,
+              "source_end": 860,
+              "text": "That's impossible,"
+            },
+            "removed_text_spans": [
+              {
+                "source_start": 862,
+                "source_end": 876,
+                "text": "Noah whispered",
+                "reason": "Converted to speaker attribution and/or performance metadata."
+              }
+            ]
+          },
+          "moment_context_id": "moment_002",
+          "context": "disbelief, whispered despite storm",
+          "dialogue_tag_policy": {
+            "source_tag": "whispered",
+            "classification": "safe",
+            "action": "convert_to_performance",
+            "risk_reason": null,
+            "reason": "vocal delivery only"
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Noah recognisably young, practical, protective, and quick to react.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "disbelief, whispered despite storm"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "disbelief, whispered despite storm",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "removed_text_beyond_said_or_asked"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "That's impossible",
+          "speaker_attribution": "explicit_tag",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_023",
+          "sequence_index": 23,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The room shook as thunder rolled across the mountains.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 879,
+            "source_end": 933,
+            "source_text": "The room shook as thunder rolled across the mountains."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The room shook as thunder rolled across the mountains.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_024",
+          "sequence_index": 24,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Maya stepped closer to the wall.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 935,
+            "source_end": 967,
+            "source_text": "Maya stepped closer to the wall."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Maya stepped closer to the wall.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_025",
+          "sequence_index": 25,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The concrete surface looked normal.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 969,
+            "source_end": 1004,
+            "source_text": "The concrete surface looked normal."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The concrete surface looked normal.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_026",
+          "sequence_index": 26,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Then she noticed a scratch.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1006,
+            "source_end": 1033,
+            "source_text": "Then she noticed a scratch."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Then she noticed a scratch.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_027",
+          "sequence_index": 27,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "A thin vertical line running from floor to ceiling.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1035,
+            "source_end": 1086,
+            "source_text": "A thin vertical line running from floor to ceiling."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "A thin vertical line running from floor to ceiling.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_028",
+          "sequence_index": 28,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "A hidden seam.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1088,
+            "source_end": 1102,
+            "source_text": "A hidden seam."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "A hidden seam.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_029",
+          "sequence_index": 29,
+          "kind": "dialogue",
+          "speaker": "maya",
+          "text": "Back up",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1104,
+            "source_end": 1124,
+            "source_text": "\"Back up,\" she said.",
+            "spoken_text_span": {
+              "source_start": 1105,
+              "source_end": 1113,
+              "text": "Back up,"
+            },
+            "removed_text_spans": [
+              {
+                "source_start": 1115,
+                "source_end": 1123,
+                "text": "she said",
+                "reason": "Converted to speaker attribution and/or performance metadata."
+              }
+            ]
+          },
+          "moment_context_id": "moment_003",
+          "context": "controlled command",
+          "dialogue_tag_policy": {
+            "source_tag": "said",
+            "classification": "safe",
+            "action": "remove",
+            "risk_reason": null,
+            "reason": "neutral attribution only"
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Maya recognisably alert, brave, controlled, and emotionally restrained under pressure.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "controlled command"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.68,
+            "pacing": "measured",
+            "delivery": "controlled command",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Back up",
+          "speaker_attribution": "explicit_tag",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "command"
+        },
+        {
+          "beat_id": "scene_001_beat_030",
+          "sequence_index": 30,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Noah obeyed immediately.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1126,
+            "source_end": 1150,
+            "source_text": "Noah obeyed immediately."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Noah obeyed immediately.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_031",
+          "sequence_index": 31,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Maya pressed her hand against the wall.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1152,
+            "source_end": 1191,
+            "source_text": "Maya pressed her hand against the wall."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Maya pressed her hand against the wall.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_032",
+          "sequence_index": 32,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Nothing happened.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1193,
+            "source_end": 1210,
+            "source_text": "Nothing happened."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Nothing happened.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_033",
+          "sequence_index": 33,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "She pushed harder.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1212,
+            "source_end": 1230,
+            "source_text": "She pushed harder."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "She pushed harder.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_034",
+          "sequence_index": 34,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Still nothing.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1232,
+            "source_end": 1246,
+            "source_text": "Still nothing."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Still nothing.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "quiet_reveal"
+        },
+        {
+          "beat_id": "scene_001_beat_035",
+          "sequence_index": 35,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Then a voice spoke behind them.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1248,
+            "source_end": 1279,
+            "source_text": "Then a voice spoke behind them."
+          },
+          "moment_context_id": "moment_003",
+          "context": "Maya identifies a hidden seam in the wall and tries to trigger it while Noah backs away. The pressure is quiet and procedural, with thunder outside.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.65,
+            "pacing": "measured",
+            "delivery": "controlled investigation",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Then a voice spoke behind them.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "disbelief"
+        },
+        {
+          "beat_id": "scene_001_beat_036",
+          "sequence_index": 36,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "Looking for this?",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1281,
+            "source_end": 1300,
+            "source_text": "\"Looking for this?\"",
+            "spoken_text_span": {
+              "source_start": 1282,
+              "source_end": 1299,
+              "text": "Looking for this?"
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "quietly amused, already in control",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "quietly amused, already in control"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "quietly amused, already in control",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Looking for this?",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_037",
+          "sequence_index": 37,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Both of them spun around.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1302,
+            "source_end": 1327,
+            "source_text": "Both of them spun around."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Both of them spun around.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_038",
+          "sequence_index": 38,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "A man stood beside the console.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1329,
+            "source_end": 1360,
+            "source_text": "A man stood beside the console."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "A man stood beside the console.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_039",
+          "sequence_index": 39,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Neither of them had heard him enter.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1362,
+            "source_end": 1398,
+            "source_text": "Neither of them had heard him enter."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Neither of them had heard him enter.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_040",
+          "sequence_index": 40,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Neither of them had heard the hatch open.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1400,
+            "source_end": 1441,
+            "source_text": "Neither of them had heard the hatch open."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Neither of them had heard the hatch open.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_041",
+          "sequence_index": 41,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The stranger smiled.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1443,
+            "source_end": 1463,
+            "source_text": "The stranger smiled."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The stranger smiled.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_042",
+          "sequence_index": 42,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Not warmly.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1465,
+            "source_end": 1476,
+            "source_text": "Not warmly."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Not warmly.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_043",
+          "sequence_index": 43,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Not kindly.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1478,
+            "source_end": 1489,
+            "source_text": "Not kindly."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Not kindly.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_044",
+          "sequence_index": 44,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Like someone who already knew how this would end.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1491,
+            "source_end": 1540,
+            "source_text": "Like someone who already knew how this would end."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Like someone who already knew how this would end.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_045",
+          "sequence_index": 45,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Noah took a step forward.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1542,
+            "source_end": 1567,
+            "source_text": "Noah took a step forward."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Noah took a step forward.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_046",
+          "sequence_index": 46,
+          "kind": "dialogue",
+          "speaker": "noah",
+          "text": "Who are you?",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1569,
+            "source_end": 1583,
+            "source_text": "\"Who are you?\"",
+            "spoken_text_span": {
+              "source_start": 1570,
+              "source_end": 1582,
+              "text": "Who are you?"
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "challenging, protective",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Noah recognisably young, practical, protective, and quick to react.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "challenging, protective"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "challenging, protective",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Who are you?",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_047",
+          "sequence_index": 47,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The man ignored the question.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1585,
+            "source_end": 1614,
+            "source_text": "The man ignored the question."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The man ignored the question.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_048",
+          "sequence_index": 48,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Instead, he looked directly at Maya.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1616,
+            "source_end": 1652,
+            "source_text": "Instead, he looked directly at Maya."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Instead, he looked directly at Maya.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_049",
+          "sequence_index": 49,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "I was wondering how long it would take you.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1654,
+            "source_end": 1699,
+            "source_text": "\"I was wondering how long it would take you.\"",
+            "spoken_text_span": {
+              "source_start": 1655,
+              "source_end": 1698,
+              "text": "I was wondering how long it would take you."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "patient, unsettling familiarity",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "patient, unsettling familiarity"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "patient, unsettling familiarity",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "I was wondering how long it would take you.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_050",
+          "sequence_index": 50,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Maya felt her stomach tighten.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1701,
+            "source_end": 1731,
+            "source_text": "Maya felt her stomach tighten."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Maya felt her stomach tighten.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_051",
+          "sequence_index": 51,
+          "kind": "dialogue",
+          "speaker": "maya",
+          "text": "Have we met?",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1733,
+            "source_end": 1747,
+            "source_text": "\"Have we met?\"",
+            "spoken_text_span": {
+              "source_start": 1734,
+              "source_end": 1746,
+              "text": "Have we met?"
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "careful, unsettled",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Maya recognisably alert, brave, controlled, and emotionally restrained under pressure.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "careful, unsettled"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "careful, unsettled",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Have we met?",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_052",
+          "sequence_index": 52,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The stranger laughed.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1749,
+            "source_end": 1770,
+            "source_text": "The stranger laughed."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The stranger laughed.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_053",
+          "sequence_index": 53,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "A short, quiet laugh.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1772,
+            "source_end": 1793,
+            "source_text": "A short, quiet laugh."
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger appears inside the room without being heard. His calm familiarity shifts the scene from mystery into threat.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "sudden reversal, controlled fear",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "A short, quiet laugh.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_054",
+          "sequence_index": 54,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "You don't remember me.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1795,
+            "source_end": 1819,
+            "source_text": "\"You don't remember me.\"",
+            "spoken_text_span": {
+              "source_start": 1796,
+              "source_end": 1818,
+              "text": "You don't remember me."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "soft accusation",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "soft accusation"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "soft accusation",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "You don't remember me.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_055",
+          "sequence_index": 55,
+          "kind": "dialogue",
+          "speaker": "maya",
+          "text": "I've never seen you before.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1821,
+            "source_end": 1850,
+            "source_text": "\"I've never seen you before.\"",
+            "spoken_text_span": {
+              "source_start": 1822,
+              "source_end": 1849,
+              "text": "I've never seen you before."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "defensive certainty",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Maya recognisably alert, brave, controlled, and emotionally restrained under pressure.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "defensive certainty"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.8,
+            "pacing": "sharp",
+            "delivery": "defensive certainty",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "I've never seen you before.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_056",
+          "sequence_index": 56,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "No",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1852,
+            "source_end": 1898,
+            "source_text": "\"No,\" the man said. \"You just don't remember.\"",
+            "spoken_text_span": {
+              "source_start": 1853,
+              "source_end": 1856,
+              "text": "No,"
+            },
+            "removed_text_spans": [
+              {
+                "source_start": 1858,
+                "source_end": 1870,
+                "text": "the man said",
+                "reason": "Neutral attribution removed after speaker resolution."
+              }
+            ]
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger corrects Maya's memory without raising his voice.",
+          "dialogue_tag_policy": {
+            "classification": "safe",
+            "action": "remove",
+            "risk_reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "calm correction, ominous"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "calm correction, ominous",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "multiple_dialogue_spans_in_source"
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 600,
+            "transition_type": "ominous_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "No",
+          "speaker_attribution": "explicit_tag",
+          "multiple_dialogue_spans_in_source": true,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_057",
+          "sequence_index": 57,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "You just don't remember.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1852,
+            "source_end": 1898,
+            "source_text": "\"No,\" the man said. \"You just don't remember.\"",
+            "spoken_text_span": {
+              "source_start": 1873,
+              "source_end": 1897,
+              "text": "You just don't remember."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_004",
+          "context": "The stranger corrects Maya's memory without raising his voice.",
+          "dialogue_tag_policy": {
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "calm correction, ominous"
+          },
+          "performance": {
+            "emotion": "dread",
+            "intensity": 0.72,
+            "pacing": "slow",
+            "delivery": "calm correction, ominous",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 350,
+            "pause_after_ms": 600,
+            "transition_type": "ominous_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "You just don't remember.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": true,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_058",
+          "sequence_index": 58,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Silence filled the room.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1900,
+            "source_end": 1924,
+            "source_text": "Silence filled the room."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Silence filled the room.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_059",
+          "sequence_index": 59,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Outside, the storm intensified.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1926,
+            "source_end": 1957,
+            "source_text": "Outside, the storm intensified."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Outside, the storm intensified.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_060",
+          "sequence_index": 60,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Rain battered the tower windows.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1959,
+            "source_end": 1991,
+            "source_text": "Rain battered the tower windows."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Rain battered the tower windows.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_061",
+          "sequence_index": 61,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The lights flickered.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 1993,
+            "source_end": 2014,
+            "source_text": "The lights flickered."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The lights flickered.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_062",
+          "sequence_index": 62,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "For the first time since entering the room, the stranger's smile faded.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2016,
+            "source_end": 2087,
+            "source_text": "For the first time since entering the room, the stranger's smile faded."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.8,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "For the first time since entering the room, the stranger's smile faded.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_063",
+          "sequence_index": 63,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "His expression became serious.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2089,
+            "source_end": 2119,
+            "source_text": "His expression became serious."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "His expression became serious.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_064",
+          "sequence_index": 64,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Almost concerned.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2121,
+            "source_end": 2138,
+            "source_text": "Almost concerned."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Almost concerned.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_065",
+          "sequence_index": 65,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "We don't have much time.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2140,
+            "source_end": 2166,
+            "source_text": "\"We don't have much time.\"",
+            "spoken_text_span": {
+              "source_start": 2141,
+              "source_end": 2165,
+              "text": "We don't have much time."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_005",
+          "context": "urgent, suddenly serious",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "urgent, suddenly serious"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "urgent, suddenly serious",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "We don't have much time.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_066",
+          "sequence_index": 66,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Noah frowned.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2168,
+            "source_end": 2181,
+            "source_text": "Noah frowned."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Noah frowned.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_067",
+          "sequence_index": 67,
+          "kind": "dialogue",
+          "speaker": "noah",
+          "text": "For what?",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2183,
+            "source_end": 2194,
+            "source_text": "\"For what?\"",
+            "spoken_text_span": {
+              "source_start": 2184,
+              "source_end": 2193,
+              "text": "For what?"
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_005",
+          "context": "confused, tense",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Noah recognisably young, practical, protective, and quick to react.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "confused, tense"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "confused, tense",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "For what?",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_068",
+          "sequence_index": 68,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The stranger looked toward the hidden door.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2196,
+            "source_end": 2239,
+            "source_text": "The stranger looked toward the hidden door."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The stranger looked toward the hidden door.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_069",
+          "sequence_index": 69,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Then back at Maya.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2241,
+            "source_end": 2259,
+            "source_text": "Then back at Maya."
+          },
+          "moment_context_id": "moment_005",
+          "context": "The stranger reveals that Maya should know him, then warns that time is running out. His confidence falters as the coming danger approaches.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "suspicion",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "heavy silence and serious warning",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Then back at Maya.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_070",
+          "sequence_index": 70,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "For what's coming.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2261,
+            "source_end": 2281,
+            "source_text": "\"For what's coming.\"",
+            "spoken_text_span": {
+              "source_start": 2262,
+              "source_end": 2280,
+              "text": "For what's coming."
+            },
+            "removed_text_spans": []
+          },
+          "moment_context_id": "moment_005",
+          "context": "grave warning",
+          "dialogue_tag_policy": {
+            "source_tag": null,
+            "classification": "none",
+            "action": "none",
+            "risk_reason": null,
+            "reason": null
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "grave warning"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.78,
+            "pacing": "slow",
+            "delivery": "grave warning",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "speaker_inferred_from_context"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "For what's coming.",
+          "speaker_attribution": "inferred_context",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_071",
+          "sequence_index": 71,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "A deafening crash echoed somewhere below the tower.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2283,
+            "source_end": 2334,
+            "source_text": "A deafening crash echoed somewhere below the tower."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.92,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "A deafening crash echoed somewhere below the tower.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_072",
+          "sequence_index": 72,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The entire building trembled.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2336,
+            "source_end": 2365,
+            "source_text": "The entire building trembled."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The entire building trembled.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_073",
+          "sequence_index": 73,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Noah swore.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2367,
+            "source_end": 2378,
+            "source_text": "Noah swore."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Noah swore.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "threat"
+        },
+        {
+          "beat_id": "scene_001_beat_074",
+          "sequence_index": 74,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Maya turned toward the staircase.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2380,
+            "source_end": 2413,
+            "source_text": "Maya turned toward the staircase."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Maya turned toward the staircase.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_075",
+          "sequence_index": 75,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Another crash.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2415,
+            "source_end": 2429,
+            "source_text": "Another crash."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.92,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Another crash.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "final_dread"
+        },
+        {
+          "beat_id": "scene_001_beat_076",
+          "sequence_index": 76,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Closer this time.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2431,
+            "source_end": 2448,
+            "source_text": "Closer this time."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.92,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Closer this time.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "final_dread"
+        },
+        {
+          "beat_id": "scene_001_beat_077",
+          "sequence_index": 77,
+          "kind": "dialogue",
+          "speaker": "noah",
+          "text": "What was that?",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2450,
+            "source_end": 2478,
+            "source_text": "\"What was that?\" Noah asked.",
+            "spoken_text_span": {
+              "source_start": 2451,
+              "source_end": 2465,
+              "text": "What was that?"
+            },
+            "removed_text_spans": [
+              {
+                "source_start": 2467,
+                "source_end": 2477,
+                "text": "Noah asked",
+                "reason": "Converted to speaker attribution and/or performance metadata."
+              }
+            ]
+          },
+          "moment_context_id": "moment_006",
+          "context": "alarmed, raised over crash",
+          "dialogue_tag_policy": {
+            "source_tag": "asked",
+            "classification": "safe",
+            "action": "remove",
+            "risk_reason": null,
+            "reason": "neutral attribution only"
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep Noah recognisably young, practical, protective, and quick to react.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "base tone"
+            ],
+            "temporary_change": "alarmed, raised over crash"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "alarmed, raised over crash",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "What was that?",
+          "speaker_attribution": "explicit_tag",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        },
+        {
+          "beat_id": "scene_001_beat_078",
+          "sequence_index": 78,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "The stranger didn't answer.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2480,
+            "source_end": 2507,
+            "source_text": "The stranger didn't answer."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "The stranger didn't answer.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "final_dread"
+        },
+        {
+          "beat_id": "scene_001_beat_079",
+          "sequence_index": 79,
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "His eyes never left the stairwell.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2509,
+            "source_end": 2543,
+            "source_text": "His eyes never left the stairwell."
+          },
+          "moment_context_id": "moment_006",
+          "context": "Crashes rise from below the tower. Everyone's attention turns to the stairwell, and the stranger realizes the danger has already arrived.",
+          "narrative_importance": {
+            "score": 0.5,
+            "label": "standard"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": false
+          },
+          "review": {
+            "requires_review": false,
+            "risk_reason": null
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 450,
+            "transition_type": "natural_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "His eyes never left the stairwell.",
+          "speaker_attribution": "narrator",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "final_dread"
+        },
+        {
+          "beat_id": "scene_001_beat_080",
+          "sequence_index": 80,
+          "kind": "dialogue_direction",
+          "speaker": "stranger",
+          "text": "Then, quietly, he said:",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2545,
+            "source_end": 2568,
+            "source_text": "Then, quietly, he said:"
+          },
+          "moment_context_id": "moment_006",
+          "context": "Performance direction for the stranger's final line. Do not speak this tag in the immersive render.",
+          "narrative_importance": {
+            "score": 0.92,
+            "label": "high"
+          },
+          "performance": {
+            "emotion": "anger",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "urgent, escalating, final dread",
+            "source": "auto",
+            "confidence": 0.82,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "dialogue_direction_removed_from_spoken_text"
+          },
+          "timing": {
+            "pause_before_ms": 200,
+            "pause_after_ms": 800,
+            "transition_type": "reveal_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": false,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": null,
+          "speaker_attribution": "dialogue_direction",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "final_dread"
+        },
+        {
+          "beat_id": "scene_001_beat_081",
+          "sequence_index": 81,
+          "kind": "dialogue",
+          "speaker": "stranger",
+          "text": "Too late.",
+          "source_trace": {
+            "source_id": "source_document.text",
+            "source_start": 2545,
+            "source_end": 2581,
+            "source_text": "Then, quietly, he said:\n\n\"Too late.\"",
+            "spoken_text_span": {
+              "source_start": 2571,
+              "source_end": 2580,
+              "text": "Too late."
+            },
+            "removed_text_spans": [
+              {
+                "source_start": 2545,
+                "source_end": 2568,
+                "text": "Then, quietly, he said:",
+                "reason": "Converted to final-line performance direction."
+              }
+            ]
+          },
+          "moment_context_id": "moment_006",
+          "context": "quiet finality",
+          "dialogue_tag_policy": {
+            "source_tag": "said",
+            "classification": "partial",
+            "action": "remove",
+            "risk_reason": null,
+            "reason": "quietly is performance; previous narration explains delivery"
+          },
+          "voice_state": {
+            "base_voice_rule": "Keep the stranger recognisably calm, low, precise, and unsettlingly familiar.",
+            "continuity_lock": [
+              "age",
+              "accent",
+              "controlled tone"
+            ],
+            "temporary_change": "quiet finality"
+          },
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.9,
+            "pacing": "fast",
+            "delivery": "quiet finality",
+            "source": "auto",
+            "confidence": 0.84,
+            "requires_review": true
+          },
+          "review": {
+            "requires_review": true,
+            "risk_reason": "source_trace_span_differs_from_segment_span"
+          },
+          "timing": {
+            "pause_before_ms": 250,
+            "pause_after_ms": 650,
+            "transition_type": "tense_pause"
+          },
+          "interaction_type": "normal_reply",
+          "speakable": true,
+          "estimated_duration_ms": null,
+          "rendered_duration_ms": null,
+          "render_attempts": 0,
+          "qa": {
+            "text_exact": true,
+            "voice_consistency": "pending",
+            "needs_rerender": false
+          },
+          "render_text": "Too late.",
+          "speaker_attribution": "explicit_tag",
+          "multiple_dialogue_spans_in_source": false,
+          "delivery_archetype": "urgency"
+        }
+      ]
+    }
+  ],
+  "renderer_constraints": {
+    "default_tts_provider": "gemini",
+    "max_speakers": 2,
+    "chunk_strategy": "split_by_moment",
+    "repeat_context_at_chunk_boundary": true
+  }
+}

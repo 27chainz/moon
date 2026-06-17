@@ -1,0 +1,891 @@
+{
+  "schema_version": "0.2",
+  "raw_chapter_text": {
+    "chapter_id": "chapter_004",
+    "chapter_title": "The Lantern Room",
+    "text": "Rain tapped against the high windows of the old observatory. Mara held the brass lantern close to her chest, watching its flame shiver each time the wind pressed under the door.\n\n\"You said this place was empty,\" Mara whispered.\n\nElias did not answer at once. He was staring at the dust on the floor, where a fresh line of footprints crossed the room and vanished behind the telescope.\n\n\"It was,\" he said."
+  },
+  "automation_policy": {
+    "confidence_thresholds": {
+      "auto_accept_min": 0.8,
+      "review_min": 0.55,
+      "reject_below": 0.55
+    },
+    "confidence_actions": {
+      "auto_accept": "Use generated metadata without human review.",
+      "requires_review": "Queue for human review before paid rendering.",
+      "reject": "Do not render until the analysis is regenerated or manually repaired."
+    },
+    "low_confidence_example": {
+      "confidence": 0.52,
+      "requires_review": true,
+      "review_reason": "Below reject_below threshold; performance metadata may be unreliable."
+    }
+  },
+  "aps": {
+    "aps_version": "0.1",
+    "book_id": "lantern_room_demo",
+    "title": "The Lantern Room",
+    "chapter_id": "chapter_004",
+    "chapter_title": "The Lantern Room",
+    "production_packet": {
+      "the_scene": "A quiet suspense chapter inside an abandoned observatory during heavy rain.",
+      "director_notes": [
+        "Keep narration intimate, tense, and controlled.",
+        "Dialogue should be quiet enough to feel unsafe.",
+        "Do not read dialogue tags aloud when the spoken line can stand alone."
+      ],
+      "sample_context": "Literary mystery audiobook with rain, silence, and restrained fear."
+    },
+    "characters": {
+      "narrator": {
+        "display_name": "Narrator",
+        "role": "narrator",
+        "stable_voice": "clear, restrained, literary, observant",
+        "provider_voice": {
+          "gemini": "Kore"
+        },
+        "do_not_change": [
+          "clarity",
+          "base tone"
+        ]
+      },
+      "mara": {
+        "display_name": "Mara",
+        "role": "main",
+        "stable_voice": "young, guarded, alert, slightly breathy under pressure",
+        "provider_voice": {
+          "gemini": "Leda"
+        },
+        "do_not_change": [
+          "age",
+          "accent",
+          "base tone"
+        ]
+      },
+      "elias": {
+        "display_name": "Elias",
+        "role": "main",
+        "stable_voice": "older, calm, protective, controlled",
+        "provider_voice": {
+          "gemini": "Algenib"
+        },
+        "do_not_change": [
+          "age",
+          "accent",
+          "base tone"
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "scene_id": "scene_001",
+        "title": "The Observatory",
+        "summary": "Mara and Elias discover fresh footprints in an abandoned observatory.",
+        "setting": "old observatory, night, heavy rain, wind under the door",
+        "mood": "tense, quiet, mysterious",
+        "scene_context": "The characters believe the observatory is abandoned, but fresh footprints prove someone has been inside.",
+        "director_notes": [
+          "Let the rain create pressure without overpowering the dialogue.",
+          "Mara should sound frightened but careful.",
+          "Elias should sound calm until the final line, where worry slips through."
+        ],
+        "character_states": {
+          "mara": {
+            "base_voice_ref": "mara.stable_voice",
+            "scene_voice_state": "same young, guarded, slightly breathy voice, but quieter and more frightened than usual",
+            "do_not_recast": true
+          },
+          "elias": {
+            "base_voice_ref": "elias.stable_voice",
+            "scene_voice_state": "same older, calm, protective voice, with concern held under control",
+            "do_not_recast": true
+          }
+        },
+        "beats": [
+          {
+            "beat_id": "scene_001_beat_001",
+            "kind": "narration",
+            "speaker": "narrator",
+            "text": "Rain tapped against the high windows of the old observatory. Mara held the brass lantern close to her chest, watching its flame shiver each time the wind pressed under the door.",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 0,
+              "source_end": 177,
+              "source_text": "Rain tapped against the high windows of the old observatory. Mara held the brass lantern close to her chest, watching its flame shiver each time the wind pressed under the door."
+            },
+            "context": "Scene opening.",
+            "performance": {
+              "emotion": "quiet tension",
+              "intensity": 0.45,
+              "pacing": "slow",
+              "delivery": "controlled literary suspense"
+            }
+          },
+          {
+            "beat_id": "scene_001_beat_002",
+            "kind": "dialogue",
+            "speaker": "mara",
+            "text": "You said this place was empty",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 179,
+              "source_end": 227,
+              "source_text": "\"You said this place was empty,\" Mara whispered.",
+              "spoken_text_span": {
+                "source_start": 180,
+                "source_end": 209,
+                "text": "You said this place was empty"
+              },
+              "removed_text_spans": [
+                {
+                  "source_start": 212,
+                  "source_end": 226,
+                  "text": "Mara whispered",
+                  "reason": "Converted to speaker attribution and performance delivery."
+                }
+              ]
+            },
+            "context": "Mara whispers. The tag is not spoken.",
+            "voice_state": {
+              "base_voice_rule": "Keep Mara recognisably young, guarded, alert, and slightly breathy.",
+              "temporary_change": "make her quieter, more frightened, and more careful because she is trying not to be heard",
+              "do_not_change": [
+                "age",
+                "accent",
+                "base tone"
+              ]
+            },
+            "dialogue_tag_policy": {
+              "source_tag": "whispered",
+              "classification": "safe",
+              "action": "convert_to_performance",
+              "reason": "vocal delivery only"
+            },
+            "performance": {
+              "emotion": "fear",
+              "intensity": 0.7,
+              "pacing": "hushed",
+              "delivery": "whispered, careful, accusing"
+            }
+          },
+          {
+            "beat_id": "scene_001_beat_003",
+            "kind": "narration",
+            "speaker": "narrator",
+            "text": "Elias did not answer at once. He was staring at the dust on the floor, where a fresh line of footprints crossed the room and vanished behind the telescope.",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 229,
+              "source_end": 384,
+              "source_text": "Elias did not answer at once. He was staring at the dust on the floor, where a fresh line of footprints crossed the room and vanished behind the telescope."
+            },
+            "context": "The danger becomes visible.",
+            "performance": {
+              "emotion": "discovery",
+              "intensity": 0.62,
+              "pacing": "measured",
+              "delivery": "precise, tightening suspense"
+            }
+          },
+          {
+            "beat_id": "scene_001_beat_004",
+            "kind": "dialogue",
+            "speaker": "elias",
+            "text": "It was",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 386,
+              "source_end": 404,
+              "source_text": "\"It was,\" he said.",
+              "spoken_text_span": {
+                "source_start": 387,
+                "source_end": 393,
+                "text": "It was"
+              },
+              "removed_text_spans": [
+                {
+                  "source_start": 396,
+                  "source_end": 403,
+                  "text": "he said",
+                  "reason": "Neutral attribution removed after speaker resolution."
+                }
+              ]
+            },
+            "context": "Elias answers, realizing the room is no longer safe.",
+            "voice_state": {
+              "base_voice_rule": "Keep Elias recognisably older, calm, protective, and controlled.",
+              "temporary_change": "let worry show through the calm without changing his core voice identity",
+              "do_not_change": [
+                "age",
+                "accent",
+                "base tone"
+              ]
+            },
+            "dialogue_tag_policy": {
+              "source_tag": "said",
+              "classification": "safe",
+              "action": "remove",
+              "reason": "neutral attribution only"
+            },
+            "performance": {
+              "emotion": "controlled alarm",
+              "intensity": 0.68,
+              "pacing": "brief",
+              "delivery": "low, controlled, worried beneath calm"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "presence_state": {
+    "presence_version": "0.1",
+    "source": {
+      "book_id": "lantern_room_demo",
+      "title": "The Lantern Room",
+      "chapter_id": "chapter_004",
+      "chapter_title": "The Lantern Room"
+    },
+    "production_packet": {
+      "the_scene": "A quiet suspense chapter inside an abandoned observatory during heavy rain.",
+      "director_notes": [
+        "Keep narration intimate, tense, and controlled.",
+        "Dialogue should be quiet enough to feel unsafe."
+      ],
+      "sample_context": "Literary mystery audiobook with rain, silence, and restrained fear."
+    },
+    "characters": {
+      "narrator": {
+        "character_id": "narrator",
+        "name": "Narrator",
+        "role": "narrator",
+        "stable_voice": "clear, restrained, literary, observant",
+        "provider_voice": {
+          "gemini": "Kore"
+        },
+        "do_not_change": [
+          "clarity",
+          "base tone"
+        ]
+      },
+      "mara": {
+        "character_id": "mara",
+        "name": "Mara",
+        "role": "main",
+        "stable_voice": "young, guarded, alert, slightly breathy under pressure",
+        "provider_voice": {
+          "gemini": "Leda"
+        },
+        "do_not_change": [
+          "age",
+          "accent",
+          "base tone"
+        ]
+      },
+      "elias": {
+        "character_id": "elias",
+        "name": "Elias",
+        "role": "main",
+        "stable_voice": "older, calm, protective, controlled",
+        "provider_voice": {
+          "gemini": "Algenib"
+        },
+        "do_not_change": [
+          "age",
+          "accent",
+          "base tone"
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "scene_id": "scene_001",
+        "title": "The Observatory",
+        "summary": "Mara and Elias discover fresh footprints in an abandoned observatory.",
+        "scene_type": "mystery",
+        "emotion": "tense, quiet, mysterious",
+        "intensity": 0.61,
+        "pace": "slow",
+        "scene_context_short": "Mara and Elias are inside an abandoned observatory at night. Rain is outside, and fresh footprints suggest someone else has entered.",
+        "narrative_importance": {
+          "score": 0.92,
+          "label": "major_discovery",
+          "reason": "Fresh footprints reveal the observatory is not empty.",
+          "treatment": {
+            "direction_strength": "high",
+            "pause_before": "medium",
+            "pause_after": "long",
+            "qa_priority": "high"
+          }
+        },
+        "moment_contexts": [
+          {
+            "moment_id": "moment_001",
+            "applies_to_segments": [
+              "scene_001_segment_001",
+              "scene_001_segment_002"
+            ],
+            "description": "The scene begins in the observatory interior. Mara is close to the lantern, the room feels empty but unsafe, and her whispered question challenges Elias's earlier certainty."
+          },
+          {
+            "moment_id": "moment_002",
+            "applies_to_segments": [
+              "scene_001_segment_003",
+              "scene_001_segment_004"
+            ],
+            "description": "The fresh footprints become visible in the dust. Elias now understands the observatory was entered recently, so his calm voice has a thin layer of alarm underneath."
+          }
+        ],
+        "ambience": {
+          "ambience_id": "rain",
+          "perspective": "inside listening to exterior weather",
+          "loops": [
+            "muffled exterior rainfall",
+            "subtle wind through door gap"
+          ],
+          "level": "subtle",
+          "notes": "Rain is outside the observatory, filtered through glass, stone, and distance. Keep below dialogue."
+        },
+        "acoustic_space": {
+          "listener_position": "inside_old_observatory",
+          "room_size": "large_tall_room",
+          "surface_character": "stone, old wood, glass",
+          "interior_reverb": "soft tall-room reflections",
+          "perspective": "close interior dialogue with exterior weather pressure"
+        },
+        "environment_sources": {
+          "rain_outside_windows": {
+            "sound": "rainfall",
+            "location": "outside",
+            "position": "wide_above_and_behind_windows",
+            "distance": "medium_far",
+            "occlusion": 0.72,
+            "filter": "low-pass, softened transients",
+            "duck_under_dialogue": true
+          },
+          "wind_under_door": {
+            "sound": "thin wind through door gap",
+            "location": "threshold",
+            "position": "low_front_right",
+            "distance": "near",
+            "occlusion": 0.35,
+            "filter": "narrow, airy",
+            "duck_under_dialogue": true
+          }
+        },
+        "character_states": {
+          "mara": {
+            "base_voice": "young, guarded, alert, slightly breathy under pressure",
+            "current_state": "frightened, quieter, careful not to be heard",
+            "continuity_rule": "do not recast; alter emotion, volume, pace, and delivery only"
+          },
+          "elias": {
+            "base_voice": "older, calm, protective, controlled",
+            "current_state": "controlled but worried",
+            "continuity_rule": "do not recast; keep calm authority while allowing alarm underneath"
+          }
+        },
+        "spatial_mix": {
+          "narrator": "center",
+          "mara": "slightly_left",
+          "elias": "slightly_right",
+          "ambience": "wide_background"
+        },
+        "segments": [
+          {
+            "segment_id": "scene_001_segment_001",
+            "sequence_index": 1,
+            "source_beat_id": "scene_001_beat_001",
+            "kind": "narration",
+            "speaker": "narrator",
+            "speaker_name": "Narrator",
+            "moment_context_id": "moment_001",
+            "render_context": "Opening beat inside the observatory. Establish quiet suspense, exterior rain pressure, lantern closeness, and the sense that the room may not be empty.",
+            "text": "Rain tapped against the high windows of the old observatory. Mara held the brass lantern close to her chest, watching its flame shiver each time the wind pressed under the door.",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 0,
+              "source_end": 177,
+              "source_text": "Rain tapped against the high windows of the old observatory. Mara held the brass lantern close to her chest, watching its flame shiver each time the wind pressed under the door."
+            },
+            "source_span": {
+              "start_char": 0,
+              "end_char": 177
+            },
+            "speakable": true,
+            "review": {
+              "requires_review": false,
+              "risk_reason": null
+            },
+            "timing": {
+              "pause_before_ms": 0,
+              "pause_after_ms": 500,
+              "transition_type": "scene_opening"
+            },
+            "interaction_type": "normal_reply",
+            "performance": {
+              "emotion": "quiet tension",
+              "intensity": 0.45,
+              "pace": "slow",
+              "delivery": "controlled literary suspense",
+              "source": "auto",
+              "confidence": 0.84,
+              "requires_review": false
+            },
+            "audio": {
+              "spatial_position": "center",
+              "sfx_cues": [
+                {
+                  "cue_id": "sfx_window_rain_soft_001",
+                  "asset_id": "sfx.window_rain_soft.loop.v1",
+                  "description": "faint rain against high windows",
+                  "sound_id": "window_rain_soft",
+                  "offset_ms": 0,
+                  "start_offset_sec": 0.0,
+                  "duration_sec": 5.5,
+                  "gain_db": -24,
+                  "level": "subtle",
+                  "duck_under_dialogue": true
+                },
+                {
+                  "cue_id": "sfx_lantern_shift_001",
+                  "asset_id": "sfx.lantern.small_shift.v1",
+                  "description": "small brass lantern movement",
+                  "sound_id": "lantern_small_shift",
+                  "offset_ms": 2200,
+                  "start_offset_sec": 2.2,
+                  "duration_sec": 0.8,
+                  "gain_db": -18,
+                  "level": "subtle",
+                  "duck_under_dialogue": false
+                }
+              ]
+            },
+            "qa": {
+              "text_exact": true,
+              "voice_consistency": "pending",
+              "needs_rerender": false
+            },
+            "estimated_duration_ms": null,
+            "rendered_duration_ms": null,
+            "render_attempts": 0
+          },
+          {
+            "segment_id": "scene_001_segment_002",
+            "sequence_index": 2,
+            "source_beat_id": "scene_001_beat_002",
+            "kind": "dialogue",
+            "speaker": "mara",
+            "speaker_name": "Mara",
+            "moment_context_id": "moment_001",
+            "render_context": "Mara whispers from fear and suspicion. She is trying not to be heard, but she is also accusing Elias of being wrong.",
+            "text": "You said this place was empty",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 179,
+              "source_end": 227,
+              "source_text": "\"You said this place was empty,\" Mara whispered.",
+              "spoken_text_span": {
+                "source_start": 180,
+                "source_end": 209,
+                "text": "You said this place was empty"
+              },
+              "removed_text_spans": [
+                {
+                  "source_start": 212,
+                  "source_end": 226,
+                  "text": "Mara whispered",
+                  "reason": "Converted to speaker attribution and performance delivery."
+                }
+              ]
+            },
+            "source_span": {
+              "start_char": 179,
+              "end_char": 227
+            },
+            "speakable": true,
+            "review": {
+              "requires_review": false,
+              "risk_reason": null
+            },
+            "timing": {
+              "pause_before_ms": 250,
+              "pause_after_ms": 700,
+              "transition_type": "suspense_pause"
+            },
+            "interaction_type": "normal_reply",
+            "voice_state": {
+              "base_voice_rule": "Still Mara.",
+              "temporary_change": "quieter, more frightened, whispered",
+              "continuity_lock": [
+                "age",
+                "accent",
+                "base tone"
+              ]
+            },
+            "performance": {
+              "emotion": "fear",
+              "intensity": 0.7,
+              "pace": "hushed",
+              "delivery": "whispered, careful, accusing",
+              "source": "auto",
+              "confidence": 0.88,
+              "requires_review": false
+            },
+            "audio": {
+              "spatial_position": "slightly_left",
+              "sfx_cues": []
+            },
+            "qa": {
+              "text_exact": true,
+              "voice_consistency": "pending",
+              "needs_rerender": false
+            },
+            "estimated_duration_ms": null,
+            "rendered_duration_ms": null,
+            "render_attempts": 0
+          },
+          {
+            "segment_id": "scene_001_segment_003",
+            "sequence_index": 3,
+            "source_beat_id": "scene_001_beat_003",
+            "kind": "narration",
+            "speaker": "narrator",
+            "speaker_name": "Narrator",
+            "moment_context_id": "moment_002",
+            "render_context": "The discovery beat. The footprints change the scene from uneasy quiet into active danger.",
+            "text": "Elias did not answer at once. He was staring at the dust on the floor, where a fresh line of footprints crossed the room and vanished behind the telescope.",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 229,
+              "source_end": 384,
+              "source_text": "Elias did not answer at once. He was staring at the dust on the floor, where a fresh line of footprints crossed the room and vanished behind the telescope."
+            },
+            "source_span": {
+              "start_char": 229,
+              "end_char": 384
+            },
+            "speakable": true,
+            "review": {
+              "requires_review": false,
+              "risk_reason": null
+            },
+            "timing": {
+              "pause_before_ms": 700,
+              "pause_after_ms": 900,
+              "transition_type": "reveal_pause"
+            },
+            "interaction_type": "long_silence",
+            "performance": {
+              "emotion": "discovery",
+              "intensity": 0.62,
+              "pace": "measured",
+              "delivery": "precise, tightening suspense",
+              "source": "auto",
+              "confidence": 0.85,
+              "requires_review": false
+            },
+            "audio": {
+              "spatial_position": "center",
+              "sfx_cues": []
+            },
+            "qa": {
+              "text_exact": true,
+              "voice_consistency": "pending",
+              "needs_rerender": false
+            },
+            "estimated_duration_ms": null,
+            "rendered_duration_ms": null,
+            "render_attempts": 0
+          },
+          {
+            "segment_id": "scene_001_segment_004",
+            "sequence_index": 4,
+            "source_beat_id": "scene_001_beat_004",
+            "kind": "dialogue",
+            "speaker": "elias",
+            "speaker_name": "Elias",
+            "moment_context_id": "moment_002",
+            "render_context": "Elias has seen the footprints. His answer is short because he realizes the room is not safe, but he is trying not to frighten Mara further.",
+            "text": "It was",
+            "source_trace": {
+              "source_id": "raw_chapter_text.text",
+              "source_start": 386,
+              "source_end": 404,
+              "source_text": "\"It was,\" he said.",
+              "spoken_text_span": {
+                "source_start": 387,
+                "source_end": 393,
+                "text": "It was"
+              },
+              "removed_text_spans": [
+                {
+                  "source_start": 396,
+                  "source_end": 403,
+                  "text": "he said",
+                  "reason": "Neutral attribution removed after speaker resolution."
+                }
+              ]
+            },
+            "source_span": {
+              "start_char": 386,
+              "end_char": 404
+            },
+            "speakable": true,
+            "review": {
+              "requires_review": false,
+              "risk_reason": null
+            },
+            "timing": {
+              "pause_before_ms": 700,
+              "pause_after_ms": 1100,
+              "transition_type": "reveal_aftershock"
+            },
+            "interaction_type": "long_silence",
+            "voice_state": {
+              "base_voice_rule": "Still Elias.",
+              "temporary_change": "brief, lower, worry beneath calm",
+              "continuity_lock": [
+                "age",
+                "accent",
+                "base tone"
+              ]
+            },
+            "performance": {
+              "emotion": "controlled alarm",
+              "intensity": 0.68,
+              "pace": "brief",
+              "delivery": "low, controlled, worried beneath calm",
+              "source": "auto",
+              "confidence": 0.86,
+              "requires_review": false
+            },
+            "audio": {
+              "spatial_position": "slightly_right",
+              "sfx_cues": [
+                {
+                  "cue_id": "sfx_tension_pause_001",
+                  "asset_id": "sfx.silence.tension_pause.v1",
+                  "description": "short breath-like silence before Elias answers",
+                  "sound_id": "tension_pause",
+                  "offset_ms": 0,
+                  "start_offset_sec": 0.0,
+                  "duration_sec": 0.7,
+                  "gain_db": -60,
+                  "level": "silent_tension",
+                  "duck_under_dialogue": false
+                }
+              ]
+            },
+            "qa": {
+              "text_exact": true,
+              "voice_consistency": "pending",
+              "needs_rerender": false
+            },
+            "estimated_duration_ms": null,
+            "rendered_duration_ms": null,
+            "render_attempts": 0
+          }
+        ]
+      }
+    ]
+  },
+  "renderer_jobs": {
+    "renderer_constraints": {
+      "provider": "gemini",
+      "max_speakers": 2,
+      "max_chars_per_chunk": 4500,
+      "max_estimated_tokens_per_chunk": 1200,
+      "chunk_strategy": "split_by_moment",
+      "repeat_context_at_chunk_boundary": true
+    },
+    "chunking_policy": {
+      "provider": "gemini",
+      "max_speakers_per_job": 2,
+      "split_strategy": [
+        "Keep narration separate when a dialogue chunk already has two character speakers.",
+        "Split at moment_context boundaries when possible.",
+        "If a moment contains more than two speakers, split into adjacent legal subchunks and repeat the same CURRENT MOMENT context.",
+        "Carry previous and next beat summaries in the continuity packet so the performance does not restart.",
+        "Never merge unrelated scenes just to fill a chunk."
+      ],
+      "overflow_example": {
+        "input_speakers": [
+          "narrator",
+          "mara",
+          "elias",
+          "third_character"
+        ],
+        "jobs": [
+          {
+            "job_id": "chunk_a",
+            "speakers": [
+              "narrator",
+              "mara"
+            ]
+          },
+          {
+            "job_id": "chunk_b",
+            "speakers": [
+              "elias",
+              "third_character"
+            ],
+            "repeated_context": "same moment_context plus previous beat summary"
+          }
+        ]
+      }
+    },
+    "gemini": [
+      {
+        "job_id": "chapter_004_chunk_001",
+        "output_file": "audio/chapter_004/chunk_001.wav",
+        "model": "gemini-2.5-pro-preview-tts",
+        "chapter_context": "## CHAPTER CONTEXT\nA quiet suspense chapter inside an abandoned observatory during heavy rain.\n\n## THE SCENE\nThe characters believe the observatory is abandoned, but fresh footprints prove someone has been inside.\n\n## CURRENT MOMENT\nThe scene begins in the observatory interior. Mara is close to the lantern, the room feels empty but unsafe, and her whispered question challenges Elias's earlier certainty. Keep the rain outside and muffled through the windows.\n\n## DIRECTOR'S NOTES\n- Keep narration intimate, tense, and controlled.\n- Mara should sound frightened but careful.\n\n## CONTINUITY PACKET\nThis is the opening render chunk for chapter_004. Preserve the rain-soaked suspense tone.",
+        "speaker_voices": {
+          "Narrator": "Kore",
+          "Mara": "Leda"
+        },
+        "transcript": "TTS the following conversation exactly as written:\n\nNarrator: [quiet tension, slow, controlled literary suspense] Rain tapped against the high windows of the old observatory. Mara held the brass lantern close to her chest, watching its flame shiver each time the wind pressed under the door.\n\nMara: [fear, hushed, whispered, careful, accusing] You said this place was empty",
+        "source": {
+          "scene_id": "scene_001",
+          "moment_id": "moment_001",
+          "segment_ids": [
+            "scene_001_segment_001",
+            "scene_001_segment_002"
+          ]
+        }
+      },
+      {
+        "job_id": "chapter_004_chunk_002",
+        "output_file": "audio/chapter_004/chunk_002.wav",
+        "model": "gemini-2.5-pro-preview-tts",
+        "chapter_context": "## CHAPTER CONTEXT\nA quiet suspense chapter inside an abandoned observatory during heavy rain.\n\n## THE SCENE\nThe characters believe the observatory is abandoned, but fresh footprints prove someone has been inside.\n\n## CURRENT MOMENT\nThe fresh footprints become visible in the dust. Elias now understands the observatory was entered recently, so his calm voice has a thin layer of alarm underneath. Keep the rain outside and muffled through the windows.\n\n## DIRECTOR'S NOTES\n- Continue from quiet suspicion into controlled alarm.\n- Elias should sound calm until the final line, where worry slips through.\n\n## CONTINUITY PACKET\nThis continues chapter_004 after Mara asks whether the observatory was empty.",
+        "speaker_voices": {
+          "Narrator": "Kore",
+          "Elias": "Algenib"
+        },
+        "transcript": "TTS the following conversation exactly as written:\n\nNarrator: [discovery, measured, precise, tightening suspense] Elias did not answer at once. He was staring at the dust on the floor, where a fresh line of footprints crossed the room and vanished behind the telescope.\n\nElias: [controlled alarm, brief, low, controlled, worried beneath calm] It was",
+        "source": {
+          "scene_id": "scene_001",
+          "moment_id": "moment_002",
+          "segment_ids": [
+            "scene_001_segment_003",
+            "scene_001_segment_004"
+          ]
+        }
+      }
+    ]
+  },
+  "final_timeline": {
+    "chapter_id": "chapter_004",
+    "timeline": [
+      {
+        "segment_id": "scene_001_segment_001",
+        "voice_audio": "audio/chapter_004/segment_001.wav",
+        "ambience": [
+          {
+            "file": "ambience/rain_exterior_muffled_loop.wav",
+            "position": "wide_above_and_behind_windows",
+            "occlusion": 0.72,
+            "level": "subtle"
+          },
+          {
+            "file": "ambience/wind_door_gap_thin.wav",
+            "position": "low_front_right",
+            "occlusion": 0.35,
+            "level": "very_subtle"
+          }
+        ],
+        "spatial_position": "center",
+        "sfx": [
+          {
+            "cue_id": "sfx_window_rain_soft_001",
+            "asset_id": "sfx.window_rain_soft.loop.v1",
+            "file": "sfx/window_rain_soft.wav",
+            "sound_id": "window_rain_soft",
+            "offset_ms": 0,
+            "start_offset_sec": 0.0,
+            "duration_sec": 5.5,
+            "gain_db": -24,
+            "level": "subtle",
+            "duck_under_dialogue": true
+          },
+          {
+            "cue_id": "sfx_lantern_shift_001",
+            "asset_id": "sfx.lantern.small_shift.v1",
+            "file": "sfx/lantern_small_shift.wav",
+            "sound_id": "lantern_small_shift",
+            "offset_ms": 2200,
+            "start_offset_sec": 2.2,
+            "duration_sec": 0.8,
+            "gain_db": -18,
+            "level": "subtle",
+            "duck_under_dialogue": false
+          }
+        ]
+      },
+      {
+        "segment_id": "scene_001_segment_002",
+        "voice_audio": "audio/chapter_004/segment_002.wav",
+        "ambience": [
+          {
+            "file": "ambience/rain_exterior_muffled_loop.wav",
+            "position": "wide_above_and_behind_windows",
+            "occlusion": 0.72,
+            "level": "ducked_under_dialogue"
+          }
+        ],
+        "spatial_position": "slightly_left",
+        "sfx": []
+      },
+      {
+        "segment_id": "scene_001_segment_003",
+        "voice_audio": "audio/chapter_004/segment_003.wav",
+        "ambience": [
+          {
+            "file": "ambience/rain_exterior_muffled_loop.wav",
+            "position": "wide_above_and_behind_windows",
+            "occlusion": 0.72,
+            "level": "subtle"
+          }
+        ],
+        "spatial_position": "center",
+        "sfx": []
+      },
+      {
+        "segment_id": "scene_001_segment_004",
+        "voice_audio": "audio/chapter_004/segment_004.wav",
+        "ambience": [
+          {
+            "file": "ambience/rain_exterior_muffled_loop.wav",
+            "position": "wide_above_and_behind_windows",
+            "occlusion": 0.72,
+            "level": "ducked_under_dialogue"
+          }
+        ],
+        "spatial_position": "slightly_right",
+        "sfx": [
+          {
+            "cue_id": "sfx_tension_pause_001",
+            "asset_id": "sfx.silence.tension_pause.v1",
+            "file": "sfx/short_silence_tension.wav",
+            "sound_id": "tension_pause",
+            "offset_ms": 0,
+            "start_offset_sec": 0.0,
+            "duration_sec": 0.7,
+            "gain_db": -60,
+            "level": "silent_tension",
+            "duck_under_dialogue": false
+          }
+        ]
+      }
+    ],
+    "qa": {
+      "spoken_text_exact": true,
+      "dialogue_tags_removed_when_safe": true,
+      "voice_consistency_checked": false,
+      "stitch_review_status": "pending"
+    }
+  }
+}

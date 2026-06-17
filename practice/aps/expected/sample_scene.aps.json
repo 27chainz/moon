@@ -1,0 +1,118 @@
+{
+  "aps_version": "0.1",
+  "book_id": "practice_001",
+  "title": "Practice Scene",
+  "chapter_id": "chapter_001",
+  "chapter_title": "Cellar Escape",
+  "production_packet": {
+    "the_scene": "A suspense scene built around hiding, silence, and the threat of discovery. The performance should feel intimate and close, not theatrical.",
+    "director_notes": [
+      "Keep narration and dialogue quiet, tense, and controlled.",
+      "Preserve exact text; do not add modern filler or extra lines.",
+      "Let pauses and restrained delivery carry the fear."
+    ],
+    "sample_context": "Intimate literary suspense audiobook with whispered fear and controlled protective dialogue."
+  },
+  "characters": {
+    "narrator": {
+      "display_name": "Narrator",
+      "role": "narrator",
+      "stable_voice": "clear, restrained literary narration",
+      "provider_voice": {
+        "gemini": "Kore",
+        "resemble": "calm literary narrator with restrained emotion"
+      },
+      "do_not_change": ["base tone", "clarity"]
+    },
+    "mara": {
+      "display_name": "Mara",
+      "role": "main",
+      "stable_voice": "young, guarded, tense, slightly breathy",
+      "provider_voice": {
+        "gemini": "Leda",
+        "resemble": "young woman, guarded and tense, with a slightly breathy voice"
+      },
+      "do_not_change": ["age", "accent", "base tone"]
+    },
+    "elias": {
+      "display_name": "Elias",
+      "role": "main",
+      "stable_voice": "older, calm, controlled, protective",
+      "provider_voice": {
+        "gemini": "Algenib",
+        "resemble": "older man, calm and protective, controlled under pressure"
+      },
+      "do_not_change": ["age", "accent", "base tone"]
+    }
+  },
+  "scenes": [
+    {
+      "scene_id": "scene_001",
+      "title": "Hiding In The Cellar",
+      "summary": "Mara and Elias hide in a wet cellar while danger moves above them.",
+      "setting": "wet cellar, night, floorboards groaning overhead",
+      "mood": "fearful, quiet, tense",
+      "scene_context": "A wet cellar at night. The characters are hiding below creaking floorboards while danger moves above them.",
+      "director_notes": [
+        "Keep the whole scene quiet and tense, with no theatrical overplaying.",
+        "Mara must sound scared, breathless, and controlled enough to avoid being heard.",
+        "Elias must sound older, calm, and protective, but still aware of the danger."
+      ],
+      "sample_context": "Intimate suspense audiobook scene with whispered fear and controlled protective dialogue.",
+      "beats": [
+        {
+          "beat_id": "scene_001_beat_001",
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Mara pressed her back against the cellar wall. The stones were wet, and somewhere above them the floorboards groaned.",
+          "context": "The scene opens in hiding.",
+          "performance": {
+            "emotion": "tension",
+            "intensity": 0.55,
+            "pacing": "slow",
+            "delivery": "quiet literary suspense"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_002",
+          "kind": "dialogue",
+          "speaker": "mara",
+          "text": "Please, just stop. If they find out we are down here, I do not know what they will do to us",
+          "context": "Mara whispers, afraid of being discovered.",
+          "performance": {
+            "emotion": "fear",
+            "intensity": 0.78,
+            "pacing": "breathless",
+            "delivery": "whispered panic, trying not to be heard"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_003",
+          "kind": "narration",
+          "speaker": "narrator",
+          "text": "Elias lifted one hand, calm but pale in the dark.",
+          "context": "Elias tries to steady Mara.",
+          "performance": {
+            "emotion": "controlled tension",
+            "intensity": 0.5,
+            "pacing": "measured",
+            "delivery": "restrained, observant"
+          }
+        },
+        {
+          "beat_id": "scene_001_beat_004",
+          "kind": "dialogue",
+          "speaker": "elias",
+          "text": "Then we breathe, and we move only when the corridor goes quiet",
+          "context": "Elias answers calmly despite danger.",
+          "performance": {
+            "emotion": "protective calm",
+            "intensity": 0.55,
+            "pacing": "slow",
+            "delivery": "low, calm, protective"
+          }
+        }
+      ]
+    }
+  ]
+}

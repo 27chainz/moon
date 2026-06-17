@@ -27,6 +27,11 @@ Return only valid JSON. Do not use Markdown. Do not wrap the response in code fe
       "stable_voice": "stable voice description",
       "provider_voice": {"gemini": "Kore"},
       "do_not_change": ["clarity", "base tone"],
+      "accent_profile": {
+        "label": "accent name if important",
+        "features": ["specific audible accent traits"],
+        "avoid": ["nearby accents or failure modes to avoid"]
+      },
       "voice_bible": "long-range voice consistency note",
       "golden_lines": ["short representative line"]
     }
@@ -174,6 +179,38 @@ Recommended pattern:
 - `golden_lines` should be short representative lines from that character.
 - Minor characters who appear in fewer than three scenes may share a Gemini voice with another minor character, provided they do not appear in the same scene and their `stable_voice` descriptions are distinct.
 - Main characters and recurring supporting characters should have stable voice assignments across all chapters.
+
+## Accent Rules
+
+If a character's accent matters, do not rely on a vague label such as `South African`, `Irish`, `Russian`, or `British` by itself.
+
+Create `accent_profile` with:
+
+- `label`: the accent name.
+- `features`: concrete audible traits the Actor should perform.
+- `avoid`: nearby accents or common failure modes the Actor must not drift into.
+
+Good example:
+
+```json
+"accent_profile": {
+  "label": "South African English",
+  "features": [
+    "clipped final consonants",
+    "dry flattened vowels",
+    "direct practical rhythm",
+    "blunt phrasing"
+  ],
+  "avoid": [
+    "polished British diction",
+    "Russian or Eastern European consonants",
+    "Australian or Cockney drift",
+    "theatrical villain delivery"
+  ]
+}
+```
+
+Then reflect those same traits in `stable_voice`, `voice_bible`, and `do_not_change`. Accent direction should be feature-based, not just label-based.
 
 ## Scene Rules
 

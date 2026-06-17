@@ -71,6 +71,20 @@ chapter production packet
       "resemble": "middle-aged alpine laborer, rough but controlled"
     },
     "do_not_change": ["accent", "age", "base tone"],
+    "accent_profile": {
+      "label": "South African English",
+      "features": [
+        "clipped final consonants",
+        "dry flattened vowels",
+        "direct practical rhythm"
+      ],
+      "avoid": [
+        "polished British diction",
+        "Russian or Eastern European consonants",
+        "Australian or Cockney drift",
+        "theatrical villain delivery"
+      ]
+    },
     "tag_suppress": ["[excitedly]", "[laughs]"]
   }
 }
@@ -165,6 +179,7 @@ Preferred beat provenance is `source_trace` plus `render_text`.
 - Put broad render guidance in `scene_context`, `director_notes`, and `sample_context`.
 - Keep `director_notes` performable. Avoid abstract literary analysis that cannot be heard.
 - Use `tag_suppress` on characters when an otherwise valid Gemini audio tag would violate the stable voice. Example: restrained narrators may suppress `[excitedly]`; dry comic characters may suppress `[sarcastic]`.
+- Use `accent_profile` for any character whose accent matters. Do not rely on vague accent labels alone. Include feature-based instructions (`features`) and negative constraints (`avoid`) so the Actor knows both what to do and what not to drift into.
 
 ## Actor Prompt Packet
 
@@ -200,6 +215,7 @@ Gemini prompt rules:
 - Keep real character ids in metadata such as `speaker_aliases`.
 - Repeat Audio Profile blocks in every chunk; Gemini has no memory between calls.
 - Use audio tags sparingly and only in the compiled prompt, never in APS `text`.
+- Compile `accent_profile` into the Audio Profile whenever present.
 - Store stitch QA notes, overlap notes, and internal continuity diagnostics outside `tts_prompt`.
 
 Generic production packet example:

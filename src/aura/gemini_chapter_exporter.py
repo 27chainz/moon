@@ -242,6 +242,7 @@ def character_voice_bible(plan: Dict[str, Any], speaker_id: str, golden_lines: L
         "provider_voice": provider_voice(plan, speaker_id, "gemini", "Kore"),
         "voice_bible": character.get("voice_bible") or character.get("stable_voice", ""),
         "do_not_change": character.get("do_not_change") or [],
+        "accent_profile": character.get("accent_profile") or {},
         "tag_suppress": character.get("tag_suppress") or [],
         "approved_reference_note": character.get("approved_reference_note", ""),
         "golden_lines": golden_lines,
@@ -265,6 +266,17 @@ def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: D
             lines.append(f"Voice identity: {bible['voice_bible']}")
         if bible["do_not_change"]:
             lines.append(f"Do not change: {', '.join(bible['do_not_change'])}")
+        accent_profile = bible.get("accent_profile") or {}
+        if accent_profile:
+            label = accent_profile.get("label")
+            features = accent_profile.get("features") or []
+            avoid = accent_profile.get("avoid") or []
+            if label:
+                lines.append(f"Accent profile: {label}")
+            if features:
+                lines.append(f"Accent features: {', '.join(features)}")
+            if avoid:
+                lines.append(f"Accent avoid: {', '.join(avoid)}")
         if bible["approved_reference_note"]:
             lines.append(f"Approved reference note: {bible['approved_reference_note']}")
         if bible["golden_lines"]:

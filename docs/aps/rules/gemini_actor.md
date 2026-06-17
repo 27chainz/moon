@@ -109,10 +109,22 @@ Profiles must be generated from APS character data:
 - `provider_voice.gemini`
 - `voice_bible` or `stable_voice`
 - `do_not_change`
+- `accent_profile`
 - `golden_lines`
 - approved voice notes, if present
 
 Do not hand-maintain repeated cast blocks across a full book. The exporter owns this repetition.
+
+## Accent Profiles
+
+When APS includes `accent_profile`, compile it directly into the Audio Profile.
+
+Use feature-based accent direction:
+
+- Good: `South African English cadence; clipped final consonants; dry flattened vowels; direct practical rhythm. Avoid polished British diction, Russian/Eastern European consonants, Australian or Cockney drift, and theatrical villain delivery.`
+- Weak: `South African accent.`
+
+Accent labels alone are not reliable enough. The Actor needs audible mechanics and negative constraints.
 
 ## Chunk Splitting
 

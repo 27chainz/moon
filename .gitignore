@@ -173,3 +173,6 @@ data/*
 **/exported_gemini/qa/
 **/manifest.render_log.json
 **/*.wav.json
+
+# Local production runs
+Production/

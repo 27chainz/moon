@@ -169,6 +169,8 @@ def validate_aps(plan: Dict[str, Any]) -> List[str]:
             intensity = performance.get("intensity", 0.4)
             if not isinstance(intensity, (int, float)) or intensity < 0 or intensity > 1:
                 warnings.append(f"Beat {beat.get('beat_id', beat_index)} intensity should be 0.0-1.0.")
+            if "chunk_boundary_hint" in beat and not isinstance(beat["chunk_boundary_hint"], bool):
+                warnings.append(f"Beat {beat.get('beat_id', beat_index)} chunk_boundary_hint should be boolean.")
     return warnings
 
 

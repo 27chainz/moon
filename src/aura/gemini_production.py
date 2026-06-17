@@ -4,8 +4,8 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 
-GEMINI_TTS_MODEL = "gemini-2.5-pro-preview-tts"
-GEMINI_TTS_FLASH_MODEL = "gemini-2.5-flash-preview-tts"
+GEMINI_TTS_MODEL = "gemini-3.1-flash-tts-preview"
+GEMINI_TTS_FLASH_MODEL = "gemini-3.1-flash-tts-preview"
 GEMINI_SAMPLE_RATE = 24000
 GEMINI_SAMPLE_WIDTH = 2
 GEMINI_CHANNELS = 1

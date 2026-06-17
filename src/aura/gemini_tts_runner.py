@@ -1,8 +1,10 @@
 import argparse
 import json
 import os
+import re
+import time
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from src.aura.gemini_production import (
     GEMINI_SAMPLE_RATE,
@@ -18,6 +20,7 @@ from src.aura.gemini_production import (
 
 
 DEFAULT_MODEL = GEMINI_TTS_MODEL
+RETRYABLE_ERROR_RE = re.compile(r"\b(429|500|502|503|504|UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED|INTERNAL)\b", re.I)
 
 
 def load_request(path: Path) -> Dict[str, Any]:
@@ -27,10 +30,15 @@ def load_request(path: Path) -> Dict[str, Any]:
 def build_single_speaker_prompt(payload: Dict[str, Any]) -> str:
     performance = payload.get("performance") or {}
     style_prompt = performance.get("style_prompt") or ""
+    chapter_context = get_system_instruction(payload)
     text = payload["text"]
+    parts = []
+    if chapter_context:
+        parts.append(chapter_context)
     if style_prompt:
-        return f"Say in this performance style: {style_prompt}\n\n{text}"
-    return text
+        parts.append(f"Say in this performance style: {style_prompt}")
+    parts.append(text)
+    return "\n\n".join(parts)
 
 
 def get_system_instruction(payload: Dict[str, Any]) -> str:
@@ -39,16 +47,23 @@ def get_system_instruction(payload: Dict[str, Any]) -> str:
 
 
 def build_multi_speaker_prompt(payload: Dict[str, Any]) -> str:
+    chapter_context = get_system_instruction(payload)
     if payload.get("transcript"):
+        if chapter_context:
+            return f"{chapter_context}\n\n{payload['transcript']}"
         return payload["transcript"]
     performance = payload.get("performance") or {}
     if performance.get("transcript"):
+        if chapter_context:
+            return f"{chapter_context}\n\n{performance['transcript']}"
         return performance["transcript"]
     if performance.get("prompt"):
         return performance["prompt"]
     direction = performance.get("direction") or performance.get("style_prompt") or ""
     turns = payload["turns"]
     lines = ["TTS the following conversation exactly as written:"]
+    if chapter_context:
+        lines.insert(0, chapter_context)
     if direction:
         lines.insert(0, direction)
     for turn in turns:
@@ -74,7 +89,6 @@ def synthesize_single(payload: Dict[str, Any], model: str) -> bytes:
         model=model,
         contents=build_single_speaker_prompt(payload),
         config=types.GenerateContentConfig(
-            system_instruction=get_system_instruction(payload) or None,
             response_modalities=["AUDIO"],
             speech_config=types.SpeechConfig(
                 voice_config=types.VoiceConfig(
@@ -98,7 +112,6 @@ def synthesize_multi(payload: Dict[str, Any], model: str) -> bytes:
         model=model,
         contents=build_multi_speaker_prompt(payload),
         config=types.GenerateContentConfig(
-            system_instruction=get_system_instruction(payload) or None,
             response_modalities=["AUDIO"],
             speech_config=types.SpeechConfig(
                 multi_speaker_voice_config=types.MultiSpeakerVoiceConfig(
@@ -123,21 +136,39 @@ def synthesize_multi(payload: Dict[str, Any], model: str) -> bytes:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Render an Aura synthesis request with Gemini TTS.")
     parser.add_argument("--request", required=True, type=Path)
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--model", default=None)
+    parser.add_argument("--retries", default=3, type=int)
+    parser.add_argument("--backoff", default=4.0, type=float)
     args = parser.parse_args()
 
     payload = load_request(args.request)
     warnings = validate_gemini_request(payload)
-    model = payload.get("model") or args.model
+    model = args.model or payload.get("model") or DEFAULT_MODEL
     output_path = request_output_path(payload)
 
     if not os.getenv("GEMINI_API_KEY"):
         raise RuntimeError("Set GEMINI_API_KEY before running Gemini TTS.")
 
-    if "speaker_voices" in payload or ("turns" in payload and "speakers" in payload):
-        pcm = synthesize_multi(payload, model)
+    last_error: Optional[Exception] = None
+    for attempt in range(1, args.retries + 2):
+        try:
+            if "speaker_voices" in payload or ("turns" in payload and "speakers" in payload):
+                pcm = synthesize_multi(payload, model)
+            else:
+                pcm = synthesize_single(payload, model)
+            break
+        except Exception as exc:
+            last_error = exc
+            message = str(exc)
+            retryable = RETRYABLE_ERROR_RE.search(message) is not None
+            if not retryable or attempt > args.retries:
+                raise
+            sleep_for = args.backoff * attempt
+            print(f"Gemini TTS request failed temporarily on attempt {attempt}: {message}")
+            print(f"Retrying in {sleep_for:.1f}s...")
+            time.sleep(sleep_for)
     else:
-        pcm = synthesize_single(payload, model)
+        raise RuntimeError("Gemini TTS failed without returning audio.") from last_error
 
     save_wave(output_path, pcm)
     audio_info = wave_info(output_path)

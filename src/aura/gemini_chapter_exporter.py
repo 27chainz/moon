@@ -13,7 +13,11 @@ from src.aura.aps_compiler import (
     performance_for_tts,
     provider_voice,
 )
-from src.aura.gemini_production import GEMINI_MAX_SPEAKERS, GEMINI_TTS_MODEL
+from src.aura.gemini_production import (
+    GEMINI_MAX_SPEAKERS,
+    GEMINI_TTS_MODEL,
+    validate_gemini_tts_prompt,
+)
 
 
 MAX_GEMINI_SPEAKERS = GEMINI_MAX_SPEAKERS
@@ -293,7 +297,7 @@ def build_prompt_transcript(beats: List[Dict[str, Any]], aliases: Dict[str, str]
     for beat in beats:
         alias = aliases[beat.get("speaker", "narrator")]
         tag = performance_audio_tags(beat.get("performance") or {})
-        text = beat["text"]
+        text = beat_render_text(beat)
         if tag:
             lines.append(f"{alias}: {tag} {text}")
         else:
@@ -581,6 +585,7 @@ def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[P
                 scene_index,
                 len(scene_chunks),
             )
+            validate_gemini_tts_prompt(request)
             request_path.write_text(json.dumps(request, indent=2), encoding="utf-8")
             request_paths.append(request_path)
             previous_beats.extend(beats)

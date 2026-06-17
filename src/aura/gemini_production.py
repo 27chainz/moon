@@ -1,4 +1,5 @@
 import json
+import re
 import wave
 from pathlib import Path
 from typing import Any, Dict, List
@@ -11,6 +12,14 @@ GEMINI_SAMPLE_WIDTH = 2
 GEMINI_CHANNELS = 1
 GEMINI_MAX_SPEAKERS = 2
 MIN_RENDERED_AUDIO_BYTES = 2048
+GEMINI_PROMPT_HEADINGS = [
+    "# AUDIO PROFILE:",
+    "## THE SCENE",
+    "### DIRECTOR'S NOTES",
+    "### SAMPLE CONTEXT",
+    "#### TRANSCRIPT",
+]
+TRANSCRIPT_LINE_RE = re.compile(r"^Speaker\d+:\s+\S", re.M)
 
 
 class GeminiProductionError(RuntimeError):
@@ -61,6 +70,53 @@ def validate_gemini_request(payload: Dict[str, Any]) -> List[str]:
     model = payload.get("model")
     if model and model not in {GEMINI_TTS_MODEL, GEMINI_TTS_FLASH_MODEL}:
         warnings.append(f"Model {model!r} is not one of the configured Gemini TTS production models.")
+    return warnings
+
+
+def validate_gemini_tts_prompt(payload: Dict[str, Any]) -> List[str]:
+    """Validate the Gemini-facing prompt before paid rendering starts."""
+    warnings: List[str] = []
+    prompt = payload.get("tts_prompt")
+    if not prompt:
+        warnings.append("tts_prompt is missing; runner will fall back to legacy prompt construction.")
+        return warnings
+
+    missing = [heading for heading in GEMINI_PROMPT_HEADINGS if heading not in prompt]
+    if missing:
+        raise GeminiProductionError(f"Gemini tts_prompt is missing required section(s): {', '.join(missing)}")
+
+    positions = [prompt.index(heading) for heading in GEMINI_PROMPT_HEADINGS]
+    if positions != sorted(positions):
+        raise GeminiProductionError(
+            "Gemini tts_prompt sections must appear in order: "
+            + " -> ".join(GEMINI_PROMPT_HEADINGS)
+        )
+
+    transcript_index = prompt.index("#### TRANSCRIPT")
+    transcript = prompt[transcript_index:]
+    if not TRANSCRIPT_LINE_RE.search(transcript):
+        raise GeminiProductionError("Gemini tts_prompt transcript must contain SpeakerN lines.")
+
+    if "Do not read these instructions aloud." not in prompt:
+        raise GeminiProductionError("Gemini tts_prompt is missing the anti-read-aloud preamble.")
+    if "Begin speaking only when you reach TRANSCRIPT." not in prompt:
+        raise GeminiProductionError("Gemini tts_prompt is missing the TRANSCRIPT boundary instruction.")
+
+    for speaker in speaker_voices(payload):
+        if f"{speaker}:" not in transcript:
+            raise GeminiProductionError(f"Gemini tts_prompt transcript does not include configured speaker {speaker!r}.")
+
+    forbidden_after_transcript = [
+        "Stitch QA note:",
+        "QA note:",
+        "CONTINUITY PACKET",
+        "JOIN CONTEXT",
+        "DO NOT SPEAK",
+    ]
+    for phrase in forbidden_after_transcript:
+        if phrase in transcript:
+            raise GeminiProductionError(f"Internal note leaked into Gemini transcript: {phrase}")
+
     return warnings
 
 

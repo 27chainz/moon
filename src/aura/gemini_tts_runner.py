@@ -14,6 +14,7 @@ from src.aura.gemini_production import (
     save_wave,
     speaker_voices,
     validate_gemini_request,
+    validate_gemini_tts_prompt,
     wave_info,
     write_json,
 )
@@ -145,6 +146,7 @@ def main() -> None:
 
     payload = load_request(args.request)
     warnings = validate_gemini_request(payload)
+    warnings.extend(validate_gemini_tts_prompt(payload))
     model = args.model or payload.get("model") or DEFAULT_MODEL
     output_path = request_output_path(payload)
 

@@ -1,6 +1,7 @@
 from src.aura.gemini_tts_runner import (
     build_single_speaker_prompt,
     get_single_speaker_voice,
+    retry_delay_seconds,
     should_use_multi_speaker,
 )
 
@@ -23,3 +24,15 @@ def test_two_speaker_voice_request_uses_multi_speaker_mode():
     }
 
     assert should_use_multi_speaker(payload) is True
+
+
+def test_retry_delay_seconds_reads_prose_retry_message():
+    message = "Please retry in 24.153660274s."
+
+    assert retry_delay_seconds(message) == 24.153660274
+
+
+def test_retry_delay_seconds_reads_retry_info_message():
+    message = "{'retryDelay': '24s'}"
+
+    assert retry_delay_seconds(message) == 24.0

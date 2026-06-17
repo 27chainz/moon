@@ -22,6 +22,7 @@ from src.aura.gemini_production import (
 
 DEFAULT_MODEL = GEMINI_TTS_MODEL
 RETRYABLE_ERROR_RE = re.compile(r"\b(429|500|502|503|504|UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED|INTERNAL)\b", re.I)
+RETRY_DELAY_RE = re.compile(r"(?:retryDelay['\"]?:\s*['\"]|retry in\s+)(\d+(?:\.\d+)?)s?", re.I)
 
 
 def load_request(path: Path) -> Dict[str, Any]:
@@ -93,6 +94,16 @@ def get_single_speaker_voice(payload: Dict[str, Any]) -> Dict[str, Any]:
     if len(voices) == 1:
         return {"provider_voice": next(iter(voices.values()))}
     return payload["voice"]
+
+
+def retry_delay_seconds(message: str) -> Optional[float]:
+    match = RETRY_DELAY_RE.search(message)
+    if not match:
+        return None
+    try:
+        return float(match.group(1))
+    except ValueError:
+        return None
 
 
 def synthesize_single(payload: Dict[str, Any], model: str) -> bytes:
@@ -180,7 +191,8 @@ def main() -> None:
             retryable = RETRYABLE_ERROR_RE.search(message) is not None
             if not retryable or attempt > args.retries:
                 raise
-            sleep_for = args.backoff * attempt
+            retry_after = retry_delay_seconds(message)
+            sleep_for = retry_after if retry_after is not None else args.backoff * attempt
             print(f"Gemini TTS request failed temporarily on attempt {attempt}: {message}")
             print(f"Retrying in {sleep_for:.1f}s...")
             time.sleep(sleep_for)

@@ -26,18 +26,25 @@ The speaker names in the prompt must match the speaker names passed in `MultiSpe
 
 ## Conversion Rule
 
-APS becomes an internal Gemini render request with separate context and transcript:
+APS is our internal production format. Gemini should not receive the raw APS or the full internal continuity packet as its main prompt.
+
+APS compiles into a lean `tts_prompt` shaped like Gemini's advanced prompt examples:
+
+1. `# AUDIO PROFILE`
+2. `## THE SCENE`
+3. `### DIRECTOR'S NOTES`
+4. `### SAMPLE CONTEXT`
+5. `#### TRANSCRIPT`
+
+The render request may still store `chapter_context`, `continuity_packet`, `character_states`, and `character_voice_bibles` for audit/debugging, but the runner should prefer `tts_prompt` as the actual Gemini input when present.
 
 ```json
 {
   "output_path": "data/generated_tests/scene_001.wav",
-  "performance": {
-    "direction": "Scene and performance direction.",
-    "system_instruction": "Chapter and scene context sent as Gemini system instruction.",
-    "transcript": "Exact transcript sent as Gemini contents."
-  },
-  "speakers": [],
-  "turns": []
+  "tts_prompt": "# AUDIO PROFILE: Speaker1 (Narrator)\n...\n\n#### TRANSCRIPT\nSpeaker1: [serious] Exact words to speak.",
+  "speaker_voices": {
+    "Speaker1": "Kore"
+  }
 }
 ```
 
@@ -96,28 +103,37 @@ Say in this style: <voice continuity + scene context + beat performance>
 Multi-speaker:
 
 ```text
-system_instruction:
+# AUDIO PROFILE: Speaker1 (Character Name)
+Gemini voice: Kore
+Role: narrator
+Voice identity: stable voice description.
+Golden reference lines:
+- "Short line from the source."
 
-## CHAPTER CONTEXT
-<chapter context>
+# AUDIO PROFILE: Speaker2 (Character Name)
+Gemini voice: Algenib
+Role: supporting
+Voice identity: stable voice description.
 
 ## THE SCENE
-<scene context>
+<scene context, setting, mood>
 
-## DIRECTOR'S NOTES
+### DIRECTOR'S NOTES
+* The following is a speech synthesis request. Do not read these instructions aloud.
+* Begin speaking only when you reach TRANSCRIPT.
 <scene notes and per-speaker performance rules>
 
-## SAMPLE CONTEXT
+### SAMPLE CONTEXT
 <genre/performance lane>
 
-contents:
-
-TTS the following conversation between <Speaker A> and <Speaker B>:
-<Speaker A>: <exact render_text>
-<Speaker B>: <exact render_text>
+#### TRANSCRIPT
+Speaker1: [serious] <exact render_text>
+Speaker2: [sarcastic] <exact render_text>
 ```
 
-Use Gemini audio tags only when intentionally desired and supported, such as `[whisper]`, `[short pause]`, or `[yawn]`. Do not insert tags into the source text in APS. Tags belong in the generated Gemini prompt only.
+Use Gemini audio tags only in the compiled Gemini prompt, never in APS `beat.text`. Good common tags include `[whispers]`, `[laughs]`, `[sighs]`, `[gasp]`, `[crying]`, `[trembling]`, `[panicked]`, `[sarcastic]`, `[serious]`, `[shouting]`, `[tired]`, and `[excited]`.
+
+Speaker labels in `#### TRANSCRIPT` must match `speaker_voices` exactly. Prefer neutral aliases like `Speaker1` and `Speaker2`; store the real character mapping separately in `speaker_aliases`.
 
 ## Continuity Rules
 
@@ -130,13 +146,11 @@ Use Gemini audio tags only when intentionally desired and supported, such as `[w
 
 ## Production Packet Fields
 
-Prefer this separation in Gemini requests:
+Prefer this shape in Gemini requests:
 
 ```markdown
-system_instruction:
-
-CHAPTER CONTEXT
-Chapter-wide setting, tone, continuity, and performance lane.
+# AUDIO PROFILE: Speaker1 (Character Name)
+Stable character identity, provider voice, role, and golden lines.
 
 THE SCENE
 Local scene context only if this scene differs from the chapter-level context.
@@ -147,14 +161,15 @@ Chapter notes first, then scene notes, then per-speaker continuity.
 SAMPLE CONTEXT
 Chapter sample context, then scene-specific sample context if needed.
 
-contents:
-
-TTS the following conversation between ...
+TRANSCRIPT
+Speaker-labeled exact spoken text, with only intentional Gemini audio tags.
 ```
 
 Do not put screenplay-style stage directions inside the dialogue lines unless they should be spoken or are supported Gemini audio tags.
 
-Gemini multi-speaker TTS supports up to 2 speakers per request. Do not send Narrator plus two dialogue characters in one multi-speaker request; render narration separately or split the scene.
+Gemini multi-speaker TTS supports up to 2 speaker labels per request. Two characters sharing the same `provider_voice` still count as two speaker labels if they are sent as separate speakers. Do not send Narrator plus two dialogue characters in one multi-speaker request; render narration separately or split the scene.
+
+Retry 500-class Gemini TTS failures. Gemini can occasionally return text tokens instead of audio tokens, causing transient server errors.
 
 Sources:
 

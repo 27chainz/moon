@@ -47,6 +47,8 @@ def get_system_instruction(payload: Dict[str, Any]) -> str:
 
 
 def build_multi_speaker_prompt(payload: Dict[str, Any]) -> str:
+    if payload.get("tts_prompt"):
+        return payload["tts_prompt"]
     chapter_context = get_system_instruction(payload)
     if payload.get("transcript"):
         if chapter_context:
@@ -181,6 +183,7 @@ def main() -> None:
         "warnings": warnings,
         "audio": audio_info,
         "chapter_context": payload.get("chapter_context"),
+        "tts_prompt": payload.get("tts_prompt"),
         "transcript": payload.get("transcript"),
         "speaker_voices": payload.get("speaker_voices"),
         "text": payload.get("text"),

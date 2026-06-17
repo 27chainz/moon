@@ -21,6 +21,20 @@ DEFAULT_MODEL = GEMINI_TTS_MODEL
 MAX_SUMMARY_CHARS = 220
 SCENE_POSITIONS = ("opening", "rising", "turning_point", "resolution")
 DEFAULT_GOLDEN_LINE_COUNT = 2
+MAX_DIRECTOR_NOTES = 8
+
+TAG_RULES = [
+    (("whisper", "hushed", "quietly"), "[whispers]"),
+    (("cry", "crying", "tear", "grief", "sorrow", "sad"), "[crying]"),
+    (("trembling", "shaking", "shaken", "suppressed grief", "holding back"), "[trembling]"),
+    (("shock", "startled", "stunned", "surprise"), "[gasp]"),
+    (("panic", "panicked", "frantic", "breathless"), "[panicked]"),
+    (("laugh", "amused", "giggle", "comic"), "[laughs]"),
+    (("sarcastic", "bitter", "dry", "cutting"), "[sarcastic]"),
+    (("excited", "eager", "bright", "cheerful", "upbeat"), "[excited]"),
+    (("serious", "grave", "solemn"), "[serious]"),
+    (("tired", "weary", "exhausted"), "[tired]"),
+]
 
 
 def speaker_ids_for(beats: Iterable[Dict[str, Any]]) -> List[str]:
@@ -130,6 +144,44 @@ def build_voice_bible_lines(plan: Dict[str, Any], speaker_ids: List[str]) -> Lis
     return lines
 
 
+def speaker_aliases(speaker_ids: List[str]) -> Dict[str, str]:
+    return {
+        speaker_id: f"Speaker{index}"
+        for index, speaker_id in enumerate(speaker_ids, start=1)
+    }
+
+
+def dedupe_lines(lines: Iterable[str], limit: int = MAX_DIRECTOR_NOTES) -> List[str]:
+    output: List[str] = []
+    seen = set()
+    for line in lines:
+        cleaned = " ".join(str(line).split())
+        if not cleaned:
+            continue
+        key = cleaned.lower()
+        if key in seen:
+            continue
+        output.append(cleaned)
+        seen.add(key)
+        if len(output) >= limit:
+            break
+    return output
+
+
+def performance_audio_tags(performance: Dict[str, Any]) -> str:
+    text = " ".join(
+        str(performance.get(key, "")).lower()
+        for key in ("emotion", "pacing", "delivery")
+    )
+    tags: List[str] = []
+    for keywords, tag in TAG_RULES:
+        if any(keyword in text for keyword in keywords) and tag not in tags:
+            tags.append(tag)
+        if len(tags) >= 2:
+            break
+    return " ".join(tags)
+
+
 def collect_golden_lines(plan: Dict[str, Any], limit: int = DEFAULT_GOLDEN_LINE_COUNT) -> Dict[str, List[str]]:
     lines: Dict[str, List[str]] = {
         speaker_id: list(character.get("golden_lines") or [])
@@ -159,6 +211,112 @@ def character_voice_bible(plan: Dict[str, Any], speaker_id: str, golden_lines: L
         "approved_reference_note": character.get("approved_reference_note", ""),
         "golden_lines": golden_lines,
     }
+
+
+def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: Dict[str, str]) -> str:
+    golden_lines = collect_golden_lines(plan)
+    sections = []
+    for speaker_id in speaker_ids:
+        bible = character_voice_bible(plan, speaker_id, golden_lines.get(speaker_id, []))
+        alias = aliases[speaker_id]
+        title = bible["display_name"]
+        lines = [
+            f"# AUDIO PROFILE: {alias} ({title})",
+            f"Gemini voice: {bible['provider_voice']}",
+        ]
+        if bible["role"]:
+            lines.append(f"Role: {bible['role']}")
+        if bible["voice_bible"]:
+            lines.append(f"Voice identity: {bible['voice_bible']}")
+        if bible["do_not_change"]:
+            lines.append(f"Do not change: {', '.join(bible['do_not_change'])}")
+        if bible["approved_reference_note"]:
+            lines.append(f"Approved reference note: {bible['approved_reference_note']}")
+        if bible["golden_lines"]:
+            lines.append("Golden reference lines:")
+            lines.extend(f'- "{line}"' for line in bible["golden_lines"])
+        sections.append("\n".join(lines))
+    return "\n\n".join(sections)
+
+
+def build_scene_section(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
+    packet = plan.get("production_packet") or {}
+    scene_bits = [
+        scene.get("scene_context"),
+        scene.get("summary"),
+        packet.get("the_scene"),
+    ]
+    context = next((str(bit).strip() for bit in scene_bits if str(bit or "").strip()), "")
+    setting = scene.get("setting")
+    mood = scene.get("mood")
+    title = scene.get("title") or plan.get("chapter_title") or "Scene"
+
+    lines = [f"## THE SCENE: {title}"]
+    if setting:
+        lines.append(f"Setting: {setting}")
+    if mood:
+        lines.append(f"Mood: {mood}")
+    if context:
+        lines.append(context)
+    return "\n".join(lines)
+
+
+def build_director_notes(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
+    packet = plan.get("production_packet") or {}
+    notes = dedupe_lines(
+        [
+            "The following is a speech synthesis request. Do not read these instructions aloud.",
+            "Begin speaking only when you reach TRANSCRIPT.",
+            *list(packet.get("director_notes") or []),
+            *list(scene.get("director_notes") or []),
+            "Keep the transcript exact. Do not add, remove, modernize, or summarize spoken words.",
+            "Use audio tags as performance cues, not as literal words.",
+        ],
+        limit=MAX_DIRECTOR_NOTES + 3,
+    )
+    return "### DIRECTOR'S NOTES\n" + "\n".join(f"* {note}" for note in notes)
+
+
+def build_sample_context(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
+    packet = plan.get("production_packet") or {}
+    samples = dedupe_lines(
+        [packet.get("sample_context", ""), scene.get("sample_context", "")],
+        limit=3,
+    )
+    if not samples:
+        samples = ["Audiobook performance with consistent character identity and natural scene continuity."]
+    return "### SAMPLE CONTEXT\n" + "\n".join(samples)
+
+
+def build_prompt_transcript(beats: List[Dict[str, Any]], aliases: Dict[str, str]) -> str:
+    lines = ["#### TRANSCRIPT"]
+    for beat in beats:
+        alias = aliases[beat.get("speaker", "narrator")]
+        tag = performance_audio_tags(beat.get("performance") or {})
+        text = beat["text"]
+        if tag:
+            lines.append(f"{alias}: {tag} {text}")
+        else:
+            lines.append(f"{alias}: {text}")
+    return "\n".join(lines)
+
+
+def build_tts_prompt(
+    plan: Dict[str, Any],
+    scene: Dict[str, Any],
+    beats: List[Dict[str, Any]],
+    speaker_ids: List[str],
+    aliases: Dict[str, str],
+) -> str:
+    return "\n\n".join(
+        [
+            build_audio_profile(plan, speaker_ids, aliases),
+            build_scene_section(scene, plan),
+            build_director_notes(scene, plan),
+            build_sample_context(scene, plan),
+            build_prompt_transcript(beats, aliases),
+        ]
+    )
 
 
 def build_character_voice_bibles(plan: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
@@ -308,6 +466,7 @@ def build_request(
 ) -> Dict[str, Any]:
     speaker_ids = speaker_ids_for(beats)
     speaker_names = {speaker_id: display_name(plan, speaker_id) for speaker_id in speaker_ids}
+    aliases = speaker_aliases(speaker_ids)
     scene_packet = build_gemini_scene_packet(scene, plan, speaker_ids, speaker_names)
     continuity_packet = build_continuity_packet(
         plan,
@@ -319,6 +478,7 @@ def build_request(
         scene_chunk_count,
     )
     states = build_character_states(plan, speaker_ids, previous_beats, beats)
+    tts_prompt = build_tts_prompt(plan, scene, beats, speaker_ids, aliases)
     return {
         "output_file": output_file,
         "model": model,
@@ -334,9 +494,18 @@ def build_request(
         },
         "chapter_context": f"{scene_packet}\n\n{continuity_packet}",
         "continuity_packet": continuity_packet,
+        "tts_prompt": tts_prompt,
         "transcript": build_transcript(plan, beats),
+        "speaker_aliases": {
+            aliases[speaker_id]: {
+                "speaker_id": speaker_id,
+                "display_name": speaker_names[speaker_id],
+                "provider_voice": provider_voice(plan, speaker_id, "gemini", "Kore"),
+            }
+            for speaker_id in speaker_ids
+        },
         "speaker_voices": {
-            speaker_names[speaker_id]: provider_voice(plan, speaker_id, "gemini", "Kore")
+            aliases[speaker_id]: provider_voice(plan, speaker_id, "gemini", "Kore")
             for speaker_id in speaker_ids
         },
         "source": {

@@ -10,8 +10,8 @@ from src.aura.gemini_production import write_json
 MARKDOWN_PATTERNS = [
     re.compile(r"\*\*(.*?)\*\*"),
     re.compile(r"__(.*?)__"),
-    re.compile(r"\*(.*?)\*"),
-    re.compile(r"_(.*?)_"),
+    re.compile(r"(?<!\w)\*(.*?)\*(?!\w)"),
+    re.compile(r"(?<!\w)_(.*?)_(?!\w)"),
     re.compile(r"`([^`]+)`"),
 ]
 MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]+\)")

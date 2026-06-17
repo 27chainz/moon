@@ -12,6 +12,38 @@ GEMINI_SAMPLE_WIDTH = 2
 GEMINI_CHANNELS = 1
 GEMINI_MAX_SPEAKERS = 2
 MIN_RENDERED_AUDIO_BYTES = 2048
+GEMINI_VOICE_NAMES = {
+    "Zephyr",
+    "Puck",
+    "Charon",
+    "Kore",
+    "Fenrir",
+    "Leda",
+    "Orus",
+    "Aoede",
+    "Callirrhoe",
+    "Autonoe",
+    "Enceladus",
+    "Iapetus",
+    "Umbriel",
+    "Algieba",
+    "Despina",
+    "Erinome",
+    "Algenib",
+    "Rasalgethi",
+    "Laomedeia",
+    "Achernar",
+    "Alnilam",
+    "Schedar",
+    "Gacrux",
+    "Pulcherrima",
+    "Achird",
+    "Zubenelgenubi",
+    "Vindemiatrix",
+    "Sadachbia",
+    "Sadaltager",
+    "Sulafat",
+}
 GEMINI_PROMPT_HEADINGS = [
     "# AUDIO PROFILE:",
     "## THE SCENE",
@@ -64,8 +96,22 @@ def validate_gemini_request(payload: Dict[str, Any]) -> List[str]:
             raise GeminiProductionError(
                 f"Gemini multi-speaker TTS supports at most {GEMINI_MAX_SPEAKERS} speakers per request."
             )
+        for speaker, voice in payload["speaker_voices"].items():
+            if voice not in GEMINI_VOICE_NAMES:
+                raise GeminiProductionError(
+                    f"Gemini speaker {speaker!r} uses unsupported voice {voice!r}. "
+                    f"Use one of: {', '.join(sorted(GEMINI_VOICE_NAMES))}"
+                )
     elif "voice" not in payload or "text" not in payload:
         raise GeminiProductionError("Gemini request must include either speaker_voices+transcript or voice+text.")
+    else:
+        voice = payload.get("voice") or {}
+        voice_name = voice.get("provider_voice") or voice.get("gemini_voice")
+        if voice_name and voice_name not in GEMINI_VOICE_NAMES:
+            raise GeminiProductionError(
+                f"Gemini request uses unsupported voice {voice_name!r}. "
+                f"Use one of: {', '.join(sorted(GEMINI_VOICE_NAMES))}"
+            )
 
     model = payload.get("model")
     if model and model not in {GEMINI_TTS_MODEL, GEMINI_TTS_FLASH_MODEL}:

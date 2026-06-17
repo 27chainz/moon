@@ -166,7 +166,8 @@ Recommended pattern:
 - Include `narrator` in `characters`.
 - Include every recurring speaker in `characters`.
 - If uncertain about a speaker, use `unknown_speaker` and explain briefly in `context`.
-- Assign one Gemini prebuilt voice per character from the approved Gemini voice reference in `docs/aps/gemini_voice_reference.md`.
+- Assign one Gemini prebuilt voice per character from this exact approved list only: Zephyr, Puck, Charon, Kore, Fenrir, Leda, Orus, Aoede, Callirrhoe, Autonoe, Enceladus, Iapetus, Umbriel, Algieba, Despina, Erinome, Algenib, Rasalgethi, Laomedeia, Achernar, Alnilam, Schedar, Gacrux, Pulcherrima, Achird, Zubenelgenubi, Vindemiatrix, Sadachbia, Sadaltager, Sulafat.
+- Never invent provider voices. Invalid examples include Gus, Alloy, Nova, Echo, Fable, Onyx, or any name not in the approved Gemini list.
 - Prefer voices whose base quality matches the character before adding performance instructions. For example, use mature/gravelly/firm voices for older or heavier characters, youthful/bright voices for younger characters, and warm/friendly voices for approachable characters.
 - Do not imitate living actors, celebrities, or copyrighted performances.
 - `voice_bible` should be a long-range consistency anchor, not a scene-specific mood.

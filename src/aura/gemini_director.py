@@ -7,45 +7,14 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from src.aura.aps_hygiene import sanitize_aps_text
-from src.aura.gemini_production import write_json
+from src.aura.gemini_production import GEMINI_VOICE_NAMES, write_json
 
 
 DEFAULT_DIRECTOR_MODEL = "gemini-2.5-flash"
 APS_VERSION = "0.1"
 ATTRIBUTION_RE = re.compile(r"\b(he|she|they|i|we|the man|the woman|the boy|the girl)\s+(said|asked|told|replied|whispered|shouted|called|muttered)\b", re.I)
 RETRYABLE_ERROR_RE = re.compile(r"\b(429|500|502|503|504|UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED)\b", re.I)
-DEFAULT_GEMINI_VOICES = [
-    "Zephyr",
-    "Puck",
-    "Charon",
-    "Kore",
-    "Fenrir",
-    "Leda",
-    "Orus",
-    "Aoede",
-    "Callirrhoe",
-    "Autonoe",
-    "Enceladus",
-    "Iapetus",
-    "Umbriel",
-    "Algieba",
-    "Despina",
-    "Erinome",
-    "Algenib",
-    "Rasalgethi",
-    "Laomedeia",
-    "Achernar",
-    "Alnilam",
-    "Schedar",
-    "Gacrux",
-    "Pulcherrima",
-    "Achird",
-    "Zubenelgenubi",
-    "Vindemiatrix",
-    "Sadachbia",
-    "Sadaltager",
-    "Sulafat",
-]
+DEFAULT_GEMINI_VOICES = sorted(GEMINI_VOICE_NAMES)
 DEFAULT_RULES_PATH = Path("docs/aps/rules/gemini_director.md")
 
 
@@ -196,6 +165,14 @@ def validate_aps(plan: Dict[str, Any]) -> List[str]:
                 warnings.append(f"Beat {beat.get('beat_id', beat_index)} intensity should be 0.0-1.0.")
             if "chunk_boundary_hint" in beat and not isinstance(beat["chunk_boundary_hint"], bool):
                 warnings.append(f"Beat {beat.get('beat_id', beat_index)} chunk_boundary_hint should be boolean.")
+    for character_id, character in plan.get("characters", {}).items():
+        provider = character.get("provider_voice") or {}
+        voice = provider.get("gemini")
+        if voice and voice not in GEMINI_VOICE_NAMES:
+            warnings.append(
+                f"Character {character_id!r} uses unsupported Gemini voice {voice!r}. "
+                f"Use one of: {', '.join(DEFAULT_GEMINI_VOICES)}"
+            )
     return warnings
 
 

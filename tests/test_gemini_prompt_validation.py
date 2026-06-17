@@ -1,6 +1,10 @@
 import pytest
 
-from src.aura.gemini_production import GeminiProductionError, validate_gemini_tts_prompt
+from src.aura.gemini_production import (
+    GeminiProductionError,
+    validate_gemini_request,
+    validate_gemini_tts_prompt,
+)
 
 
 def valid_payload():
@@ -56,3 +60,11 @@ def test_configured_speaker_must_appear_in_transcript():
 
     with pytest.raises(GeminiProductionError, match="does not include configured speaker"):
         validate_gemini_tts_prompt(payload)
+
+
+def test_unsupported_gemini_voice_fails_before_api_call():
+    payload = valid_payload()
+    payload["speaker_voices"]["Speaker2"] = "Gus"
+
+    with pytest.raises(GeminiProductionError, match="unsupported voice 'Gus'"):
+        validate_gemini_request(payload)

@@ -1,7 +1,7 @@
 import argparse
 import json
 from pathlib import Path
-from typing import Any, Dict, Iterable, List
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from src.aura.aps_compiler import (
     beat_render_text,
@@ -27,17 +27,31 @@ SCENE_POSITIONS = ("opening", "rising", "turning_point", "resolution")
 DEFAULT_GOLDEN_LINE_COUNT = 2
 MAX_DIRECTOR_NOTES = 8
 
-TAG_RULES = [
-    (("whisper", "hushed", "quietly"), "[whispers]"),
-    (("cry", "crying", "tear", "grief", "sorrow", "sad"), "[crying]"),
-    (("trembling", "shaking", "shaken", "suppressed grief", "holding back"), "[trembling]"),
-    (("shock", "startled", "stunned", "surprise"), "[gasp]"),
-    (("panic", "panicked", "frantic", "breathless"), "[panicked]"),
-    (("laugh", "amused", "giggle", "comic"), "[laughs]"),
-    (("sarcastic", "bitter", "dry", "cutting"), "[sarcastic]"),
-    (("excited", "eager", "bright", "cheerful", "upbeat"), "[excited]"),
-    (("serious", "grave", "solemn"), "[serious]"),
-    (("tired", "weary", "exhausted"), "[tired]"),
+TagRule = Tuple[Tuple[str, ...], Optional[str], float]
+
+TAG_RULES: List[TagRule] = [
+    (("whisper", "hushed", "quietly"), "[whispers]", 0.0),
+    (("crying", "weeping", "tears"), "[crying]", 0.6),
+    (("grief", "sorrow"), "[crying]", 0.75),
+    (("sad", "sadness"), "[crying]", 0.85),
+    (("trembling", "shaking", "suppressed grief", "holding back"), "[trembling]", 0.5),
+    (("gasp", "sudden shock", "startled"), "[gasp]", 0.6),
+    (("shock", "stunned", "disbelief"), "[trembling]", 0.6),
+    (("panic", "panicked", "frantic", "breathless"), "[panicked]", 0.5),
+    (("laughs", "giggle", "comic"), "[laughs]", 0.5),
+    (("amused", "wry", "playful teasing"), "[mischievously]", 0.4),
+    (("sarcastic", "bitter", "cutting"), "[sarcastic]", 0.5),
+    (("dry", "understated", "ironic"), None, 0.0),
+    (("excited", "eager", "upbeat"), "[excitedly]", 0.5),
+    (("cheerful", "bright"), "[excitedly]", 0.65),
+    (("serious", "grave", "solemn"), "[serious]", 0.6),
+    (("tired", "exhausted"), "[tired]", 0.6),
+    (("weary", "resignation", "weary acceptance"), None, 0.0),
+    (("curious", "wondering", "puzzled"), "[curious]", 0.4),
+    (("amazed", "wonder", "awe"), "[amazed]", 0.5),
+    (("sighs", "resigned acceptance"), "[sighs]", 0.4),
+    (("mischievous", "teasing"), "[mischievously]", 0.4),
+    (("angry", "furious", "hostile"), "[shouting]", 0.85),
 ]
 
 
@@ -172,14 +186,30 @@ def dedupe_lines(lines: Iterable[str], limit: int = MAX_DIRECTOR_NOTES) -> List[
     return output
 
 
-def performance_audio_tags(performance: Dict[str, Any]) -> str:
+def performance_audio_tags(
+    performance: Dict[str, Any],
+    suppressed_tags: Iterable[str] = (),
+) -> str:
     text = " ".join(
         str(performance.get(key, "")).lower()
         for key in ("emotion", "pacing", "delivery")
     )
+    try:
+        intensity = float(performance.get("intensity", 0.0))
+    except (TypeError, ValueError):
+        intensity = 0.0
+    suppressed = set(suppressed_tags)
     tags: List[str] = []
-    for keywords, tag in TAG_RULES:
-        if any(keyword in text for keyword in keywords) and tag not in tags:
+    for keywords, tag, min_intensity in TAG_RULES:
+        if not any(keyword in text for keyword in keywords):
+            continue
+        if intensity < min_intensity:
+            continue
+        if tag is None:
+            continue
+        if tag == "[trembling]" and "[gasp]" in tags:
+            continue
+        if tag not in suppressed and tag not in tags:
             tags.append(tag)
         if len(tags) >= 2:
             break
@@ -212,6 +242,7 @@ def character_voice_bible(plan: Dict[str, Any], speaker_id: str, golden_lines: L
         "provider_voice": provider_voice(plan, speaker_id, "gemini", "Kore"),
         "voice_bible": character.get("voice_bible") or character.get("stable_voice", ""),
         "do_not_change": character.get("do_not_change") or [],
+        "tag_suppress": character.get("tag_suppress") or [],
         "approved_reference_note": character.get("approved_reference_note", ""),
         "golden_lines": golden_lines,
     }
@@ -292,11 +323,16 @@ def build_sample_context(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
     return "### SAMPLE CONTEXT\n" + "\n".join(samples)
 
 
-def build_prompt_transcript(beats: List[Dict[str, Any]], aliases: Dict[str, str]) -> str:
+def build_prompt_transcript(plan: Dict[str, Any], beats: List[Dict[str, Any]], aliases: Dict[str, str]) -> str:
     lines = ["#### TRANSCRIPT"]
     for beat in beats:
-        alias = aliases[beat.get("speaker", "narrator")]
-        tag = performance_audio_tags(beat.get("performance") or {})
+        speaker_id = beat.get("speaker", "narrator")
+        alias = aliases[speaker_id]
+        character = plan.get("characters", {}).get(speaker_id, {})
+        tag = performance_audio_tags(
+            performance_for_tts(beat),
+            character.get("tag_suppress") or (),
+        )
         text = beat_render_text(beat)
         if tag:
             lines.append(f"{alias}: {tag} {text}")
@@ -318,7 +354,7 @@ def build_tts_prompt(
             build_scene_section(scene, plan),
             build_director_notes(scene, plan),
             build_sample_context(scene, plan),
-            build_prompt_transcript(beats, aliases),
+            build_prompt_transcript(plan, beats, aliases),
         ]
     )
 

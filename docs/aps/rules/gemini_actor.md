@@ -83,9 +83,18 @@ Speaker1: [serious] <exact render_text>
 Speaker2: [sarcastic] <exact render_text>
 ```
 
-Use Gemini audio tags only in the compiled Gemini prompt, never in APS `beat.text`. Good common tags include `[whispers]`, `[laughs]`, `[sighs]`, `[gasp]`, `[crying]`, `[trembling]`, `[panicked]`, `[sarcastic]`, `[serious]`, `[shouting]`, `[tired]`, and `[excited]`.
+Use Gemini audio tags only in the compiled Gemini prompt, never in APS `beat.text`. Good common tags include `[whispers]`, `[laughs]`, `[sighs]`, `[gasp]`, `[crying]`, `[trembling]`, `[panicked]`, `[sarcastic]`, `[serious]`, `[shouting]`, `[tired]`, `[curious]`, `[amazed]`, `[mischievously]`, and `[excitedly]`.
 
 Use tags sparingly. Prefer no tag when the scene notes already carry the performance. A tag should mark a real vocal event or meaningful local shift, not restate every beat's emotion. Do not use `[tired]` for quiet resignation or private contentment; leave those lines untagged or use `[serious]` only if needed.
+
+Audio tags are intensity-gated:
+
+- Low sadness should not become `[crying]`.
+- Dry wit, understatement, and irony should usually receive no tag; let the voice profile and delivery carry it.
+- Shock should usually become `[trembling]` only when heightened; use `[gasp]` only for explicit gasp/sudden-startle moments.
+- Anger should not become `[shouting]` unless intensity is very high.
+
+Characters may define `tag_suppress` in APS to block tags that do not fit their stable performance. For example, a restrained narrator may suppress `[excitedly]` and `[laughs]`; Mr. Bennet may suppress `[sarcastic]` so dry wit does not turn into broad mockery.
 
 Speaker labels in `#### TRANSCRIPT` must match `speaker_voices` exactly. Prefer neutral aliases like `Speaker1` and `Speaker2`; store the real character mapping separately in `speaker_aliases`.
 

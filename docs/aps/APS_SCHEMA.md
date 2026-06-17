@@ -70,7 +70,8 @@ chapter production packet
       "gemini": "Kore",
       "resemble": "middle-aged alpine laborer, rough but controlled"
     },
-    "do_not_change": ["accent", "age", "base tone"]
+    "do_not_change": ["accent", "age", "base tone"],
+    "tag_suppress": ["[excitedly]", "[laughs]"]
   }
 }
 ```
@@ -163,6 +164,7 @@ Preferred beat provenance is `source_trace` plus `render_text`.
 - Store normalized emotion, intensity, and delivery separately from text.
 - Put broad render guidance in `scene_context`, `director_notes`, and `sample_context`.
 - Keep `director_notes` performable. Avoid abstract literary analysis that cannot be heard.
+- Use `tag_suppress` on characters when an otherwise valid Gemini audio tag would violate the stable voice. Example: restrained narrators may suppress `[excitedly]`; dry comic characters may suppress `[sarcastic]`.
 
 ## Actor Prompt Packet
 

@@ -55,7 +55,7 @@ chapter production packet
 + scene production packet
 + cast continuity
 + exact transcript
-= actor prompt
+= provider-specific actor prompt
 ```
 
 ## Character
@@ -166,7 +166,41 @@ Preferred beat provenance is `source_trace` plus `render_text`.
 
 ## Actor Prompt Packet
 
-For high-quality renderers such as Gemini or DramaBox, APS should compile scene-level context into a production packet before the spoken transcript.
+For high-quality renderers such as Gemini or DramaBox, APS should compile scene-level context into a provider-specific production packet before the spoken transcript.
+
+For Gemini, the compiled `tts_prompt` must use this order:
+
+```markdown
+# AUDIO PROFILE: Speaker1 (Character Name)
+Gemini voice, role, voice identity, do-not-change traits, and golden reference lines.
+
+## THE SCENE
+Scene title, setting, mood, and local dramatic context.
+
+### DIRECTOR'S NOTES
+Short performable instructions.
+Include:
+- The following is a speech synthesis request. Do not read these instructions aloud.
+- Begin speaking only when you reach TRANSCRIPT.
+
+### SAMPLE CONTEXT
+The performance lane for the scene.
+
+#### TRANSCRIPT
+Speaker1: [optional audio tag] exact render_text
+Speaker2: exact render_text
+```
+
+Gemini prompt rules:
+
+- Use `render_text` as the spoken transcript when present.
+- Use neutral Gemini labels such as `Speaker1` and `Speaker2`.
+- Keep real character ids in metadata such as `speaker_aliases`.
+- Repeat Audio Profile blocks in every chunk; Gemini has no memory between calls.
+- Use audio tags sparingly and only in the compiled prompt, never in APS `text`.
+- Store stitch QA notes, overlap notes, and internal continuity diagnostics outside `tts_prompt`.
+
+Generic production packet example:
 
 ```markdown
 ## THE SCENE

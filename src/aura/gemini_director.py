@@ -10,6 +10,7 @@ from src.aura.gemini_production import write_json
 
 DEFAULT_DIRECTOR_MODEL = "gemini-2.5-flash"
 APS_VERSION = "0.1"
+ATTRIBUTION_RE = re.compile(r"\b(he|she|they|i|we|the man|the woman|the boy|the girl)\s+(said|asked|told|replied|whispered|shouted|called|muttered)\b", re.I)
 DEFAULT_GEMINI_VOICES = [
     "Kore",
     "Charon",
@@ -20,9 +21,10 @@ DEFAULT_GEMINI_VOICES = [
     "Algenib",
     "Orus",
 ]
+DEFAULT_RULES_PATH = Path("docs/aps/rules/gemini_director.md")
 
 
-DIRECTOR_SYSTEM_PROMPT = """You are Aster's Director.
+FALLBACK_DIRECTOR_SYSTEM_PROMPT = """You are Aster's Director.
 
 Your job is to convert book chapter text into an Aster Performance Script (APS) for audiobook production.
 
@@ -98,6 +100,12 @@ Rules:
 """
 
 
+def load_director_rules(path: Path = DEFAULT_RULES_PATH) -> str:
+    if path.exists():
+        return path.read_text(encoding="utf-8")
+    return FALLBACK_DIRECTOR_SYSTEM_PROMPT
+
+
 def build_user_prompt(book_id: str, title: str, chapter_id: str, chapter_title: str, text: str) -> str:
     return f"""Create APS JSON for this chapter.
 
@@ -151,6 +159,12 @@ def validate_aps(plan: Dict[str, Any]) -> List[str]:
                 raise ValueError(f"Beat {beat.get('beat_id', beat_index)} is missing speaker.")
             if not beat.get("text"):
                 raise ValueError(f"Beat {beat.get('beat_id', beat_index)} is missing text.")
+            if beat.get("kind") == "dialogue":
+                text = beat.get("text", "")
+                if "“" in text or "”" in text or '"' in text:
+                    warnings.append(f"Dialogue beat {beat.get('beat_id', beat_index)} contains quote marks.")
+                if ATTRIBUTION_RE.search(text):
+                    warnings.append(f"Dialogue beat {beat.get('beat_id', beat_index)} may contain attribution/action text.")
             performance = beat.get("performance") or {}
             intensity = performance.get("intensity", 0.4)
             if not isinstance(intensity, (int, float)) or intensity < 0 or intensity > 1:
@@ -165,6 +179,7 @@ def create_aps(
     chapter_id: str,
     chapter_title: str,
     model: str,
+    rules_path: Path = DEFAULT_RULES_PATH,
 ) -> Dict[str, Any]:
     if not os.getenv("GEMINI_API_KEY"):
         raise RuntimeError("Set GEMINI_API_KEY before running Gemini Director.")
@@ -177,7 +192,7 @@ def create_aps(
         model=model,
         contents=build_user_prompt(book_id, title, chapter_id, chapter_title, chapter_text),
         config=types.GenerateContentConfig(
-            system_instruction=DIRECTOR_SYSTEM_PROMPT,
+            system_instruction=load_director_rules(rules_path),
             response_mime_type="application/json",
             temperature=0.3,
         ),
@@ -199,6 +214,7 @@ def main() -> None:
     parser.add_argument("--chapter-id", required=True)
     parser.add_argument("--chapter-title", required=True)
     parser.add_argument("--model", default=DEFAULT_DIRECTOR_MODEL)
+    parser.add_argument("--rules", default=DEFAULT_RULES_PATH, type=Path)
     args = parser.parse_args()
 
     chapter_text = args.input.read_text(encoding="utf-8")
@@ -209,6 +225,7 @@ def main() -> None:
         chapter_id=args.chapter_id,
         chapter_title=args.chapter_title,
         model=args.model,
+        rules_path=args.rules,
     )
     write_json(args.output, plan)
     print(f"Wrote APS: {args.output}")

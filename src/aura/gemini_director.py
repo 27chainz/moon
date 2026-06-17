@@ -2,8 +2,9 @@ import argparse
 import json
 import os
 import re
+import time
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 from src.aura.gemini_production import write_json
 
@@ -11,6 +12,7 @@ from src.aura.gemini_production import write_json
 DEFAULT_DIRECTOR_MODEL = "gemini-2.5-flash"
 APS_VERSION = "0.1"
 ATTRIBUTION_RE = re.compile(r"\b(he|she|they|i|we|the man|the woman|the boy|the girl)\s+(said|asked|told|replied|whispered|shouted|called|muttered)\b", re.I)
+RETRYABLE_ERROR_RE = re.compile(r"\b(429|500|502|503|504|UNAVAILABLE|RESOURCE_EXHAUSTED|DEADLINE_EXCEEDED)\b", re.I)
 DEFAULT_GEMINI_VOICES = [
     "Kore",
     "Charon",
@@ -182,6 +184,8 @@ def create_aps(
     chapter_title: str,
     model: str,
     rules_path: Path = DEFAULT_RULES_PATH,
+    retries: int = 3,
+    backoff: float = 4.0,
 ) -> Dict[str, Any]:
     if not os.getenv("GEMINI_API_KEY"):
         raise RuntimeError("Set GEMINI_API_KEY before running Gemini Director.")
@@ -190,15 +194,32 @@ def create_aps(
     from google.genai import types
 
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-    response = client.models.generate_content(
-        model=model,
-        contents=build_user_prompt(book_id, title, chapter_id, chapter_title, chapter_text),
-        config=types.GenerateContentConfig(
-            system_instruction=load_director_rules(rules_path),
-            response_mime_type="application/json",
-            temperature=0.3,
-        ),
-    )
+    last_error: Optional[Exception] = None
+    for attempt in range(1, retries + 2):
+        try:
+            response = client.models.generate_content(
+                model=model,
+                contents=build_user_prompt(book_id, title, chapter_id, chapter_title, chapter_text),
+                config=types.GenerateContentConfig(
+                    system_instruction=load_director_rules(rules_path),
+                    response_mime_type="application/json",
+                    temperature=0.3,
+                ),
+            )
+            break
+        except Exception as exc:
+            last_error = exc
+            message = str(exc)
+            retryable = RETRYABLE_ERROR_RE.search(message) is not None
+            if not retryable or attempt > retries:
+                raise
+            sleep_for = backoff * attempt
+            print(f"Gemini Director request failed temporarily on attempt {attempt}: {message}")
+            print(f"Retrying in {sleep_for:.1f}s...")
+            time.sleep(sleep_for)
+    else:
+        raise RuntimeError("Gemini Director failed without returning a response.") from last_error
+
     raw = response.text or ""
     plan = parse_json_response(raw)
     warnings = validate_aps(plan)
@@ -217,6 +238,8 @@ def main() -> None:
     parser.add_argument("--chapter-title", required=True)
     parser.add_argument("--model", default=DEFAULT_DIRECTOR_MODEL)
     parser.add_argument("--rules", default=DEFAULT_RULES_PATH, type=Path)
+    parser.add_argument("--retries", default=3, type=int)
+    parser.add_argument("--backoff", default=4.0, type=float)
     args = parser.parse_args()
 
     chapter_text = args.input.read_text(encoding="utf-8")
@@ -228,6 +251,8 @@ def main() -> None:
         chapter_title=args.chapter_title,
         model=args.model,
         rules_path=args.rules,
+        retries=args.retries,
+        backoff=args.backoff,
     )
     write_json(args.output, plan)
     print(f"Wrote APS: {args.output}")

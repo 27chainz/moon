@@ -2,9 +2,13 @@
 
 This is the commercial Gemini audiobook path for Aster.
 
-## 1. Source APS
+## 1. Generate Source APS
 
-The master production file is `aps.json`.
+The master production file is `aps.json`. For production, create it with the Gemini Director:
+
+```powershell
+python -m src.aura.gemini_director --input path\to\chapter_001.txt --output production\book_001\chapter_001\aps.json --book-id book_001 --title "Book Title" --chapter-id chapter_001 --chapter-title "Chapter 1"
+```
 
 It contains:
 
@@ -15,7 +19,7 @@ It contains:
 - beats
 - performance metadata
 
-Gemini does not receive this file directly.
+The Gemini Director uses a text model to analyze the chapter. Gemini TTS does not receive this file directly.
 
 For the broader audiobook production model, export provider-neutral Presence state first:
 

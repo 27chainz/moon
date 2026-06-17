@@ -29,6 +29,8 @@ def load_request(path: Path) -> Dict[str, Any]:
 
 
 def build_single_speaker_prompt(payload: Dict[str, Any]) -> str:
+    if payload.get("tts_prompt"):
+        return payload["tts_prompt"]
     performance = payload.get("performance") or {}
     style_prompt = performance.get("style_prompt") or ""
     chapter_context = get_system_instruction(payload)
@@ -82,12 +84,23 @@ def get_speaker_voices(payload: Dict[str, Any]) -> Dict[str, str]:
     return speaker_voices(payload)
 
 
+def should_use_multi_speaker(payload: Dict[str, Any]) -> bool:
+    return len(get_speaker_voices(payload)) > 1
+
+
+def get_single_speaker_voice(payload: Dict[str, Any]) -> Dict[str, Any]:
+    voices = get_speaker_voices(payload)
+    if len(voices) == 1:
+        return {"provider_voice": next(iter(voices.values()))}
+    return payload["voice"]
+
+
 def synthesize_single(payload: Dict[str, Any], model: str) -> bytes:
     from google import genai
     from google.genai import types
 
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-    voice = payload["voice"]
+    voice = get_single_speaker_voice(payload)
     response = client.models.generate_content(
         model=model,
         contents=build_single_speaker_prompt(payload),
@@ -156,7 +169,7 @@ def main() -> None:
     last_error: Optional[Exception] = None
     for attempt in range(1, args.retries + 2):
         try:
-            if "speaker_voices" in payload or ("turns" in payload and "speakers" in payload):
+            if should_use_multi_speaker(payload):
                 pcm = synthesize_multi(payload, model)
             else:
                 pcm = synthesize_single(payload, model)

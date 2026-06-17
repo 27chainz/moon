@@ -11,18 +11,50 @@ TARGET_LUFS = -16.0
 PEAK_HEADROOM = 0.98
 MIN_CHUNK_DURATION = 0.25
 SILENCE_RMS_THRESHOLD = 0.0005
+EXIT_TYPE_GAP_MULTIPLIERS = {
+    "interruption": 0.0,
+    "natural_pause": 1.0,
+    "sentence_end": 1.0,
+    "scene_end": 3.0,
+}
 
 
 def load_json(path: Path) -> Dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def request_audio_paths(manifest: Dict[str, Any]) -> List[Path]:
-    paths = []
-    for request_path in manifest.get("requests", []):
+def request_audio_items(manifest: Dict[str, Any]) -> List[Dict[str, Any]]:
+    chunks = manifest.get("chunks") or []
+    if chunks:
+        return [
+            {
+                "index": chunk.get("index", index),
+                "audio_file": Path(chunk["audio_file"]),
+                "request_file": chunk.get("request_file"),
+                "scene_id": chunk.get("scene_id"),
+                "scene_exit_type": chunk.get("scene_exit_type", "natural_pause"),
+                "beat_ids": chunk.get("beat_ids") or [],
+            }
+            for index, chunk in enumerate(chunks, start=1)
+        ]
+
+    items = []
+    for index, request_path in enumerate(manifest.get("requests", []), start=1):
         request = load_json(Path(request_path))
-        paths.append(Path(request["output_file"]))
-    return paths
+        source = request.get("source") or {}
+        items.append(
+            {
+                "index": index,
+                "audio_file": Path(request["output_file"]),
+                "request_file": str(request_path),
+                "scene_id": source.get("scene_id"),
+                "scene_exit_type": request.get("scene_exit_type")
+                or source.get("scene_exit_type")
+                or "natural_pause",
+                "beat_ids": source.get("beat_ids") or [],
+            }
+        )
+    return items
 
 
 def to_2d(audio: np.ndarray) -> np.ndarray:
@@ -77,6 +109,11 @@ def silence(sample_rate: int, channels: int, gap_ms: int) -> np.ndarray:
     return np.zeros((samples, channels), dtype=np.float32)
 
 
+def gap_for_exit_type(exit_type: str, base_gap_ms: int) -> int:
+    multiplier = EXIT_TYPE_GAP_MULTIPLIERS.get(exit_type, 1.0)
+    return int(round(base_gap_ms * multiplier))
+
+
 def compile_audio(
     manifest_path: Path,
     output_path: Path,
@@ -90,8 +127,8 @@ def compile_audio(
         raise ValueError(
             f"Chapter QA status is {qa_status!r}. Mark it approved or pass --allow-unapproved for a test compile."
         )
-    audio_paths = request_audio_paths(manifest)
-    if not audio_paths:
+    audio_items = request_audio_items(manifest)
+    if not audio_items:
         raise ValueError("Manifest has no request audio paths.")
 
     rendered = []
@@ -100,7 +137,8 @@ def compile_audio(
     timeline = []
     cursor = 0.0
 
-    for index, audio_path in enumerate(audio_paths, start=1):
+    for index, item in enumerate(audio_items, start=1):
+        audio_path = item["audio_file"]
         if not audio_path.exists():
             raise FileNotFoundError(f"Missing rendered chunk audio: {audio_path}")
 
@@ -128,6 +166,10 @@ def compile_audio(
             {
                 "index": index,
                 "audio_file": str(audio_path),
+                "request_file": item.get("request_file"),
+                "scene_id": item.get("scene_id"),
+                "scene_exit_type": item.get("scene_exit_type", "natural_pause"),
+                "beat_ids": item.get("beat_ids") or [],
                 "start_time": round(cursor, 3),
                 "duration": round(duration, 3),
                 "stats_before": before_stats,
@@ -137,14 +179,19 @@ def compile_audio(
         )
         cursor += duration
         rendered.append(audio)
-        if gap_ms and index < len(audio_paths):
-            gap = silence(rate, channels, gap_ms)
+        if gap_ms and index < len(audio_items):
+            effective_gap_ms = gap_for_exit_type(item.get("scene_exit_type", "natural_pause"), gap_ms)
+            gap = silence(rate, channels, effective_gap_ms).astype(audio.dtype, copy=False)
             rendered.append(gap)
             cursor += len(gap) / rate
+            timeline[-1]["gap_after_ms"] = effective_gap_ms
+        else:
+            timeline[-1]["gap_after_ms"] = 0
 
     chapter_audio = np.concatenate(rendered, axis=0)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     sf.write(output_path, chapter_audio, sample_rate)
+    chapter_stats = audio_stats(chapter_audio, sample_rate)
 
     result = {
         "output_file": str(output_path),
@@ -153,7 +200,8 @@ def compile_audio(
         "gap_ms": gap_ms,
         "qa_status": qa_status,
         "duration": round(len(chapter_audio) / sample_rate, 3),
-        "chunk_count": len(audio_paths),
+        "chunk_count": len(audio_items),
+        "chapter_stats": chapter_stats,
         "qa": {
             "failed": any(item["warnings"] for item in timeline),
             "warnings": [
@@ -164,7 +212,7 @@ def compile_audio(
         },
         "timeline": timeline,
     }
-    metadata_path = output_path.with_suffix(output_path.suffix + ".json")
+    metadata_path = output_path.with_suffix(".json")
     metadata_path.write_text(json.dumps(result, indent=2), encoding="utf-8")
     return result
 

@@ -26,6 +26,7 @@ MAX_SUMMARY_CHARS = 220
 SCENE_POSITIONS = ("opening", "rising", "turning_point", "resolution")
 DEFAULT_GOLDEN_LINE_COUNT = 2
 MAX_DIRECTOR_NOTES = 8
+SENTENCE_ENDINGS = (".", "?", "!", '"', "'")
 
 TagRule = Tuple[Tuple[str, ...], Optional[str], float]
 
@@ -392,6 +393,20 @@ def scene_position(chunk_index: int, chunk_count: int) -> str:
     return SCENE_POSITIONS[3]
 
 
+def chunk_exit_type(beats: List[Dict[str, Any]], chunk_index: int, chunk_count: int) -> str:
+    if chunk_index >= chunk_count:
+        return "scene_end"
+    if not beats:
+        return "natural_pause"
+    last_beat = beats[-1]
+    if last_beat.get("chunk_boundary_hint") is True:
+        return "natural_pause"
+    text = beat_render_text(last_beat).strip()
+    if text.endswith(SENTENCE_ENDINGS):
+        return "sentence_end"
+    return "interruption"
+
+
 def latest_speaker_beat(speaker_id: str, beats: List[Dict[str, Any]]) -> Dict[str, Any]:
     for beat in reversed(beats):
         if beat.get("speaker", "narrator") == speaker_id:
@@ -531,10 +546,12 @@ def build_request(
     )
     states = build_character_states(plan, speaker_ids, previous_beats, beats)
     tts_prompt = build_tts_prompt(plan, scene, beats, speaker_ids, aliases)
+    exit_type = chunk_exit_type(beats, chunk_index_in_scene, scene_chunk_count)
     return {
         "output_file": output_file,
         "model": model,
         "scene_position": scene_position(chunk_index_in_scene, scene_chunk_count),
+        "scene_exit_type": exit_type,
         "character_states": states,
         "character_voice_bibles": {
             speaker_id: character_voice_bible(
@@ -567,6 +584,7 @@ def build_request(
             "chunk_number": chunk_number,
             "scene_chunk_index": chunk_index_in_scene,
             "scene_chunk_count": scene_chunk_count,
+            "scene_exit_type": exit_type,
             "beat_ids": [beat.get("beat_id") for beat in beats],
         },
     }
@@ -615,6 +633,7 @@ def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[P
     audio_dir.mkdir(parents=True, exist_ok=True)
 
     request_paths: List[Path] = []
+    chunk_records: List[Dict[str, Any]] = []
     chunk_number = 1
     previous_beats: List[Dict[str, Any]] = []
     for scene in plan.get("scenes", []):
@@ -636,6 +655,17 @@ def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[P
             validate_gemini_tts_prompt(request)
             request_path.write_text(json.dumps(request, indent=2), encoding="utf-8")
             request_paths.append(request_path)
+            chunk_records.append(
+                {
+                    "index": chunk_number,
+                    "request_file": str(request_path),
+                    "audio_file": str(audio_path),
+                    "scene_id": scene.get("scene_id"),
+                    "scene_position": request["scene_position"],
+                    "scene_exit_type": request["scene_exit_type"],
+                    "beat_ids": request["source"]["beat_ids"],
+                }
+            )
             previous_beats.extend(beats)
             chunk_number += 1
 
@@ -647,6 +677,7 @@ def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[P
         "qa_status": "pending",
         "qa_notes": [],
         "character_voice_bibles": build_character_voice_bibles(plan),
+        "chunks": chunk_records,
         "requests": [str(path) for path in request_paths],
         "note": "Gemini TTS chunks are split to keep each request within the two-speaker limit.",
     }

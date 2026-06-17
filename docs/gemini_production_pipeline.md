@@ -45,11 +45,21 @@ This writes:
 - `audio/`
 - `render_chapter.py`
 
+The manifest stores direct `chunks` records with:
+
+- `request_file`
+- `audio_file`
+- `scene_id`
+- `scene_position`
+- `scene_exit_type`
+- `beat_ids`
+
 Each request contains:
 
 - `chapter_context`
 - `continuity_packet`
 - `scene_position`
+- `scene_exit_type`
 - `character_states`
 - `transcript`
 - `speaker_voices`
@@ -111,8 +121,15 @@ The compiler:
 - checks all rendered chunk files exist
 - checks sample rate and channel consistency
 - normalizes loudness when `pyloudnorm` is installed
+- reads direct audio paths from `manifest.chunks`
+- applies stitch gaps from `scene_exit_type`
+  - `interruption`: `0ms`
+  - `natural_pause`: base gap
+  - `sentence_end`: base gap
+  - `scene_end`: `3x` base gap
 - stitches chunks in manifest order
-- writes a timeline metadata file beside the final audio
+- records chapter-level loudness/statistics
+- writes a clean metadata file beside the final audio, e.g. `chapter_001.json` for `chapter_001.wav`
 - blocks final compile unless `qa_status` is `approved`
 
 For test compiles only:

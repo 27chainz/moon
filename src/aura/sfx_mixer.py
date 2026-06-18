@@ -113,8 +113,25 @@ def level_adjustment_db(
     relative_db = float(effect.get("relative_to_voice_db", SFX_ROLE_RELATIVE_DB.get(mix_role, -14.0)))
     window_duration = max(2.0, min(8.0, duration_seconds))
     window_start = max(0.0, start_seconds - 1.0)
-    voice = audio_window(voice_master, sample_rate, window_start, window_duration)
-    voice_stats = audio_stats(voice, sample_rate)
+    if effect.get("type") in {"ambience", "room_tone", "music"}:
+        voice_stats = audio_stats(voice_master, sample_rate)
+        reference_stats = voice_stats
+        voice_window = {
+            "start_seconds": 0.0,
+            "duration_seconds": round(len(voice_master) / sample_rate, 3),
+            "scope": "full_voice_master",
+            "stats": voice_stats,
+        }
+    else:
+        voice = audio_window(voice_master, sample_rate, window_start, window_duration)
+        voice_stats = audio_stats(voice, sample_rate)
+        reference_stats = audio_stats(voice_master, sample_rate)
+        voice_window = {
+            "start_seconds": round(window_start, 3),
+            "duration_seconds": round(window_duration, 3),
+            "scope": "local_window",
+            "stats": voice_stats,
+        }
     asset_stats = audio_stats(asset_audio, sample_rate)
     recommendation = recommended_sfx_gain_db(
         voice_stats=voice_stats,
@@ -122,16 +139,13 @@ def level_adjustment_db(
         effect_type=str(effect.get("type") or ""),
         relative_to_voice_db=relative_db,
         duration_seconds=duration_seconds,
+        reference_voice_stats=reference_stats,
     )
     return float(recommendation["recommended_gain_db"]), {
         "mode": "relative_to_voice",
         "mix_role": mix_role,
         "relative_to_voice_db": relative_db,
-        "voice_window": {
-            "start_seconds": round(window_start, 3),
-            "duration_seconds": round(window_duration, 3),
-            "stats": voice_stats,
-        },
+        "voice_window": voice_window,
         "asset_stats": asset_stats,
         "recommendation": recommendation,
     }

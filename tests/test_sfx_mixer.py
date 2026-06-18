@@ -111,3 +111,4 @@ def test_mix_sfx_plan_relative_level(tmp_path):
     assert layer["level"]["mode"] == "relative_to_voice"
     assert layer["level"]["mix_role"] == "spot_important"
     assert layer["level"]["recommendation"]["recommended_gain_db"] < 0
+    assert layer["level"]["voice_window"]["scope"] == "local_window"

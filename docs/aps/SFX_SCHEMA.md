@@ -191,6 +191,32 @@ Do not time-stretch footsteps heavily. If motion must cover a longer phrase, loo
 
 The mixer should reduce SFX/music level while speech is active.
 
+## Relative Loudness
+
+Prefer relative levels over fixed `level_db` once voice audio exists.
+
+```json
+{
+  "mix_role": "spot_important",
+  "relative_to_voice_db": -10
+}
+```
+
+This means the mixer should measure the nearby voice audio, measure the SFX asset, then apply gain so the SFX lands about 10dB quieter than the voice.
+
+Recommended starting points:
+
+| Mix role | Relative target |
+| --- | --- |
+| `ambience` | voice -22dB |
+| `room_tone` | voice -30dB |
+| `motion` | voice -16dB |
+| `spot_soft` | voice -14dB |
+| `spot_important` | voice -10dB |
+| `music_bed` | voice -26dB |
+
+For long ambience/music, use LUFS when measurable. For short spot effects, RMS is usually more stable than LUFS. Always peak-limit the final mix after layering.
+
 ## Asset Resolution
 
 The Director should describe the sound. The Resolver chooses a real asset.

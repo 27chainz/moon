@@ -79,3 +79,35 @@ def test_mix_sfx_plan_time_span_loops(tmp_path):
 
     assert result["layers"][0]["duration_seconds"] == 0.8
     assert output.exists()
+
+
+def test_mix_sfx_plan_relative_level(tmp_path):
+    master = tmp_path / "master.wav"
+    asset = tmp_path / "click.wav"
+    output = tmp_path / "mix.wav"
+    write_wav(master, seconds=1.0, value=0.1)
+    write_wav(asset, seconds=0.1, value=0.1)
+    plan = {
+        "voice_master": str(master),
+        "output_mix": str(output),
+        "sfx": [
+            {
+                "sfx_id": "sfx_001",
+                "asset_id": "click",
+                "asset_path": str(asset),
+                "placement": "time_point",
+                "start_seconds": 0.5,
+                "mix_role": "spot_important",
+                "relative_to_voice_db": -10,
+            }
+        ],
+    }
+    plan_path = tmp_path / "plan.json"
+    plan_path.write_text(json.dumps(plan), encoding="utf-8")
+
+    result = mix_sfx_plan(plan_path)
+
+    layer = result["layers"][0]
+    assert layer["level"]["mode"] == "relative_to_voice"
+    assert layer["level"]["mix_role"] == "spot_important"
+    assert layer["level"]["recommendation"]["recommended_gain_db"] < 0

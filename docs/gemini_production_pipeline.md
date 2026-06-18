@@ -199,6 +199,17 @@ python -m src.aura.sfx_mixer `
 
 This writes the mixed WAV and a sidecar JSON report. Use the mixed WAV as the playback packaging input.
 
+The SFX mixer supports fixed `level_db` and relative loudness fields such as:
+
+```json
+{
+  "mix_role": "spot_important",
+  "relative_to_voice_db": -10
+}
+```
+
+Relative loudness uses the local voice window plus the SFX asset level to recommend gain before mixing.
+
 Package the master into HLS assets:
 
 ```powershell

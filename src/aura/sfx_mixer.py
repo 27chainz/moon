@@ -8,8 +8,14 @@ import numpy as np
 import soundfile as sf
 from scipy import signal
 
-
-PEAK_HEADROOM = 0.98
+from src.aura.audio_levels import (
+    SFX_ROLE_RELATIVE_DB,
+    audio_stats,
+    audio_window,
+    db_to_gain,
+    normalize_peak,
+    recommended_sfx_gain_db,
+)
 
 
 def load_json(path: Path) -> Dict[str, Any]:
@@ -19,10 +25,6 @@ def load_json(path: Path) -> Dict[str, Any]:
 def write_json(path: Path, payload: Dict[str, Any]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-
-
-def db_to_gain(db: float) -> float:
-    return float(10 ** (db / 20.0))
 
 
 def load_audio(path: Path) -> Tuple[np.ndarray, int]:
@@ -75,13 +77,6 @@ def fit_to_duration(audio: np.ndarray, sample_count: int, loop: bool) -> np.ndar
     return tiled[:sample_count]
 
 
-def normalize_peak(audio: np.ndarray) -> np.ndarray:
-    peak = float(np.max(np.abs(audio))) if audio.size else 0.0
-    if peak <= PEAK_HEADROOM or peak <= 0:
-        return audio
-    return audio * (PEAK_HEADROOM / peak)
-
-
 def overlay(base: np.ndarray, layer: np.ndarray, start_sample: int) -> np.ndarray:
     if start_sample >= len(base) or len(layer) == 0:
         return base
@@ -91,12 +86,68 @@ def overlay(base: np.ndarray, layer: np.ndarray, start_sample: int) -> np.ndarra
     return base
 
 
-def prepare_layer(effect: Dict[str, Any], sample_rate: int, channels: int) -> Tuple[np.ndarray, Dict[str, Any]]:
+def effect_span(effect: Dict[str, Any], layer: np.ndarray, sample_rate: int) -> Tuple[float, float]:
+    start_seconds = float(effect["start_seconds"])
+    if effect.get("placement") == "time_span":
+        end_seconds = float(effect["end_seconds"])
+    else:
+        end_seconds = start_seconds + len(layer) / sample_rate
+    return start_seconds, end_seconds
+
+
+def level_adjustment_db(
+    effect: Dict[str, Any],
+    voice_master: np.ndarray,
+    asset_audio: np.ndarray,
+    sample_rate: int,
+    start_seconds: float,
+    duration_seconds: float,
+) -> Tuple[float, Dict[str, Any]]:
+    if "level_db" in effect:
+        return float(effect["level_db"]), {
+            "mode": "manual",
+            "level_db": float(effect["level_db"]),
+        }
+
+    mix_role = effect.get("mix_role") or effect.get("type") or "spot_soft"
+    relative_db = float(effect.get("relative_to_voice_db", SFX_ROLE_RELATIVE_DB.get(mix_role, -14.0)))
+    window_duration = max(2.0, min(8.0, duration_seconds))
+    window_start = max(0.0, start_seconds - 1.0)
+    voice = audio_window(voice_master, sample_rate, window_start, window_duration)
+    voice_stats = audio_stats(voice, sample_rate)
+    asset_stats = audio_stats(asset_audio, sample_rate)
+    recommendation = recommended_sfx_gain_db(
+        voice_stats=voice_stats,
+        asset_stats=asset_stats,
+        effect_type=str(effect.get("type") or ""),
+        relative_to_voice_db=relative_db,
+        duration_seconds=duration_seconds,
+    )
+    return float(recommendation["recommended_gain_db"]), {
+        "mode": "relative_to_voice",
+        "mix_role": mix_role,
+        "relative_to_voice_db": relative_db,
+        "voice_window": {
+            "start_seconds": round(window_start, 3),
+            "duration_seconds": round(window_duration, 3),
+            "stats": voice_stats,
+        },
+        "asset_stats": asset_stats,
+        "recommendation": recommendation,
+    }
+
+
+def prepare_layer(
+    effect: Dict[str, Any],
+    voice_master: np.ndarray,
+    sample_rate: int,
+    channels: int,
+) -> Tuple[np.ndarray, Dict[str, Any]]:
     asset_path = Path(effect["asset_path"])
     if not asset_path.exists():
         raise FileNotFoundError(f"Missing SFX asset: {asset_path}")
-    audio, asset_rate = load_audio(asset_path)
-    audio = resample_audio(audio, asset_rate, sample_rate)
+    raw_audio, asset_rate = load_audio(asset_path)
+    audio = resample_audio(raw_audio, asset_rate, sample_rate)
     audio = match_channels(audio, channels)
 
     placement = effect.get("placement")
@@ -115,24 +166,29 @@ def prepare_layer(effect: Dict[str, Any], sample_rate: int, channels: int) -> Tu
     else:
         raise ValueError(f"Unsupported sample mixer placement: {placement!r}")
 
+    start_seconds, end_seconds = effect_span(effect, audio, sample_rate)
+    duration_seconds = len(audio) / sample_rate
+    gain_db, level = level_adjustment_db(effect, voice_master, audio, sample_rate, start_seconds, duration_seconds)
+
     audio = apply_fades(
         audio,
         sample_rate,
         fade_in_ms=int(effect.get("fade_in_ms") or 0),
         fade_out_ms=int(effect.get("fade_out_ms") or 0),
     )
-    audio = audio * db_to_gain(float(effect.get("level_db", -24)))
+    audio = audio * db_to_gain(gain_db)
     resolved = {
         "sfx_id": effect.get("sfx_id"),
         "asset_id": effect.get("asset_id"),
         "asset_path": str(asset_path),
         "placement": placement,
         "start_seconds": round(start_seconds, 3),
-        "duration_seconds": round(len(audio) / sample_rate, 3),
-        "level_db": effect.get("level_db", -24),
+        "duration_seconds": round(duration_seconds, 3),
+        "applied_gain_db": round(gain_db, 3),
+        "level": level,
     }
     if placement == "time_span":
-        resolved["end_seconds"] = round(float(effect["end_seconds"]), 3)
+        resolved["end_seconds"] = round(end_seconds, 3)
     return audio.astype(np.float32), resolved
 
 
@@ -147,7 +203,7 @@ def mix_sfx_plan(plan_path: Path, output_path: Path | None = None) -> Dict[str, 
     resolved_layers: List[Dict[str, Any]] = []
 
     for effect in plan.get("sfx", []):
-        layer, resolved = prepare_layer(effect, sample_rate, channels)
+        layer, resolved = prepare_layer(effect, mix, sample_rate, channels)
         start_sample = int(float(effect["start_seconds"]) * sample_rate)
         mix = overlay(mix, layer, start_sample)
         resolved_layers.append(resolved)

@@ -6,11 +6,15 @@ from typing import Any, Dict, List
 import numpy as np
 import soundfile as sf
 
+from src.aura.audio_levels import (
+    SILENCE_RMS_THRESHOLD,
+    audio_stats,
+    normalize_to_lufs,
+)
+
 
 TARGET_LUFS = -16.0
-PEAK_HEADROOM = 0.98
 MIN_CHUNK_DURATION = 0.25
-SILENCE_RMS_THRESHOLD = 0.0005
 RMS_JUMP_RATIO_THRESHOLD = 1.35
 LUFS_JUMP_THRESHOLD = 2.0
 SPECTRAL_CENTROID_JUMP_HZ = 450.0
@@ -60,57 +64,6 @@ def request_audio_items(manifest: Dict[str, Any]) -> List[Dict[str, Any]]:
     return items
 
 
-def to_2d(audio: np.ndarray) -> np.ndarray:
-    if audio.ndim == 1:
-        return audio[:, None]
-    return audio
-
-
-def normalize_peak(audio: np.ndarray) -> np.ndarray:
-    peak = float(np.max(np.abs(audio))) if audio.size else 0.0
-    if peak <= 0:
-        return audio
-    if peak <= PEAK_HEADROOM:
-        return audio
-    return audio * (PEAK_HEADROOM / peak)
-
-
-def audio_stats(audio: np.ndarray, sample_rate: int) -> Dict[str, Any]:
-    peak = float(np.max(np.abs(audio))) if audio.size else 0.0
-    rms = float(np.sqrt(np.mean(np.square(audio)))) if audio.size else 0.0
-    duration = len(audio) / sample_rate if sample_rate else 0.0
-    stats = {
-        "duration": round(duration, 3),
-        "peak": round(peak, 6),
-        "rms": round(rms, 6),
-        "near_silent": rms < SILENCE_RMS_THRESHOLD,
-        "spectral_centroid_hz": round(spectral_centroid(audio, sample_rate), 3),
-    }
-    try:
-        import pyloudnorm as pyln
-
-        meter = pyln.Meter(sample_rate)
-        stats["lufs"] = round(float(meter.integrated_loudness(audio)), 3)
-    except Exception:
-        stats["lufs"] = None
-    return stats
-
-
-def spectral_centroid(audio: np.ndarray, sample_rate: int) -> float:
-    if not audio.size or sample_rate <= 0:
-        return 0.0
-    mono = np.mean(to_2d(audio), axis=1)
-    if not np.any(mono):
-        return 0.0
-    window = np.hanning(len(mono))
-    spectrum = np.abs(np.fft.rfft(mono * window))
-    total = float(np.sum(spectrum))
-    if total <= 0:
-        return 0.0
-    freqs = np.fft.rfftfreq(len(mono), d=1.0 / sample_rate)
-    return float(np.sum(freqs * spectrum) / total)
-
-
 def compare_neighbor_stats(previous: Dict[str, Any], current: Dict[str, Any]) -> Dict[str, Any]:
     previous_rms = float(previous.get("rms") or 0.0)
     current_rms = float(current.get("rms") or 0.0)
@@ -148,18 +101,6 @@ def compare_neighbor_stats(previous: Dict[str, Any], current: Dict[str, Any]) ->
         "spectral_centroid_delta_hz": round(centroid_delta, 3),
         "warnings": warnings,
     }
-
-
-def normalize_loudness(audio: np.ndarray, sample_rate: int, target_lufs: float) -> np.ndarray:
-    try:
-        import pyloudnorm as pyln
-    except ImportError:
-        return normalize_peak(audio)
-
-    meter = pyln.Meter(sample_rate)
-    loudness = meter.integrated_loudness(audio)
-    normalized = pyln.normalize.loudness(audio, loudness, target_lufs)
-    return normalize_peak(normalized)
 
 
 def silence(sample_rate: int, channels: int, gap_ms: int) -> np.ndarray:
@@ -211,7 +152,7 @@ def compile_audio(
             raise ValueError(f"Channel-count mismatch in {audio_path}: {audio.shape[1]} != {channels}")
 
         before_stats = audio_stats(audio, rate)
-        audio = normalize_loudness(audio, rate, target_lufs)
+        audio = normalize_to_lufs(audio, rate, target_lufs)
         after_stats = audio_stats(audio, rate)
         neighbor_diagnostics = (
             compare_neighbor_stats(previous_after_stats, after_stats)

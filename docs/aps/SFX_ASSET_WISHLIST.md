@@ -57,3 +57,16 @@ Still useful to find later:
 ```text
 assets/sfx/room_tone/room_tone_house_quiet_001.wav
 ```
+
+## Leveling
+
+The local SFX mixer can now use relative levels:
+
+```json
+{
+  "mix_role": "spot_important",
+  "relative_to_voice_db": -10
+}
+```
+
+It measures the nearby voice audio and the SFX asset, then applies the recommended gain. Long ambience/music prefer LUFS when measurable; short spot effects use RMS as the safer fallback.

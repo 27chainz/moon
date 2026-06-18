@@ -21,13 +21,13 @@
     {
       "asset_id": "ambience_suburban_day_soft_001",
       "category": "ambience",
-      "path": "assets/sfx/ambience/ambience_suburban_day_soft_001.wav",
+      "path": "assets/sfx/ambience/ambience_suburban_day_soft_001.mp3",
       "tags": ["suburban", "day", "soft", "exterior"],
       "license": "pending",
       "source": "pending",
-      "duration_seconds": null,
+      "duration_seconds": 29.28,
       "loopable": true,
-      "status": "needed"
+      "status": "available"
     },
     {
       "asset_id": "spot_cardboard_box_soft_001",
@@ -36,32 +36,31 @@
       "tags": ["cardboard", "box", "flap", "soft"],
       "license": "pending",
       "source": "pending",
-      "duration_seconds": null,
+      "duration_seconds": 1.0,
       "loopable": false,
-      "status": "needed"
+      "status": "available"
     },
     {
       "asset_id": "spot_cat_hiss_small_001",
       "category": "spot",
-      "path": "assets/sfx/spot/spot_cat_hiss_small_001.wav",
+      "path": "assets/sfx/spot/spot_cat_hiss_small_001.mp3",
       "tags": ["cat", "hiss", "small", "animal"],
       "license": "pending",
       "source": "pending",
-      "duration_seconds": null,
+      "duration_seconds": 7.845,
       "loopable": false,
-      "status": "needed"
+      "status": "available"
     },
     {
       "asset_id": "motion_footsteps_house_soft_001",
       "category": "motion",
-      "path": "assets/sfx/motion/motion_footsteps_house_soft_001.wav",
+      "path": "assets/sfx/motion/motion_footsteps_house_soft_001.mp3",
       "tags": ["footsteps", "house", "soft", "floor"],
       "license": "pending",
       "source": "pending",
-      "duration_seconds": null,
+      "duration_seconds": 69.44,
       "loopable": true,
-      "status": "needed"
+      "status": "available"
     }
   ]
 }
-

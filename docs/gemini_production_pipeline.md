@@ -190,6 +190,15 @@ python -m src.aura.chapter_audio_compiler --manifest path\to\exported_gemini\man
 
 The chapter WAV is the production master, not the mobile playback format.
 
+If a chapter has SFX, create the final chapter mix before packaging:
+
+```powershell
+python -m src.aura.sfx_mixer `
+  --plan Production\book_001\chapter_001\sfx_sample\sfx_plan.sample.json
+```
+
+This writes the mixed WAV and a sidecar JSON report. Use the mixed WAV as the playback packaging input.
+
 Package the master into HLS assets:
 
 ```powershell

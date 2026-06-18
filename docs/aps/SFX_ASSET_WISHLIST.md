@@ -41,3 +41,19 @@ Find these first:
 - Prefer subtle and realistic over cinematic.
 - Note the source/license for every uploaded asset in `assets/sfx/library.json`.
 
+## Current Sample Assets
+
+The local sample library currently has:
+
+```text
+assets/sfx/ambience/ambience_suburban_day_soft_001.mp3
+assets/sfx/motion/motion_footsteps_house_soft_001.mp3
+assets/sfx/spot/spot_cardboard_box_soft_001.wav
+assets/sfx/spot/spot_cat_hiss_small_001.mp3
+```
+
+Still useful to find later:
+
+```text
+assets/sfx/room_tone/room_tone_house_quiet_001.wav
+```

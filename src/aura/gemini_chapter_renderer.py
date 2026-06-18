@@ -14,6 +14,7 @@ from src.aura.gemini_production import (
     wave_info,
     write_json,
 )
+from src.aura.render_queue import queue_request_paths
 
 
 def manifest_requests(manifest_path: Path) -> List[Path]:
@@ -97,8 +98,9 @@ def render_manifest(
     retries: int,
     backoff: float,
     force: bool,
+    request_paths: List[Path] | None = None,
 ) -> Dict[str, Any]:
-    request_paths = manifest_requests(manifest_path)
+    request_paths = request_paths or manifest_requests(manifest_path)
     results = []
 
     for index, request_path in enumerate(request_paths, start=1):
@@ -145,13 +147,15 @@ def render_manifest(
 def main() -> None:
     parser = argparse.ArgumentParser(description="Render Gemini chapter chunks with retry/resume.")
     parser.add_argument("--manifest", required=True, type=Path)
+    parser.add_argument("--queue", type=Path, help="Optional render queue. Only queued chunks will render.")
     parser.add_argument("--model", default=GEMINI_TTS_MODEL)
     parser.add_argument("--retries", default=2, type=int)
     parser.add_argument("--backoff", default=2.0, type=float)
     parser.add_argument("--force", action="store_true")
     args = parser.parse_args()
 
-    summary = render_manifest(args.manifest, args.model, args.retries, args.backoff, args.force)
+    request_paths = queue_request_paths(args.queue) if args.queue else None
+    summary = render_manifest(args.manifest, args.model, args.retries, args.backoff, args.force, request_paths)
     print(
         f"Done: {summary['rendered']} rendered, "
         f"{summary['skipped_existing']} skipped, {summary['failed']} failed."

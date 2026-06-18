@@ -17,6 +17,31 @@ MARKDOWN_PATTERNS = [
 MARKDOWN_LINK_RE = re.compile(r"\[([^\]]+)\]\([^)]+\)")
 HEADING_RE = re.compile(r"^\s{0,3}#{1,6}\s+")
 LIST_MARKER_RE = re.compile(r"^\s*([-*+]|\d+[.)])\s+")
+PUNCTUATION_REPLACEMENTS = {
+    "\u2018": "'",
+    "\u2019": "'",
+    "\u201a": "'",
+    "\u201b": "'",
+    "\u201c": '"',
+    "\u201d": '"',
+    "\u201e": '"',
+    "\u201f": '"',
+    "\u2013": "-",
+    "\u2014": "-",
+    "\u2212": "-",
+    "\u2026": "...",
+    "\u00a0": " ",
+}
+MOJIBAKE_REPLACEMENTS = {
+    "â€™": "'",
+    "â€˜": "'",
+    "â€œ": '"',
+    "â€\u009d": '"',
+    "â€": '"',
+    "â€“": "-",
+    "â€”": "-",
+    "â€¦": "...",
+}
 
 
 def load_json(path: Path) -> Dict[str, Any]:
@@ -34,6 +59,38 @@ def strip_markdown(text: str) -> str:
     return cleaned
 
 
+def normalize_tts_punctuation(text: str) -> str:
+    cleaned = text
+    for before, after in MOJIBAKE_REPLACEMENTS.items():
+        cleaned = cleaned.replace(before, after)
+    for before, after in PUNCTUATION_REPLACEMENTS.items():
+        cleaned = cleaned.replace(before, after)
+    return cleaned
+
+
+def normalize_json_strings(value: Any) -> Tuple[Any, int]:
+    if isinstance(value, str):
+        cleaned = normalize_tts_punctuation(value)
+        return cleaned, int(cleaned != value)
+    if isinstance(value, list):
+        total = 0
+        output = []
+        for item in value:
+            cleaned, changes = normalize_json_strings(item)
+            output.append(cleaned)
+            total += changes
+        return output, total
+    if isinstance(value, dict):
+        total = 0
+        output = {}
+        for key, item in value.items():
+            cleaned, changes = normalize_json_strings(item)
+            output[key] = cleaned
+            total += changes
+        return output, total
+    return value, 0
+
+
 def sanitize_aps_text(plan: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[str, str]]]:
     changes: List[Dict[str, str]] = []
     for scene in plan.get("scenes", []):
@@ -42,6 +99,7 @@ def sanitize_aps_text(plan: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[s
             if not isinstance(original, str):
                 continue
             cleaned = strip_markdown(original)
+            cleaned = normalize_tts_punctuation(cleaned)
             if cleaned != original:
                 beat["text"] = cleaned
                 changes.append(
@@ -56,18 +114,27 @@ def sanitize_aps_text(plan: Dict[str, Any]) -> Tuple[Dict[str, Any], List[Dict[s
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Strip non-spoken Markdown syntax from APS beat text.")
+    parser = argparse.ArgumentParser(description="Strip non-spoken Markdown syntax and unsafe punctuation from APS/production JSON.")
     parser.add_argument("--input", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument(
+        "--all-strings",
+        action="store_true",
+        help="Normalize punctuation in every JSON string, not only APS beat.text fields.",
+    )
     args = parser.parse_args()
 
     plan = load_json(args.input)
     plan, changes = sanitize_aps_text(plan)
+    all_string_changes = 0
+    if args.all_strings:
+        plan, all_string_changes = normalize_json_strings(plan)
     if changes:
         plan["_hygiene_changes"] = changes
     write_json(args.output, plan)
     print(f"Wrote sanitized APS: {args.output}")
-    print(f"Changes: {len(changes)}")
+    print(f"Beat text changes: {len(changes)}")
+    print(f"All-string punctuation changes: {all_string_changes}")
 
 
 if __name__ == "__main__":

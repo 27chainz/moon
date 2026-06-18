@@ -11,6 +11,9 @@ TARGET_LUFS = -16.0
 PEAK_HEADROOM = 0.98
 MIN_CHUNK_DURATION = 0.25
 SILENCE_RMS_THRESHOLD = 0.0005
+RMS_JUMP_RATIO_THRESHOLD = 1.35
+LUFS_JUMP_THRESHOLD = 2.0
+SPECTRAL_CENTROID_JUMP_HZ = 450.0
 EXIT_TYPE_GAP_MULTIPLIERS = {
     "interruption": 0.0,
     "natural_pause": 1.0,
@@ -81,6 +84,7 @@ def audio_stats(audio: np.ndarray, sample_rate: int) -> Dict[str, Any]:
         "peak": round(peak, 6),
         "rms": round(rms, 6),
         "near_silent": rms < SILENCE_RMS_THRESHOLD,
+        "spectral_centroid_hz": round(spectral_centroid(audio, sample_rate), 3),
     }
     try:
         import pyloudnorm as pyln
@@ -90,6 +94,60 @@ def audio_stats(audio: np.ndarray, sample_rate: int) -> Dict[str, Any]:
     except Exception:
         stats["lufs"] = None
     return stats
+
+
+def spectral_centroid(audio: np.ndarray, sample_rate: int) -> float:
+    if not audio.size or sample_rate <= 0:
+        return 0.0
+    mono = np.mean(to_2d(audio), axis=1)
+    if not np.any(mono):
+        return 0.0
+    window = np.hanning(len(mono))
+    spectrum = np.abs(np.fft.rfft(mono * window))
+    total = float(np.sum(spectrum))
+    if total <= 0:
+        return 0.0
+    freqs = np.fft.rfftfreq(len(mono), d=1.0 / sample_rate)
+    return float(np.sum(freqs * spectrum) / total)
+
+
+def compare_neighbor_stats(previous: Dict[str, Any], current: Dict[str, Any]) -> Dict[str, Any]:
+    previous_rms = float(previous.get("rms") or 0.0)
+    current_rms = float(current.get("rms") or 0.0)
+    if previous_rms > 0 and current_rms > 0:
+        rms_ratio = max(previous_rms, current_rms) / min(previous_rms, current_rms)
+    else:
+        rms_ratio = None
+
+    previous_lufs = previous.get("lufs")
+    current_lufs = current.get("lufs")
+    lufs_delta = (
+        abs(float(current_lufs) - float(previous_lufs))
+        if previous_lufs is not None and current_lufs is not None
+        else None
+    )
+
+    centroid_delta = abs(
+        float(current.get("spectral_centroid_hz") or 0.0)
+        - float(previous.get("spectral_centroid_hz") or 0.0)
+    )
+
+    warnings = []
+    if rms_ratio is not None and rms_ratio > RMS_JUMP_RATIO_THRESHOLD:
+        warnings.append(f"Neighbour RMS jump ratio {rms_ratio:.2f} exceeds {RMS_JUMP_RATIO_THRESHOLD:.2f}.")
+    if lufs_delta is not None and lufs_delta > LUFS_JUMP_THRESHOLD:
+        warnings.append(f"Neighbour LUFS delta {lufs_delta:.2f}dB exceeds {LUFS_JUMP_THRESHOLD:.2f}dB.")
+    if centroid_delta > SPECTRAL_CENTROID_JUMP_HZ:
+        warnings.append(
+            f"Neighbour spectral centroid delta {centroid_delta:.1f}Hz exceeds {SPECTRAL_CENTROID_JUMP_HZ:.1f}Hz."
+        )
+
+    return {
+        "rms_ratio": round(rms_ratio, 3) if rms_ratio is not None else None,
+        "lufs_delta": round(lufs_delta, 3) if lufs_delta is not None else None,
+        "spectral_centroid_delta_hz": round(centroid_delta, 3),
+        "warnings": warnings,
+    }
 
 
 def normalize_loudness(audio: np.ndarray, sample_rate: int, target_lufs: float) -> np.ndarray:
@@ -135,6 +193,7 @@ def compile_audio(
     sample_rate = None
     channels = None
     timeline = []
+    previous_after_stats = None
     cursor = 0.0
 
     for index, item in enumerate(audio_items, start=1):
@@ -154,6 +213,11 @@ def compile_audio(
         before_stats = audio_stats(audio, rate)
         audio = normalize_loudness(audio, rate, target_lufs)
         after_stats = audio_stats(audio, rate)
+        neighbor_diagnostics = (
+            compare_neighbor_stats(previous_after_stats, after_stats)
+            if previous_after_stats is not None
+            else None
+        )
         duration = len(audio) / rate
         warnings = []
         if duration < MIN_CHUNK_DURATION:
@@ -162,6 +226,8 @@ def compile_audio(
             warnings.append("Chunk appears near-silent before normalization.")
         if after_stats["near_silent"]:
             warnings.append("Chunk appears near-silent after normalization.")
+        if neighbor_diagnostics:
+            warnings.extend(neighbor_diagnostics["warnings"])
         timeline.append(
             {
                 "index": index,
@@ -174,9 +240,11 @@ def compile_audio(
                 "duration": round(duration, 3),
                 "stats_before": before_stats,
                 "stats_after": after_stats,
+                "neighbor_diagnostics": neighbor_diagnostics,
                 "warnings": warnings,
             }
         )
+        previous_after_stats = after_stats
         cursor += duration
         rendered.append(audio)
         if gap_ms and index < len(audio_items):

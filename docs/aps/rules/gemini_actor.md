@@ -115,6 +115,32 @@ Profiles must be generated from APS character data:
 
 Do not hand-maintain repeated cast blocks across a full book. The exporter owns this repetition.
 
+Every important character needs a strong Audio Profile, not just a Gemini voice name. A good profile should include:
+
+- the base prebuilt Gemini voice
+- an explicit casting lock that says this is the same stable cast voice every time the character appears
+- age or vocal maturity
+- vocal texture, such as clear, gravelly, breathy, warm, clipped, smooth, or bright
+- tempo and rhythm
+- emotional default state
+- social energy, such as reserved, blunt, charming, anxious, formal, playful, or hostile
+- accent mechanics and accent avoid-list when relevant
+- two short golden reference lines from the source
+
+Weak character prompt:
+
+```text
+Voice identity: South African man.
+```
+
+Strong character prompt:
+
+```text
+Voice identity: A brusque South African opal miner who treats emotional harm as a practical matter already settled. Gravelly, clipped, dry, blunt, and matter-of-fact. His cheerfulness should feel socially insensitive, not warm.
+Accent features: clipped final consonants, dry flattened vowels, direct practical rhythm.
+Accent avoid: polished British diction, Russian or Eastern European consonants, Australian or Cockney drift, theatrical villain delivery.
+```
+
 ## Accent Profiles
 
 When APS includes `accent_profile`, compile it directly into the Audio Profile.
@@ -129,6 +155,15 @@ Accent labels alone are not reliable enough. The Actor needs audible mechanics a
 ## Chunk Splitting
 
 Gemini multi-speaker TTS supports up to 2 speaker labels per request. Two characters sharing the same `provider_voice` still count as two speaker labels if they are sent as separate speakers.
+
+Target render chunks should be about 1-2 minutes. Long chunks can lose volume, energy, accent consistency, or emotional focus over time.
+
+Use a word budget as a practical guardrail:
+
+- Default target: about 230 words per chunk.
+- Safe range: 180-260 words per chunk for normal audiobook pacing.
+- Do not intentionally export chunks expected to run beyond 2 minutes.
+- If a single source beat exceeds the word budget, keep it intact rather than rewriting source text; flag it for APS review and split the source beat at natural sentence boundaries in the next Director pass.
 
 Split chunks by speaker-label count, not by voice-name count. A chunk may contain:
 
@@ -146,6 +181,8 @@ A chunk must not contain Narrator + Young Narrator + another character. If a sce
 - Put nuance in scene/moment context, `delivery`, and `beat_modifier`; do not use prose phrases as emotion tokens.
 - Do not rely on Gemini remembering previous chunks.
 - Repeat enough Audio Profile and Scene information in each chunk for a cold API call to perform correctly.
+- For non-opening chunks, include a short continuity bridge in `### DIRECTOR'S NOTES` telling Gemini to enter with the same vocal level, pace, and emotional temperature as the previous moment. This belongs in `tts_prompt` because Gemini cannot see request metadata.
+- For every recurring speaker in a non-opening chunk, include a per-character voice continuity lock. This is especially important when a character is not the first speaker in the chunk. Example: `Voice continuity lock for Opal Miner: use the exact same character voice as earlier chunks; do not reinterpret this character because the co-speaker, scene, or emotional beat changed.`
 - Store stitch warnings, overlap context, and QA concerns in metadata, not inside the Gemini transcript.
 - For 40+ characters, render scene-by-scene and use the cast sheet as memory.
 

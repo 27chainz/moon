@@ -13,6 +13,7 @@ from src.aura.aps_compiler import (
     performance_for_tts,
     provider_voice,
 )
+from src.aura.cast_bible import apply_cast_bible
 from src.aura.gemini_production import (
     GEMINI_MAX_SPEAKERS,
     GEMINI_TTS_MODEL,
@@ -27,6 +28,7 @@ SCENE_POSITIONS = ("opening", "rising", "turning_point", "resolution")
 DEFAULT_GOLDEN_LINE_COUNT = 2
 MAX_DIRECTOR_NOTES = 8
 SENTENCE_ENDINGS = (".", "?", "!", '"', "'")
+DEFAULT_MAX_CHUNK_WORDS = 230
 
 TagRule = Tuple[Tuple[str, ...], Optional[str], float]
 
@@ -67,25 +69,38 @@ def speaker_ids_for(beats: Iterable[Dict[str, Any]]) -> List[str]:
     return speaker_ids
 
 
-def split_scene_beats(scene: Dict[str, Any]) -> List[List[Dict[str, Any]]]:
+def beat_word_count(beat: Dict[str, Any]) -> int:
+    return len(beat_render_text(beat).split())
+
+
+def split_scene_beats(
+    scene: Dict[str, Any],
+    max_chunk_words: Optional[int] = DEFAULT_MAX_CHUNK_WORDS,
+) -> List[List[Dict[str, Any]]]:
     chunks: List[List[Dict[str, Any]]] = []
     current: List[Dict[str, Any]] = []
     current_speakers: List[str] = []
+    current_words = 0
 
     for beat in scene.get("beats", []):
         if not is_speakable_beat(beat):
             continue
         speaker_id = beat.get("speaker", "narrator")
+        words = beat_word_count(beat)
         next_speakers = list(current_speakers)
         if speaker_id not in next_speakers:
             next_speakers.append(speaker_id)
 
-        if current and len(next_speakers) > MAX_GEMINI_SPEAKERS:
+        exceeds_speaker_limit = len(next_speakers) > MAX_GEMINI_SPEAKERS
+        exceeds_word_budget = bool(max_chunk_words) and current_words + words > max_chunk_words
+        if current and (exceeds_speaker_limit or exceeds_word_budget):
             chunks.append(current)
             current = []
             current_speakers = []
+            current_words = 0
 
         current.append(beat)
+        current_words += words
         if speaker_id not in current_speakers:
             current_speakers.append(speaker_id)
 
@@ -244,8 +259,10 @@ def character_voice_bible(plan: Dict[str, Any], speaker_id: str, golden_lines: L
         "voice_bible": character.get("voice_bible") or character.get("stable_voice", ""),
         "do_not_change": character.get("do_not_change") or [],
         "accent_profile": character.get("accent_profile") or {},
+        "energy_profile": character.get("energy_profile") or {},
         "tag_suppress": character.get("tag_suppress") or [],
         "approved_reference_note": character.get("approved_reference_note", ""),
+        "approved_reference_render": character.get("approved_reference_render") or {},
         "golden_lines": golden_lines,
     }
 
@@ -260,6 +277,7 @@ def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: D
         lines = [
             f"# AUDIO PROFILE: {alias} ({title})",
             f"Gemini voice: {bible['provider_voice']}",
+            "Casting lock: This is a stable cast voice. Keep the same vocal identity every time this character appears; do not reinterpret the voice between chunks.",
         ]
         if bible["role"]:
             lines.append(f"Role: {bible['role']}")
@@ -280,6 +298,25 @@ def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: D
                 lines.append(f"Accent avoid: {', '.join(avoid)}")
         if bible["approved_reference_note"]:
             lines.append(f"Approved reference note: {bible['approved_reference_note']}")
+        energy_profile = bible.get("energy_profile") or {}
+        if energy_profile:
+            if energy_profile.get("baseline_intensity") is not None:
+                lines.append(f"Energy baseline: {energy_profile['baseline_intensity']}")
+            if energy_profile.get("entry_instruction"):
+                lines.append(f"Energy entry: {energy_profile['entry_instruction']}")
+            if energy_profile.get("do_not_do"):
+                lines.append(f"Energy avoid: {', '.join(energy_profile['do_not_do'])}")
+        approved_reference_render = bible.get("approved_reference_render") or {}
+        if approved_reference_render and approved_reference_render.get("status") == "approved":
+            reference_bits = [
+                approved_reference_render.get("chapter_id"),
+                approved_reference_render.get("chunk_id"),
+                approved_reference_render.get("notes"),
+            ]
+            lines.append(
+                "Approved reference render: "
+                + " | ".join(str(bit) for bit in reference_bits if bit)
+            )
         if bible["golden_lines"]:
             lines.append("Golden reference lines:")
             lines.extend(f'- "{line}"' for line in bible["golden_lines"])
@@ -309,12 +346,68 @@ def build_scene_section(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-def build_director_notes(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
+def build_prompt_continuity_notes(
+    plan: Dict[str, Any],
+    previous_beats: List[Dict[str, Any]],
+    current_beats: List[Dict[str, Any]],
+    chunk_index_in_scene: int,
+    scene_chunk_count: int,
+) -> List[str]:
+    speaker_ids = speaker_ids_for(current_beats)
+    if chunk_index_in_scene <= 1 or not previous_beats:
+        notes = ["This is the first render chunk for this scene. Establish the scene tone without rushing."]
+        for speaker_id in speaker_ids:
+            character_name = display_name(plan, speaker_id)
+            previous_speaker_beat = latest_speaker_beat(speaker_id, previous_beats)
+            if previous_speaker_beat:
+                notes.append(
+                    f"Voice continuity lock for {character_name}: use the exact same character voice as earlier chunks; "
+                    "do not reinterpret this character because this is a new scene."
+                )
+            else:
+                notes.append(
+                    f"{character_name} is a locked cast voice. Do not invent a new voice for this character."
+                )
+        return notes
+
+    previous = latest_speaker_beat(
+        current_beats[0].get("speaker", "narrator"),
+        previous_beats,
+    )
+    previous_note = beat_summary(plan, previous) if previous else beat_summary(plan, previous_beats[-1])
+    position = scene_position(chunk_index_in_scene, scene_chunk_count)
+    notes = [
+        f"This chunk continues an already-started scene at the {position} point; enter as if already mid-scene, not as a fresh take.",
+        f"Enter with the same vocal level, pace, and emotional temperature as the previous moment: {previous_note}",
+        "Match the previous chunk's restraint, volume, pace, and vocal colour at the start of this chunk.",
+        "Do not brighten, accelerate, increase volume, or become more theatrical just because this is a new audio request.",
+    ]
+    for speaker_id in speaker_ids:
+        previous_speaker_beat = latest_speaker_beat(speaker_id, previous_beats)
+        character_name = display_name(plan, speaker_id)
+        if previous_speaker_beat:
+            notes.append(
+                f"Voice continuity lock for {character_name}: use the exact same character voice as earlier chunks; "
+                "do not reinterpret this character because the co-speaker, scene, or emotional beat changed."
+            )
+        else:
+            notes.append(
+                f"Voice continuity lock for {character_name}: establish this as a stable cast voice for all future chunks."
+            )
+    return notes
+
+
+def build_director_notes(
+    scene: Dict[str, Any],
+    plan: Dict[str, Any],
+    continuity_notes: Optional[List[str]] = None,
+) -> str:
     packet = plan.get("production_packet") or {}
     notes = dedupe_lines(
         [
             "The following is a speech synthesis request. Do not read these instructions aloud.",
             "Begin speaking only when you reach TRANSCRIPT.",
+            *(continuity_notes or []),
             *list(packet.get("director_notes") or []),
             *list(scene.get("director_notes") or []),
             "Keep the transcript exact. Do not add, remove, modernize, or summarize spoken words.",
@@ -360,12 +453,22 @@ def build_tts_prompt(
     beats: List[Dict[str, Any]],
     speaker_ids: List[str],
     aliases: Dict[str, str],
+    previous_beats: Optional[List[Dict[str, Any]]] = None,
+    chunk_index_in_scene: int = 1,
+    scene_chunk_count: int = 1,
 ) -> str:
+    continuity_notes = build_prompt_continuity_notes(
+        plan,
+        previous_beats or [],
+        beats,
+        chunk_index_in_scene,
+        scene_chunk_count,
+    )
     return "\n\n".join(
         [
             build_audio_profile(plan, speaker_ids, aliases),
             build_scene_section(scene, plan),
-            build_director_notes(scene, plan),
+            build_director_notes(scene, plan, continuity_notes),
             build_sample_context(scene, plan),
             build_prompt_transcript(plan, beats, aliases),
         ]
@@ -545,7 +648,16 @@ def build_request(
         scene_chunk_count,
     )
     states = build_character_states(plan, speaker_ids, previous_beats, beats)
-    tts_prompt = build_tts_prompt(plan, scene, beats, speaker_ids, aliases)
+    tts_prompt = build_tts_prompt(
+        plan,
+        scene,
+        beats,
+        speaker_ids,
+        aliases,
+        previous_beats,
+        chunk_index_in_scene,
+        scene_chunk_count,
+    )
     exit_type = chunk_exit_type(beats, chunk_index_in_scene, scene_chunk_count)
     return {
         "output_file": output_file,
@@ -626,18 +738,69 @@ if __name__ == "__main__":
 '''
 
 
-def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[Path]:
+def prompt_preview_markdown(request: Dict[str, Any], request_path: Path) -> str:
+    source = request.get("source") or {}
+    aliases = request.get("speaker_aliases") or {}
+    speaker_voices = request.get("speaker_voices") or {}
+    lines = [
+        f"# Gemini Prompt Preview - Chunk {source.get('chunk_number', '?')}",
+        "",
+        "## Metadata",
+        "",
+        f"- Request file: `{request_path}`",
+        f"- Output file: `{request.get('output_file', '')}`",
+        f"- Model: `{request.get('model', '')}`",
+        f"- Scene: `{source.get('scene_id', '')}`",
+        f"- Scene position: `{request.get('scene_position', '')}`",
+        f"- Scene exit type: `{request.get('scene_exit_type', '')}`",
+        f"- Beat ids: `{', '.join(str(beat_id) for beat_id in source.get('beat_ids', []))}`",
+        "",
+        "## Speaker Map",
+        "",
+    ]
+    for alias, details in aliases.items():
+        lines.append(
+            f"- `{alias}` -> `{details.get('speaker_id', '')}` "
+            f"({details.get('display_name', '')}), voice `{speaker_voices.get(alias, details.get('provider_voice', ''))}`"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Gemini-Facing Prompt",
+            "",
+            "This is the exact `tts_prompt` sent to Gemini.",
+            "",
+            "```text",
+            request.get("tts_prompt", ""),
+            "```",
+            "",
+        ]
+    )
+    return "\n".join(lines)
+
+
+def export_chapter(
+    plan: Dict[str, Any],
+    output_dir: Path,
+    model: str,
+    max_chunk_words: Optional[int] = DEFAULT_MAX_CHUNK_WORDS,
+    cast_bible_path: Optional[Path] = None,
+) -> List[Path]:
     requests_dir = output_dir / "requests"
     audio_dir = output_dir / "audio"
+    prompt_preview_dir = output_dir / "qa" / "prompts"
     requests_dir.mkdir(parents=True, exist_ok=True)
     audio_dir.mkdir(parents=True, exist_ok=True)
+    prompt_preview_dir.mkdir(parents=True, exist_ok=True)
 
     request_paths: List[Path] = []
+    prompt_preview_paths: List[Path] = []
     chunk_records: List[Dict[str, Any]] = []
     chunk_number = 1
     previous_beats: List[Dict[str, Any]] = []
     for scene in plan.get("scenes", []):
-        scene_chunks = split_scene_beats(scene)
+        scene_chunks = split_scene_beats(scene, max_chunk_words=max_chunk_words)
         for scene_index, beats in enumerate(scene_chunks, start=1):
             request_path = requests_dir / f"chunk_{chunk_number:03d}.json"
             audio_path = audio_dir / f"chunk_{chunk_number:03d}.wav"
@@ -654,11 +817,18 @@ def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[P
             )
             validate_gemini_tts_prompt(request)
             request_path.write_text(json.dumps(request, indent=2), encoding="utf-8")
+            prompt_preview_path = prompt_preview_dir / f"chunk_{chunk_number:03d}.md"
+            prompt_preview_path.write_text(
+                prompt_preview_markdown(request, request_path),
+                encoding="utf-8",
+            )
             request_paths.append(request_path)
+            prompt_preview_paths.append(prompt_preview_path)
             chunk_records.append(
                 {
                     "index": chunk_number,
                     "request_file": str(request_path),
+                    "prompt_preview_file": str(prompt_preview_path),
                     "audio_file": str(audio_path),
                     "scene_id": scene.get("scene_id"),
                     "scene_position": request["scene_position"],
@@ -677,9 +847,15 @@ def export_chapter(plan: Dict[str, Any], output_dir: Path, model: str) -> List[P
         "qa_status": "pending",
         "qa_notes": [],
         "character_voice_bibles": build_character_voice_bibles(plan),
+        "cast_bible": str(cast_bible_path) if cast_bible_path else None,
         "chunks": chunk_records,
         "requests": [str(path) for path in request_paths],
-        "note": "Gemini TTS chunks are split to keep each request within the two-speaker limit.",
+        "prompt_previews": [str(path) for path in prompt_preview_paths],
+        "chunking": {
+            "max_chunk_words": max_chunk_words,
+            "estimated_duration": "roughly 1-2 minutes at normal audiobook pace",
+        },
+        "note": "Gemini TTS chunks are split to keep each request within the two-speaker limit and the configured word budget.",
     }
     (output_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
     return request_paths
@@ -690,10 +866,29 @@ def main() -> None:
     parser.add_argument("--aps", required=True, type=Path)
     parser.add_argument("--output-dir", required=True, type=Path)
     parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument(
+        "--max-chunk-words",
+        default=DEFAULT_MAX_CHUNK_WORDS,
+        type=int,
+        help="Approximate chunk word budget. Use 180-260 for 1-2 minute audiobook chunks.",
+    )
+    parser.add_argument(
+        "--cast-bible",
+        type=Path,
+        help="Optional book-level cast bible. When provided, it overrides APS character voice identity fields.",
+    )
     args = parser.parse_args()
 
     plan = load_json(args.aps)
-    request_paths = export_chapter(plan, args.output_dir, args.model)
+    if args.cast_bible:
+        plan = apply_cast_bible(plan, load_json(args.cast_bible))
+    request_paths = export_chapter(
+        plan,
+        args.output_dir,
+        args.model,
+        max_chunk_words=args.max_chunk_words,
+        cast_bible_path=args.cast_bible,
+    )
     print(f"Wrote {len(request_paths)} Gemini request chunk(s) to {args.output_dir}")
     print(f"Render with: python {args.output_dir / 'render_chapter.py'}")
 

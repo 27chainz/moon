@@ -1,4 +1,4 @@
-from src.aura.aps_hygiene import strip_markdown
+from src.aura.aps_hygiene import normalize_json_strings, normalize_tts_punctuation, strip_markdown
 
 
 def test_strip_markdown_emphasis() -> None:
@@ -14,3 +14,17 @@ def test_preserve_internal_underscores_and_asterisks() -> None:
 
 def test_clean_spacing_before_punctuation() -> None:
     assert strip_markdown("Iolanthe , a play") == "Iolanthe, a play"
+
+
+def test_normalize_tts_punctuation() -> None:
+    assert normalize_tts_punctuation("I\u2019m \u201cgood\u201d - really\u2026") == "I'm \"good\" - really..."
+    assert normalize_tts_punctuation("Iâ€™m good") == "I'm good"
+
+
+def test_normalize_json_strings_recurses() -> None:
+    payload = {"a": "Don\u2019t", "b": ["Iâ€™m"], "c": {"d": "fine"}}
+
+    cleaned, changes = normalize_json_strings(payload)
+
+    assert cleaned == {"a": "Don't", "b": ["I'm"], "c": {"d": "fine"}}
+    assert changes == 2

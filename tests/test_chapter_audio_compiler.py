@@ -7,10 +7,10 @@ import soundfile as sf
 from src.aura.chapter_audio_compiler import compile_audio, gap_for_exit_type
 
 
-def write_wav(path: Path, seconds: float = 0.5, sample_rate: int = 24000) -> None:
+def write_wav(path: Path, seconds: float = 0.5, sample_rate: int = 24000, freq: float = 220.0) -> None:
     samples = int(seconds * sample_rate)
     t = np.linspace(0, seconds, samples, endpoint=False)
-    audio = (0.05 * np.sin(2 * np.pi * 220 * t)).astype(np.float32)
+    audio = (0.05 * np.sin(2 * np.pi * freq * t)).astype(np.float32)
     sf.write(path, audio, sample_rate)
 
 
@@ -65,3 +65,30 @@ def test_compile_uses_manifest_chunks_and_writes_clean_metadata(tmp_path):
     assert result["timeline"][1]["gap_after_ms"] == 0
     assert "chapter_stats" in result
     assert result["chapter_stats"]["duration"] == result["duration"]
+    assert "spectral_centroid_hz" in result["timeline"][0]["stats_after"]
+    assert result["timeline"][1]["neighbor_diagnostics"] is not None
+
+
+def test_compile_flags_neighbour_tonal_jump(tmp_path):
+    audio_dir = tmp_path / "audio"
+    audio_dir.mkdir()
+    first = audio_dir / "chunk_001.wav"
+    second = audio_dir / "chunk_002.wav"
+    write_wav(first, freq=220)
+    write_wav(second, freq=2200)
+
+    manifest = {
+        "qa_status": "approved",
+        "chunks": [
+            {"index": 1, "audio_file": str(first), "scene_exit_type": "sentence_end"},
+            {"index": 2, "audio_file": str(second), "scene_exit_type": "sentence_end"},
+        ],
+    }
+    manifest_path = tmp_path / "manifest.json"
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    result = compile_audio(manifest_path, tmp_path / "chapter.wav", target_lufs=-16.0, gap_ms=0)
+
+    diagnostics = result["timeline"][1]["neighbor_diagnostics"]
+    assert diagnostics["spectral_centroid_delta_hz"] > 450
+    assert any("spectral centroid" in warning for warning in diagnostics["warnings"])

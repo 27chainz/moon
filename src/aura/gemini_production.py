@@ -167,17 +167,64 @@ def validate_gemini_tts_prompt(payload: Dict[str, Any]) -> List[str]:
 
 
 def extract_pcm_from_response(response: Any) -> bytes:
+    response_summary = summarize_gemini_response(response)
     try:
         parts = response.candidates[0].content.parts
     except (AttributeError, IndexError) as exc:
-        raise GeminiProductionError(f"Gemini response did not include an audio candidate: {response!r}") from exc
+        raise GeminiProductionError(
+            "Gemini response did not include an audio candidate. "
+            f"Response summary: {response_summary}"
+        ) from exc
+
+    if not parts:
+        raise GeminiProductionError(
+            "Gemini response candidate did not include audio parts. "
+            f"Response summary: {response_summary}"
+        )
 
     for part in parts:
         inline_data = getattr(part, "inline_data", None)
         data = getattr(inline_data, "data", None)
         if data:
             return data
-    raise GeminiProductionError("Gemini response did not include inline audio data.")
+    raise GeminiProductionError(
+        "Gemini response did not include inline audio data. "
+        f"Response summary: {response_summary}"
+    )
+
+
+def summarize_gemini_response(response: Any) -> Dict[str, Any]:
+    summary: Dict[str, Any] = {}
+    for field in ("prompt_feedback", "usage_metadata", "model_version"):
+        value = getattr(response, field, None)
+        if value is not None:
+            summary[field] = repr(value)
+
+    candidates = getattr(response, "candidates", None) or []
+    summary["candidate_count"] = len(candidates)
+    candidate_summaries = []
+    for candidate in candidates:
+        content = getattr(candidate, "content", None)
+        parts = getattr(content, "parts", None) if content is not None else None
+        part_summaries = []
+        for part in parts or []:
+            inline_data = getattr(part, "inline_data", None)
+            text = getattr(part, "text", None)
+            part_summaries.append(
+                {
+                    "has_inline_data": bool(getattr(inline_data, "data", None)),
+                    "mime_type": getattr(inline_data, "mime_type", None),
+                    "text_preview": text[:200] if isinstance(text, str) else None,
+                }
+            )
+        candidate_summaries.append(
+            {
+                "finish_reason": getattr(candidate, "finish_reason", None),
+                "parts": part_summaries,
+            }
+        )
+    summary["candidates"] = candidate_summaries
+    return summary
 
 
 def save_wave(

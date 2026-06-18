@@ -34,7 +34,7 @@ This gives audio, SFX, spatial mix, and QA systems the same scene and segment st
 Convert APS into Gemini-ready request chunks:
 
 ```powershell
-python -m src.aura.gemini_chapter_exporter --aps path\to\aps.json --output-dir path\to\exported_gemini
+python -m src.aura.gemini_chapter_exporter --aps path\to\aps.json --output-dir path\to\exported_gemini --max-chunk-words 230
 ```
 
 This writes:
@@ -42,12 +42,15 @@ This writes:
 - `manifest.json`
 - `requests/chunk_001.json`
 - `requests/chunk_002.json`
+- `qa/prompts/chunk_001.md`
+- `qa/prompts/chunk_002.md`
 - `audio/`
 - `render_chapter.py`
 
 The manifest stores direct `chunks` records with:
 
 - `request_file`
+- `prompt_preview_file`
 - `audio_file`
 - `scene_id`
 - `scene_position`
@@ -67,6 +70,20 @@ Each request contains:
 
 Gemini multi-speaker TTS supports two speakers per request, so the exporter splits scenes into legal chunks.
 
+The exporter also uses a word budget to keep render jobs short. The production target is about 1-2 minutes per chunk because longer Gemini TTS renders can lose volume, accent consistency, or performance energy over time. The default is 230 words; use 180-260 words as the normal testing range.
+
+Before rendering, inspect the Markdown prompt previews in `qa/prompts/`. These previews show the exact Gemini-facing `tts_prompt`, speaker map, beat ids, and output path without needing to dig through JSON.
+
+For quota-safe testing, create a render queue instead of rendering the whole chapter:
+
+```powershell
+python -m src.aura.render_queue create `
+  --manifest path\to\exported_gemini\manifest.json `
+  --output path\to\exported_gemini\render_queue_opal_miner.json `
+  --chunks 004 005 006 007 008 `
+  --purpose "Opal Miner cast bible voice consistency test"
+```
+
 ## 3. Render Audio With Retry/Resume
 
 Set `GEMINI_API_KEY`, then run:
@@ -79,6 +96,14 @@ Or from inside the export folder:
 
 ```powershell
 python render_chapter.py
+```
+
+To render only a queue:
+
+```powershell
+python -m src.aura.gemini_chapter_renderer `
+  --manifest path\to\exported_gemini\manifest.json `
+  --queue path\to\exported_gemini\render_queue_opal_miner.json
 ```
 
 The renderer:
@@ -108,6 +133,27 @@ After stitch review and chapter QA, approve the manifest:
 
 ```powershell
 python -m src.aura.chapter_qa --manifest path\to\exported_gemini\manifest.json --status approved --note "Chapter passed stitch and performance QA."
+```
+
+For chunk-level QA:
+
+```powershell
+python -m src.aura.chapter_qa `
+  --manifest path\to\exported_gemini\manifest.json `
+  --chunks 004 005 006 `
+  --status needs_rerender `
+  --note "Character voice drift."
+```
+
+When a chunk becomes the approved reference for a cast member:
+
+```powershell
+python -m src.aura.cast_bible approve-reference `
+  --cast-bible Production\book_001\cast\cast_bible.json `
+  --character-id opal_miner `
+  --chapter-id chapter_001 `
+  --chunk-id chunk_004 `
+  --notes "Best Opal Miner render to date. Accent held and voice identity stayed stable."
 ```
 
 After all chunks render:

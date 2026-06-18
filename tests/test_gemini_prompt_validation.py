@@ -2,6 +2,7 @@ import pytest
 
 from src.aura.gemini_production import (
     GeminiProductionError,
+    extract_pcm_from_response,
     validate_gemini_request,
     validate_gemini_tts_prompt,
 )
@@ -68,3 +69,18 @@ def test_unsupported_gemini_voice_fails_before_api_call():
 
     with pytest.raises(GeminiProductionError, match="unsupported voice 'Gus'"):
         validate_gemini_request(payload)
+
+
+def test_empty_gemini_audio_response_fails_clearly():
+    class Content:
+        parts = None
+
+    class Candidate:
+        content = Content()
+        finish_reason = "STOP"
+
+    class Response:
+        candidates = [Candidate()]
+
+    with pytest.raises(GeminiProductionError, match="did not include audio parts"):
+        extract_pcm_from_response(Response())

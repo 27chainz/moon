@@ -218,6 +218,9 @@ Then reflect those same traits in `stable_voice`, `voice_bible`, and `do_not_cha
 - Do not create a new scene for every paragraph.
 - Scene context should help the Actor perform the scene, not analyze literature.
 - Director notes must describe audible performance choices.
+- If SFX are useful, add restrained scene-level `sfx` metadata. Do not put SFX instructions inside spoken beat text.
+- SFX must be implied by source text or setting. Prefer ambience and room tone over frequent spot effects.
+- Phrase-level SFX must include `anchor_text`, `anchor_beat`, `min_alignment_confidence`, `fallback_placement`, and `on_alignment_failure`.
 - Mark natural render split points with `chunk_boundary_hint: true` on a beat when a scene shift, time jump, setting change, or clean speaker transition makes it safe to split audio after that beat.
 - Do not mark a chunk boundary in the middle of an emotional sentence, a rapid exchange, or a suspense beat that should flow directly into the next line.
 

@@ -17,6 +17,38 @@ DELIVERY_ARCHETYPES = {
     "final_dread",
 }
 
+SFX_TYPES = {
+    "ambience",
+    "background_event",
+    "music",
+    "motion",
+    "room_tone",
+    "spot",
+    "transition",
+}
+SFX_PLACEMENTS = {
+    "after_text",
+    "beat_end",
+    "beat_span",
+    "beat_start",
+    "before_text",
+    "during_phrase",
+    "phrase_span",
+    "scene_span",
+}
+SFX_ALIGNMENT_FAILURE_POLICIES = {
+    "degrade_to_fallback",
+    "skip_and_flag_qa",
+}
+SFX_DURATION_POLICIES = {
+    "fixed",
+    "loop_crossfade",
+    "match_beat",
+    "match_phrase",
+    "one_shot",
+    "trim",
+}
+
 SAFE_REMOVABLE_TAGS = {"said", "asked"}
 REVIEW_SAFE_DELIVERY_TAGS = {"whispered", "shouted", "muttered"}
 DETERMINISTIC_TRANSFORMATIONS = {
@@ -214,6 +246,92 @@ def validate_renderer_constraints(aps: Dict[str, Any], errors: List[str]) -> Non
         errors.append("renderer_constraints.chunk_strategy is required")
 
 
+def validate_sfx_ducking(errors: List[str], scene: Dict[str, Any], sfx: Dict[str, Any]) -> None:
+    ducking = sfx.get("ducking")
+    if ducking is None or ducking is False:
+        return
+    if ducking is True:
+        errors.append(f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}: ducking must be an object, not true")
+        return
+    if not isinstance(ducking, dict):
+        errors.append(f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}: ducking must be an object")
+        return
+    if not ducking.get("enabled"):
+        return
+    for key in ["duck_by_db", "attack_ms", "release_ms"]:
+        if key not in ducking:
+            errors.append(
+                f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}: ducking.{key} is required when ducking is enabled"
+            )
+
+
+def validate_sfx_duration(errors: List[str], scene: Dict[str, Any], sfx: Dict[str, Any]) -> None:
+    duration_policy = sfx.get("duration_policy")
+    if duration_policy is None:
+        return
+    if isinstance(duration_policy, str):
+        if duration_policy not in SFX_DURATION_POLICIES:
+            errors.append(
+                f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}: duration_policy must be one of {sorted(SFX_DURATION_POLICIES)}"
+            )
+        return
+    if not isinstance(duration_policy, dict):
+        errors.append(f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}: duration_policy must be a string or object")
+        return
+    policy = duration_policy.get("policy")
+    if policy not in SFX_DURATION_POLICIES:
+        errors.append(
+            f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}: duration_policy.policy must be one of {sorted(SFX_DURATION_POLICIES)}"
+        )
+
+
+def validate_sfx(scene: Dict[str, Any], errors: List[str]) -> None:
+    beat_ids = {beat.get("beat_id") for beat in scene.get("beats", [])}
+    for sfx in scene.get("sfx", []):
+        prefix = f"{scene.get('scene_id', 'unknown_scene')}.{sfx.get('sfx_id', 'unknown_sfx')}"
+        if not sfx.get("sfx_id"):
+            errors.append(f"{prefix}: sfx_id is required")
+        if sfx.get("type") not in SFX_TYPES:
+            errors.append(f"{prefix}: type must be one of {sorted(SFX_TYPES)}")
+        placement = sfx.get("placement")
+        if placement not in SFX_PLACEMENTS:
+            errors.append(f"{prefix}: placement must be one of {sorted(SFX_PLACEMENTS)}")
+
+        if sfx.get("type") in {"ambience", "room_tone", "music"} or placement == "scene_span":
+            if not sfx.get("start_beat") or not sfx.get("end_beat"):
+                errors.append(f"{prefix}: scene-span SFX requires start_beat and end_beat")
+
+        for key in ["start_beat", "end_beat", "anchor_beat"]:
+            if sfx.get(key) and beat_ids and sfx.get(key) not in beat_ids:
+                errors.append(f"{prefix}: {key} {sfx.get(key)!r} does not match a beat in this scene")
+
+        if placement in {"beat_start", "beat_end", "beat_span", "after_text", "before_text", "during_phrase"}:
+            if not sfx.get("anchor_beat"):
+                errors.append(f"{prefix}: {placement} placement requires anchor_beat")
+
+        if placement == "phrase_span":
+            if not sfx.get("anchor_text"):
+                errors.append(f"{prefix}: phrase_span placement requires anchor_text")
+            if not sfx.get("anchor_beat"):
+                errors.append(f"{prefix}: phrase_span placement requires anchor_beat")
+            try:
+                confidence = float(sfx.get("min_alignment_confidence"))
+            except (TypeError, ValueError):
+                errors.append(f"{prefix}: phrase_span requires numeric min_alignment_confidence")
+            else:
+                if not 0.0 <= confidence <= 1.0:
+                    errors.append(f"{prefix}: min_alignment_confidence must be between 0.0 and 1.0")
+            if sfx.get("fallback_placement") not in SFX_PLACEMENTS - {"phrase_span"}:
+                errors.append(f"{prefix}: phrase_span requires fallback_placement that is not phrase_span")
+            if sfx.get("on_alignment_failure") not in SFX_ALIGNMENT_FAILURE_POLICIES:
+                errors.append(
+                    f"{prefix}: on_alignment_failure must be one of {sorted(SFX_ALIGNMENT_FAILURE_POLICIES)}"
+                )
+
+        validate_sfx_duration(errors, scene, sfx)
+        validate_sfx_ducking(errors, scene, sfx)
+
+
 def validate_aps(aps: Dict[str, Any]) -> List[str]:
     errors: List[str] = []
     if aps.get("schema_version") != "0.2":
@@ -224,6 +342,7 @@ def validate_aps(aps: Dict[str, Any]) -> List[str]:
     for scene in aps.get("scenes", []):
         validate_sequence(scene, errors)
         validate_delivery_archetypes(scene, errors)
+        validate_sfx(scene, errors)
         for beat in scene.get("beats", []):
             validate_dialogue_tags(errors, beat)
             validate_punctuation(errors, beat)

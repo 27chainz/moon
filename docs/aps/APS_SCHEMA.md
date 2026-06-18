@@ -90,6 +90,8 @@ chapter production packet
 }
 ```
 
+Optional scene-level `sfx` entries are defined in `docs/aps/SFX_SCHEMA.md`.
+
 ## Scene
 
 ```json
@@ -109,9 +111,12 @@ chapter production packet
     "Pacing, rhythm, accent, intensity, or emotional rules."
   ],
   "sample_context": "Comparable performance lane, genre, or casting reference.",
+  "sfx": [],
   "beats": []
 }
 ```
+
+`sfx` is a Soundstage plan, not spoken text. It is mixed after TTS render and chapter compilation.
 
 ## Beat
 

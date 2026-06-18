@@ -266,6 +266,7 @@ Recommended SFX metadata shape:
   "sfx_id": "sfx_001",
   "type": "ambience",
   "description": "soft mountain wind and muffled falling snow",
+  "placement": "scene_span",
   "start_beat": "scene_001_beat_001",
   "end_beat": "scene_001_beat_008",
   "level_db": -28,
@@ -273,6 +274,37 @@ Recommended SFX metadata shape:
   "fade_out_ms": 1800
 }
 ```
+
+Precise phrase-level SFX must use confidence and fallback:
+
+```json
+{
+  "sfx_id": "sfx_002",
+  "type": "motion",
+  "description": "hurried footsteps on pavement",
+  "placement": "phrase_span",
+  "anchor_text": "ran hastily across the street",
+  "anchor_beat": "scene_004_beat_006",
+  "min_alignment_confidence": 0.82,
+  "fallback_placement": "beat_span",
+  "on_alignment_failure": "degrade_to_fallback",
+  "duration_policy": {
+    "policy": "loop_crossfade",
+    "crossfade_ms": 80
+  }
+}
+```
+
+Timing source preference:
+
+```text
+1. Provider-native word or phrase timestamps if available.
+2. WhisperX alignment over rendered TTS audio.
+3. Beat-level timing fallback.
+4. Skip and flag QA.
+```
+
+See `docs/aps/SFX_SCHEMA.md` for the full Soundstage contract.
 
 For literary audiobooks, SFX should be restrained. The first commercial version should support light ambience and rare spot effects, not full audio drama mixing.
 

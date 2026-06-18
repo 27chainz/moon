@@ -2,6 +2,8 @@
 
 This is the commercial Gemini audiobook path for Aster.
 
+For the recommended infrastructure, storage, queue, playback, and SFX stack, see `docs/aster_tech_stack.md`.
+
 ## 1. Generate Source APS
 
 The master production file is `aps.json`. For production, create it with the Gemini Director:
@@ -183,6 +185,40 @@ For test compiles only:
 ```powershell
 python -m src.aura.chapter_audio_compiler --manifest path\to\exported_gemini\manifest.json --output path\to\chapter_001.wav --allow-unapproved
 ```
+
+## 5. Package Playback Assets
+
+The chapter WAV is the production master, not the mobile playback format.
+
+Package the master into HLS assets:
+
+```powershell
+python -m src.aura.playback_packager `
+  --input path\to\chapter_001.wav `
+  --output-dir path\to\playback\chapter_001 `
+  --book-id book_001 `
+  --chapter-id chapter_001
+```
+
+For a command/manifest check without running FFmpeg:
+
+```powershell
+python -m src.aura.playback_packager `
+  --input path\to\chapter_001.wav `
+  --output-dir path\to\playback\chapter_001 `
+  --book-id book_001 `
+  --chapter-id chapter_001 `
+  --dry-run
+```
+
+This writes:
+
+- `chapter_001.m3u8`
+- `chapter_001_00000.ts`
+- `chapter_001_00001.ts`
+- `playback_manifest.json`
+
+The app should stream the HLS playlist, not the production WAV.
 
 ## Production Notes
 

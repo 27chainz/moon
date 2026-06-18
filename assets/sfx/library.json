@@ -1,0 +1,67 @@
+{
+  "library_version": "0.1",
+  "rules": [
+    "Only use commercial-safe assets.",
+    "Prefer WAV source files.",
+    "Keep source and license fields filled before commercial use.",
+    "Do not use assets with watermarks, recognisable dialogue, or unclear rights."
+  ],
+  "assets": [
+    {
+      "asset_id": "room_tone_house_quiet_001",
+      "category": "room_tone",
+      "path": "assets/sfx/room_tone/room_tone_house_quiet_001.wav",
+      "tags": ["interior", "house", "quiet", "room tone"],
+      "license": "pending",
+      "source": "pending",
+      "duration_seconds": null,
+      "loopable": true,
+      "status": "needed"
+    },
+    {
+      "asset_id": "ambience_suburban_day_soft_001",
+      "category": "ambience",
+      "path": "assets/sfx/ambience/ambience_suburban_day_soft_001.wav",
+      "tags": ["suburban", "day", "soft", "exterior"],
+      "license": "pending",
+      "source": "pending",
+      "duration_seconds": null,
+      "loopable": true,
+      "status": "needed"
+    },
+    {
+      "asset_id": "spot_cardboard_box_soft_001",
+      "category": "spot",
+      "path": "assets/sfx/spot/spot_cardboard_box_soft_001.wav",
+      "tags": ["cardboard", "box", "flap", "soft"],
+      "license": "pending",
+      "source": "pending",
+      "duration_seconds": null,
+      "loopable": false,
+      "status": "needed"
+    },
+    {
+      "asset_id": "spot_cat_hiss_small_001",
+      "category": "spot",
+      "path": "assets/sfx/spot/spot_cat_hiss_small_001.wav",
+      "tags": ["cat", "hiss", "small", "animal"],
+      "license": "pending",
+      "source": "pending",
+      "duration_seconds": null,
+      "loopable": false,
+      "status": "needed"
+    },
+    {
+      "asset_id": "motion_footsteps_house_soft_001",
+      "category": "motion",
+      "path": "assets/sfx/motion/motion_footsteps_house_soft_001.wav",
+      "tags": ["footsteps", "house", "soft", "floor"],
+      "license": "pending",
+      "source": "pending",
+      "duration_seconds": null,
+      "loopable": true,
+      "status": "needed"
+    }
+  ]
+}
+

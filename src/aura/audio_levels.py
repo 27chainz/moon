@@ -7,7 +7,7 @@ import numpy as np
 PEAK_HEADROOM = 0.98
 SILENCE_RMS_THRESHOLD = 0.0005
 MAX_RECOMMENDED_GAIN_DB = 24.0
-LUFS_EFFECT_TYPES = {"ambience", "room_tone", "music"}
+LUFS_EFFECT_TYPES = {"ambience", "room_tone", "music", "music_bed"}
 SFX_ROLE_RELATIVE_DB = {
     "ambience": -22.0,
     "room_tone": -30.0,
@@ -71,7 +71,10 @@ def measure_lufs(audio: np.ndarray, sample_rate: int) -> Optional[float]:
         return None
     try:
         meter = pyln.Meter(sample_rate)
-        value = float(meter.integrated_loudness(audio))
+        # pyloudnorm expects (samples,) for mono or (samples, channels) for multi-channel.
+        # Squeeze (samples, 1) -> (samples,) to avoid shape rejection on mono assets.
+        audio_for_meter = audio.squeeze(axis=1) if audio.ndim == 2 and audio.shape[1] == 1 else audio
+        value = float(meter.integrated_loudness(audio_for_meter))
     except Exception as exc:
         warnings.warn(f"LUFS measurement failed; falling back to RMS/peak metrics: {exc}", RuntimeWarning, stacklevel=2)
         return None
@@ -95,6 +98,17 @@ def normalize_to_lufs(audio: np.ndarray, sample_rate: int, target_lufs: float, r
         warnings.warn("Could not measure LUFS; applying peak normalization only.", RuntimeWarning, stacklevel=2)
         return normalize_peak(audio)
     normalized = pyln.normalize.loudness(audio, loudness, target_lufs)
+    current_peak = float(np.max(np.abs(normalized))) if normalized.size else 0.0
+    if current_peak > PEAK_HEADROOM:
+        scale = PEAK_HEADROOM / current_peak
+        loss_db = float(20 * np.log10(scale))
+        warnings.warn(
+            f"Post-LUFS peak normalization reduced level by {loss_db:.2f} dB; "
+            f"actual LUFS will be below target {target_lufs:.1f} LUFS. "
+            "Consider a true-peak limiter for precision mastering.",
+            RuntimeWarning,
+            stacklevel=2,
+        )
     return normalize_peak(normalized)
 
 
@@ -170,10 +184,18 @@ def recommended_sfx_gain_db(
 ) -> Dict[str, Any]:
     warnings_list = []
     reference_used = False
-    if voice_stats.get("near_silent") and reference_voice_stats:
-        voice_stats = reference_voice_stats
-        reference_used = True
-        warnings_list.append("Local voice window was near-silent; used reference voice loudness.")
+    near_silent_unresolved = False
+    if voice_stats.get("near_silent"):
+        if reference_voice_stats:
+            voice_stats = reference_voice_stats
+            reference_used = True
+            warnings_list.append("Local voice window was near-silent; used reference voice loudness.")
+        else:
+            near_silent_unresolved = True
+            warnings_list.append(
+                "Local voice window was near-silent and no reference was provided; "
+                "gain recommendation may be unreliable."
+            )
 
     metric = choose_level_metric(effect_type, duration_seconds)
     voice_value = voice_stats.get(metric)
@@ -210,6 +232,7 @@ def recommended_sfx_gain_db(
         "target_sfx_level": round(target, 3),
         "fallback_used": fallback_used,
         "reference_used": reference_used,
+        "near_silent_unresolved": near_silent_unresolved,
         "clamped": clamped["clamped"],
     }
     if warnings_list:

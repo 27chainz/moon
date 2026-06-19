@@ -128,6 +128,7 @@ def mark_approved_reference_render(
     chapter_id: str,
     chunk_id: str,
     notes: str = "",
+    audio_path: str = "",
 ) -> Dict[str, Any]:
     if character_id not in (cast_bible.get("characters") or {}):
         raise ValueError(f"Character {character_id!r} is not in the cast bible.")
@@ -140,6 +141,8 @@ def mark_approved_reference_render(
     }
     if notes:
         reference["notes"] = notes
+    if audio_path:
+        reference["audio_path"] = audio_path
     updated["characters"][character_id]["approved_reference_render"] = reference
     updated.setdefault("version_history", []).append(
         {

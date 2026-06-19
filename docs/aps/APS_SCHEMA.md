@@ -205,10 +205,19 @@ Include:
 - The following is a speech synthesis request. Do not read these instructions aloud.
 - Begin speaking only when you reach TRANSCRIPT.
 
+### CHARACTER STATE
+[Director context only — do not speak. This section anchors vocal continuity.]
+Previous moment: last spoken line summary.
+Character — voice identity — energy entry instruction.
+
+Note: CHARACTER STATE is optional for the opening chunk of a chapter but strongly
+recommended for all subsequent chunks to prevent vocal energy resets at boundaries.
+
 ### SAMPLE CONTEXT
 The performance lane for the scene.
 
 #### TRANSCRIPT
+[Speaker1=Character Name, Speaker2=Character 2]
 Speaker1: [optional audio tag] exact render_text
 Speaker2: exact render_text
 ```
@@ -218,10 +227,13 @@ Gemini prompt rules:
 - Use `render_text` as the spoken transcript when present.
 - Use neutral Gemini labels such as `Speaker1` and `Speaker2`.
 - Keep real character ids in metadata such as `speaker_aliases`.
+- Include an inline alias→name map at the top of the TRANSCRIPT block: `[Speaker1=Narrator, Speaker2=Opal Miner]`.
 - Repeat Audio Profile blocks in every chunk; Gemini has no memory between calls.
+- Include a CHARACTER STATE block in every non-opening chunk to prevent energy resets.
 - Use audio tags sparingly and only in the compiled prompt, never in APS `text`.
 - Compile `accent_profile` into the Audio Profile whenever present.
 - Store stitch QA notes, overlap notes, and internal continuity diagnostics outside `tts_prompt`.
+- CHARACTER STATE must begin with `[Director context only — do not speak.]` to prevent classifier false-rejection (per Gemini TTS docs).
 
 Generic production packet example:
 

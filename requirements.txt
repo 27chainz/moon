@@ -7,4 +7,9 @@ soundfile
 scipy
 google-genai
 pyloudnorm
+pyannote.audio
+resemblyzer
+openai-whisper
+praat-parselmouth
+phonemizer
 pytest

@@ -48,14 +48,36 @@ GEMINI_PROMPT_HEADINGS = [
     "# AUDIO PROFILE:",
     "## THE SCENE",
     "### DIRECTOR'S NOTES",
+    "### CHARACTER STATE",
+    "### SAMPLE CONTEXT",
+    "#### TRANSCRIPT",
+]
+GEMINI_REQUIRED_HEADINGS = [
+    "# AUDIO PROFILE:",
+    "## THE SCENE",
+    "### DIRECTOR'S NOTES",
     "### SAMPLE CONTEXT",
     "#### TRANSCRIPT",
 ]
 TRANSCRIPT_LINE_RE = re.compile(r"^Speaker\d+:\s+\S", re.M)
+# Gemini TTS context window (documented hard limit: 32k tokens).
+# We use a conservative 4 chars-per-token estimate for English text.
+TTS_CONTEXT_WINDOW_TOKENS = 32_768
+TTS_TOKEN_WARN_THRESHOLD = 28_000  # warn at ~85% of limit
 
 
 class GeminiProductionError(RuntimeError):
     pass
+
+
+def estimate_prompt_tokens(text: str) -> int:
+    """Conservative token estimate for Gemini TTS prompts.
+
+    Gemini uses a subword tokeniser; English text averages 3-5 chars per token.
+    We use 4 chars/token as a safe middle estimate. This is intentionally
+    conservative to avoid silently approaching the 32k TTS context limit.
+    """
+    return max(1, len(text) // 4)
 
 
 def load_json(path: Path) -> Dict[str, Any]:
@@ -127,16 +149,41 @@ def validate_gemini_tts_prompt(payload: Dict[str, Any]) -> List[str]:
         warnings.append("tts_prompt is missing; runner will fall back to legacy prompt construction.")
         return warnings
 
-    missing = [heading for heading in GEMINI_PROMPT_HEADINGS if heading not in prompt]
+    missing = [heading for heading in GEMINI_REQUIRED_HEADINGS if heading not in prompt]
     if missing:
         raise GeminiProductionError(f"Gemini tts_prompt is missing required section(s): {', '.join(missing)}")
 
-    positions = [prompt.index(heading) for heading in GEMINI_PROMPT_HEADINGS]
-    if positions != sorted(positions):
+    # Token size guard — Gemini TTS has a 32k token context window (documented).
+    estimated_tokens = estimate_prompt_tokens(prompt)
+    if estimated_tokens > TTS_CONTEXT_WINDOW_TOKENS:
+        raise GeminiProductionError(
+            f"tts_prompt is too long (~{estimated_tokens:,} tokens estimated; "
+            f"limit is {TTS_CONTEXT_WINDOW_TOKENS:,}). "
+            "Split into smaller chunks or reduce prompt content."
+        )
+    if estimated_tokens > TTS_TOKEN_WARN_THRESHOLD:
+        warnings.append(
+            f"tts_prompt is large (~{estimated_tokens:,} tokens estimated). "
+            f"Approaching the {TTS_CONTEXT_WINDOW_TOKENS:,}-token Gemini TTS context limit."
+        )
+
+
+    # Check required headings are in order; CHARACTER STATE is optional but must appear
+    # between DIRECTOR'S NOTES and SAMPLE CONTEXT when present.
+    required_positions = [prompt.index(h) for h in GEMINI_REQUIRED_HEADINGS]
+    if required_positions != sorted(required_positions):
         raise GeminiProductionError(
             "Gemini tts_prompt sections must appear in order: "
-            + " -> ".join(GEMINI_PROMPT_HEADINGS)
+            + " -> ".join(GEMINI_REQUIRED_HEADINGS)
         )
+    if "### CHARACTER STATE" in prompt:
+        state_pos = prompt.index("### CHARACTER STATE")
+        notes_pos = prompt.index("### DIRECTOR'S NOTES")
+        context_pos = prompt.index("### SAMPLE CONTEXT")
+        if not (notes_pos < state_pos < context_pos):
+            raise GeminiProductionError(
+                "### CHARACTER STATE must appear between ### DIRECTOR'S NOTES and ### SAMPLE CONTEXT."
+            )
 
     transcript_index = prompt.index("#### TRANSCRIPT")
     transcript = prompt[transcript_index:]

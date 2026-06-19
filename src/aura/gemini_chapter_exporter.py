@@ -29,6 +29,7 @@ DEFAULT_GOLDEN_LINE_COUNT = 2
 MAX_DIRECTOR_NOTES = 8
 SENTENCE_ENDINGS = (".", "?", "!", '"', "'")
 DEFAULT_MAX_CHUNK_WORDS = 230
+PREVIOUS_BEATS_WINDOW = 50
 
 TagRule = Tuple[Tuple[str, ...], Optional[str], float]
 
@@ -233,17 +234,44 @@ def performance_audio_tags(
 
 
 def collect_golden_lines(plan: Dict[str, Any], limit: int = DEFAULT_GOLDEN_LINE_COUNT) -> Dict[str, List[str]]:
+    """Collect representative golden lines per speaker.
+
+    Priority order:
+    1. Explicit ``golden_lines`` from the cast bible entry.
+    2. Beats nominated by ``golden_line_beat_ids`` in the character record.
+    3. First-occurrence fallback scan across all scenes.
+    """
+    # Seed from cast bible golden_lines (highest priority)
     lines: Dict[str, List[str]] = {
         speaker_id: list(character.get("golden_lines") or [])
         for speaker_id, character in (plan.get("characters") or {}).items()
     }
+    # Preferred beat IDs nominated in the cast bible
+    preferred_ids: Dict[str, set] = {
+        speaker_id: set(character.get("golden_line_beat_ids") or [])
+        for speaker_id, character in (plan.get("characters") or {}).items()
+    }
+    # First pass: preferred beat IDs
     for scene in plan.get("scenes", []):
         for beat in scene.get("beats", []):
             if not is_speakable_beat(beat):
                 continue
             speaker_id = beat.get("speaker", "narrator")
-            speaker_lines = lines.setdefault(speaker_id, [])
+            beat_id = beat.get("beat_id")
+            if not beat_id or beat_id not in preferred_ids.get(speaker_id, set()):
+                continue
             text = " ".join(beat_render_text(beat).split())
+            speaker_lines = lines.setdefault(speaker_id, [])
+            if text and text not in speaker_lines and len(speaker_lines) < limit:
+                speaker_lines.append(text)
+    # Second pass: first-occurrence fallback to fill remaining slots
+    for scene in plan.get("scenes", []):
+        for beat in scene.get("beats", []):
+            if not is_speakable_beat(beat):
+                continue
+            speaker_id = beat.get("speaker", "narrator")
+            text = " ".join(beat_render_text(beat).split())
+            speaker_lines = lines.setdefault(speaker_id, [])
             if text and text not in speaker_lines and len(speaker_lines) < limit:
                 speaker_lines.append(text)
     return {speaker_id: values[:limit] for speaker_id, values in lines.items()}
@@ -274,10 +302,29 @@ def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: D
         bible = character_voice_bible(plan, speaker_id, golden_lines.get(speaker_id, []))
         alias = aliases[speaker_id]
         title = bible["display_name"]
+
+        # Escalate casting lock when a human has approved a reference render
+        approved_reference_render = bible.get("approved_reference_render") or {}
+        has_approved_render = approved_reference_render.get("status") == "approved"
+        if has_approved_render:
+            ref_chapter = approved_reference_render.get("chapter_id", "")
+            ref_chunk = approved_reference_render.get("chunk_id", "")
+            ref_loc = f" ({ref_chapter}/{ref_chunk})" if ref_chapter and ref_chunk else ""
+            casting_lock = (
+                f"STRONG CASTING LOCK: This character has a human-approved reference render{ref_loc}. "
+                "You MUST reproduce the exact same vocal identity, accent, energy, and texture. "
+                "Do not reinterpret this voice under any circumstances."
+            )
+        else:
+            casting_lock = (
+                "Casting lock: This is a stable cast voice. Keep the same vocal identity every time "
+                "this character appears; do not reinterpret the voice between chunks."
+            )
+
         lines = [
             f"# AUDIO PROFILE: {alias} ({title})",
             f"Gemini voice: {bible['provider_voice']}",
-            "Casting lock: This is a stable cast voice. Keep the same vocal identity every time this character appears; do not reinterpret the voice between chunks.",
+            casting_lock,
         ]
         if bible["role"]:
             lines.append(f"Role: {bible['role']}")
@@ -298,16 +345,7 @@ def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: D
                 lines.append(f"Accent avoid: {', '.join(avoid)}")
         if bible["approved_reference_note"]:
             lines.append(f"Approved reference note: {bible['approved_reference_note']}")
-        energy_profile = bible.get("energy_profile") or {}
-        if energy_profile:
-            if energy_profile.get("baseline_intensity") is not None:
-                lines.append(f"Energy baseline: {energy_profile['baseline_intensity']}")
-            if energy_profile.get("entry_instruction"):
-                lines.append(f"Energy entry: {energy_profile['entry_instruction']}")
-            if energy_profile.get("do_not_do"):
-                lines.append(f"Energy avoid: {', '.join(energy_profile['do_not_do'])}")
-        approved_reference_render = bible.get("approved_reference_render") or {}
-        if approved_reference_render and approved_reference_render.get("status") == "approved":
+        if has_approved_render:
             reference_bits = [
                 approved_reference_render.get("chapter_id"),
                 approved_reference_render.get("chunk_id"),
@@ -316,6 +354,21 @@ def build_audio_profile(plan: Dict[str, Any], speaker_ids: List[str], aliases: D
             lines.append(
                 "Approved reference render: "
                 + " | ".join(str(bit) for bit in reference_bits if bit)
+            )
+        energy_profile = bible.get("energy_profile") or {}
+        if energy_profile:
+            if energy_profile.get("baseline_intensity") is not None:
+                lines.append(f"Energy baseline: {energy_profile['baseline_intensity']}")
+            if energy_profile.get("entry_instruction"):
+                lines.append(f"Energy entry: {energy_profile['entry_instruction']}")
+            if energy_profile.get("do_not_do"):
+                lines.append(f"Energy avoid: {', '.join(energy_profile['do_not_do'])}")
+        else:
+            # Mandatory fallback: every character needs an energy anchor even without a cast bible entry
+            lines.append("Energy baseline: 0.5")
+            lines.append(
+                "Energy entry: Enter as the same already-established character voice. "
+                "Do not reset vocal energy, accent, or texture at chunk boundaries."
             )
         if bible["golden_lines"]:
             lines.append("Golden reference lines:")
@@ -431,6 +484,10 @@ def build_sample_context(scene: Dict[str, Any], plan: Dict[str, Any]) -> str:
 
 def build_prompt_transcript(plan: Dict[str, Any], beats: List[Dict[str, Any]], aliases: Dict[str, str]) -> str:
     lines = ["#### TRANSCRIPT"]
+    # Inline alias→name bridge: repeat the mapping at the point of use so Gemini
+    # doesn't have to recall it from the top of the AUDIO PROFILE (docs-recommended).
+    alias_map = ", ".join(f"{alias}={display_name(plan, sid)}" for sid, alias in aliases.items())
+    lines.append(f"[{alias_map}]")
     for beat in beats:
         speaker_id = beat.get("speaker", "narrator")
         alias = aliases[speaker_id]
@@ -447,6 +504,65 @@ def build_prompt_transcript(plan: Dict[str, Any], beats: List[Dict[str, Any]], a
     return "\n".join(lines)
 
 
+def build_character_state_section(
+    plan: Dict[str, Any],
+    speaker_ids: List[str],
+    previous_beats: List[Dict[str, Any]],
+    current_beats: List[Dict[str, Any]],
+) -> str:
+    """Build a grounded CHARACTER STATE section for the Gemini-facing prompt.
+
+    This is the critical missing link: the previous moment and per-character
+    voice/energy anchors sent directly to Gemini so it has concrete state to
+    match, not just abstract lock instructions.
+    """
+    lines = ["### CHARACTER STATE"]
+    # Guard: tell the classifier this is director context, not spoken transcript.
+    # Per Gemini TTS docs, unlabelled sections between headings risk being read aloud
+    # or triggering a PROHIBITED_CONTENT rejection.
+    lines.append("[Director context only — do not speak. This section anchors vocal continuity.]")
+
+    if previous_beats:
+        prev_summary = beat_summary(plan, previous_beats[-1])
+        lines.append(f"Previous moment: {prev_summary}")
+        lines.append(
+            "Enter this chunk matching that exact vocal energy, pace, and emotional temperature. "
+            "Do not restart as if this is a fresh take."
+        )
+    else:
+        lines.append("Opening chunk: establish the scene tone steadily. Do not rush the first line.")
+
+    lines.append("")
+
+    for speaker_id in speaker_ids:
+        character = plan.get("characters", {}).get(speaker_id, {})
+        char_display = display_name(plan, speaker_id)
+        voice_bible = character.get("voice_bible") or character.get("stable_voice", "")
+        energy_profile = character.get("energy_profile") or {}
+        approved = character.get("approved_reference_render") or {}
+
+        prev_beat = latest_speaker_beat(speaker_id, previous_beats)
+
+        anchor_parts = [char_display]
+        if voice_bible:
+            truncated = voice_bible[:120].rstrip()
+            if len(voice_bible) > 120:
+                truncated += "..."
+            anchor_parts.append(truncated)
+        if energy_profile.get("entry_instruction"):
+            anchor_parts.append(energy_profile["entry_instruction"])
+        elif prev_beat:
+            perf = performance_summary(prev_beat)
+            if perf:
+                anchor_parts.append(f"last heard: {perf}")
+        if approved.get("status") == "approved" and approved.get("notes"):
+            anchor_parts.append(f"[reference: {approved['notes'][:100]}]")
+
+        lines.append(" — ".join(anchor_parts))
+
+    return "\n".join(lines)
+
+
 def build_tts_prompt(
     plan: Dict[str, Any],
     scene: Dict[str, Any],
@@ -457,9 +573,10 @@ def build_tts_prompt(
     chunk_index_in_scene: int = 1,
     scene_chunk_count: int = 1,
 ) -> str:
+    prev = previous_beats or []
     continuity_notes = build_prompt_continuity_notes(
         plan,
-        previous_beats or [],
+        prev,
         beats,
         chunk_index_in_scene,
         scene_chunk_count,
@@ -469,6 +586,7 @@ def build_tts_prompt(
             build_audio_profile(plan, speaker_ids, aliases),
             build_scene_section(scene, plan),
             build_director_notes(scene, plan, continuity_notes),
+            build_character_state_section(plan, speaker_ids, prev, beats),
             build_sample_context(scene, plan),
             build_prompt_transcript(plan, beats, aliases),
         ]
@@ -799,6 +917,23 @@ def export_chapter(
     chunk_records: List[Dict[str, Any]] = []
     chunk_number = 1
     previous_beats: List[Dict[str, Any]] = []
+
+    # Fix #3: cast bible safety check.
+    # Exporting without a cast bible on chapter 2+ silently discards all voice locks,
+    # which is the most common cause of whole-chapter character drift.
+    chapter_id = plan.get("chapter_id", "")
+    is_opening_chapter = not chapter_id or chapter_id.endswith("_001") or chapter_id.endswith("001")
+    if cast_bible_path is None and not is_opening_chapter:
+        import warnings as _warnings
+        _warnings.warn(
+            f"Exporting chapter '{chapter_id}' without a cast bible. "
+            "Character voice identity will default to this chapter's APS values, "
+            "which may differ from approved voices in earlier chapters. "
+            "Pass --cast-bible to lock voice identity across chapters.",
+            UserWarning,
+            stacklevel=2,
+        )
+
     for scene in plan.get("scenes", []):
         scene_chunks = split_scene_beats(scene, max_chunk_words=max_chunk_words)
         for scene_index, beats in enumerate(scene_chunks, start=1):
@@ -836,7 +971,8 @@ def export_chapter(
                     "beat_ids": request["source"]["beat_ids"],
                 }
             )
-            previous_beats.extend(beats)
+            # Cap the rolling window to avoid stale state from many chunks back
+            previous_beats = (previous_beats + beats)[-PREVIOUS_BEATS_WINDOW:]
             chunk_number += 1
 
     (output_dir / "render_chapter.py").write_text(render_script(request_paths, model), encoding="utf-8")

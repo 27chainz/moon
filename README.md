@@ -5,7 +5,7 @@
 **Autonomous Production & Quality Architecture for Audio Computing**
 
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-black.svg?style=for-the-badge&logo=python)](https://www.python.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-black.svg?style=for-the-badge)](LICENSE)
+[![License: All Rights Reserved](https://img.shields.io/badge/License-All%20Rights%20Reserved-black.svg?style=for-the-badge)](LICENSE)
 [![Status: Experimental](https://img.shields.io/badge/Status-Active%20R%2DD-black.svg?style=for-the-badge)]()
 
 ---
